@@ -1,0 +1,9 @@
+.channels {
+	width: 200vw;
+	display: flex;
+	transition: transform 500ms;
+}
+
+.channel2 {
+	transform: translateX(-100vw);
+}
