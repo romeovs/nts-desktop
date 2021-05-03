@@ -4,5 +4,8 @@
 	"description": "A desktop app for playing NTS Live and streams",
 	"main": "index.js",
 	"author": "Romeo Van Snick <romeo@romeovansnick.be>",
-	"license": "MIT"
+	"license": "MIT",
+	"devDependencies": {
+		"prettier": "^2.2.1"
+	}
 }
