@@ -5,6 +5,9 @@ module.exports = {
 		},
 	},
 	plugins: [],
+	packageOptions: {
+		external: ["electron"],
+	},
 	buildOptions: {
 		out: "./dist/client",
 	},
