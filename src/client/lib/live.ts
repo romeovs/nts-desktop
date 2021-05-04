@@ -1,6 +1,11 @@
 import { usePromise, PromiseState } from "./use-promise"
 
 export type ChannelInfo = {
+	now: ShowInfo
+	next: ShowInfo
+}
+
+export type ShowInfo = {
 	name: string
 	starts: Date
 	ends: Date
@@ -18,41 +23,43 @@ export async function live(): Promise<Info> {
 	const content = await resp.json()
 
 	return {
-		channel1: simplify(content.results[0]),
-		channel2: simplify(content.results[1]),
+		channel1: {
+			now: simplify(content.results[0].now),
+			next: simplify(content.results[0].next),
+		},
+		channel2: {
+			now: simplify(content.results[1].now),
+			next: simplify(content.results[1].next),
+		},
 	}
 }
 
-type Result = {
-	now: {
-		start_timestamp: string
-		end_timestamp: string
-		embeds: {
-			details: {
-				name: string
-				location_long: string
-				media: {
-					background_large: string
-				}
+type ShowData = {
+	start_timestamp: string
+	end_timestamp: string
+	embeds: {
+		details: {
+			name: string
+			location_long: string
+			media: {
+				background_large: string
 			}
 		}
 	}
 }
 
-function simplify(result: Result): ChannelInfo {
+function simplify(data: ShowData): ShowInfo {
 	const {
-		now: {
-			start_timestamp,
-			end_timestamp,
-			embeds: {
-				details: {
-					name,
-					location_long,
-					media: { background_large },
-				},
+		start_timestamp,
+		end_timestamp,
+		embeds: {
+			details: {
+				name,
+				location_long,
+				media: { background_large },
 			},
 		},
-	} = result
+	} = data
 
 	return {
 		name,

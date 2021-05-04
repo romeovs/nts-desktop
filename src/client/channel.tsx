@@ -19,7 +19,9 @@ export function Channel(props: Props) {
 		return null
 	}
 
-	const { name, image, starts, ends, location } = info
+	const now = new Date()
+	const show = now > info.now.ends ? info.next : info.now
+	const { name, image, starts, ends, location } = show
 
 	function handleClick() {
 		if (playing) {
