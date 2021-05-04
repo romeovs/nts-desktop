@@ -1,5 +1,5 @@
 import * as React from "react"
-import type { ChannelInfo } from "./lib/api"
+import type { ChannelInfo } from "./lib/live"
 
 import css from "./channel.module.css"
 
