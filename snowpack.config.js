@@ -4,7 +4,7 @@ module.exports = {
 			url: "/",
 		},
 	},
-	plugins: [],
+	plugins: ["@snowpack/plugin-react-refresh"],
 	packageOptions: {
 		external: ["electron"],
 	},
