@@ -11,7 +11,13 @@ app.on("ready", function () {
 		frame: false,
 		resizable: false,
 		alwaysOnTop: true,
-		webPreferences: { nodeIntegration: true },
+		webPreferences: {
+			webSecurity: true,
+			nodeIntegration: false,
+			contextIsolation: true,
+			enableRemoteModule: false,
+			preload: path.resolve(__dirname, "preload.js"),
+		},
 	})
 
 	window.setAlwaysOnTop(true, "floating")
