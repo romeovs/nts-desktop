@@ -17,5 +17,9 @@ start: index preload
 client.dev:
 	@$(bin)/snowpack dev
 
+client:
+	@rm -r dist/*
+	@snowpack build
+
 dev:
 	@$(bin)/concurrently "make client.dev" "make start"

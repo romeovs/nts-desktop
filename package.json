@@ -7,6 +7,7 @@
 	"license": "MIT",
 	"devDependencies": {
 		"@snowpack/plugin-react-refresh": "^2.5.0",
+		"@snowpack/plugin-webpack": "^2.3.1",
 		"@types/classnames": "^2.3.1",
 		"@types/react": "^17.0.4",
 		"@types/react-dom": "^17.0.3",

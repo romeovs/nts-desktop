@@ -4,7 +4,7 @@ module.exports = {
 			url: "/",
 		},
 	},
-	plugins: ["@snowpack/plugin-react-refresh"],
+	plugins: ["@snowpack/plugin-react-refresh", "@snowpack/plugin-webpack"],
 	devOptions: {
 		open: "none",
 	},
@@ -13,5 +13,8 @@ module.exports = {
 	},
 	buildOptions: {
 		out: "./dist/client",
+	},
+	optimize: {
+		target: "es2017",
 	},
 }
