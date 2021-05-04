@@ -11,6 +11,7 @@ import { usePromise } from "./lib/use-promise"
 import { Splash } from "./splash"
 import { Channel } from "./channel"
 import { Player } from "./player"
+import { Mixcloud } from "./mixcloud"
 import { Show } from "./show"
 
 import css from "./app.module.css"
@@ -47,6 +48,7 @@ export function App() {
 				<Show show={show} />
 			</div>
 			<Player channel={channel} playing={playing} />
+			<Mixcloud show={show} playing={playing && channel === 2} />
 		</>
 	)
 }
