@@ -1,6 +1,3 @@
-dev:
-	@snowpack dev
-
 typecheck:
 	@tsc --noEmit
 
@@ -9,3 +6,9 @@ index: src/main.ts
 
 start: index
 	electron dist
+
+client.dev:
+	@snowpack dev
+
+dev:
+	concurrently "make client.dev" "make start"
