@@ -16,6 +16,11 @@ import { Slider, Slide } from "./slider"
 
 import css from "./app.module.css"
 
+const streams = {
+	1: "https://stream-relay-geo.ntslive.net/stream?client=NTSWebApp",
+	2: "https://stream-relay-geo.ntslive.net/stream2?client=NTSWebApp",
+}
+
 type State<T> = {
 	loading: boolean
 	data: T | null
@@ -77,7 +82,8 @@ export function App() {
 					<Show show={show.data} />
 				</Slide>
 			</Slider>
-			<Player channel={channel} playing={playing} />
+			<Player src={streams[1]} playing={playing} />
+			<Player src={streams[2]} playing={playing} />
 			<Mixcloud show={show.data} playing={playing && channel === 2} />
 		</>
 	)

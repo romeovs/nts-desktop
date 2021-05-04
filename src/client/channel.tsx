@@ -4,12 +4,17 @@ import type { ChannelInfo } from "./lib/api"
 import css from "./channel.module.css"
 
 type Props = {
-	info: ChannelInfo
+	info?: ChannelInfo
 	channel: number
 }
 
 export function Channel(props: Props) {
 	const { info, channel } = props
+
+	if (!info) {
+		return null
+	}
+
 	const { name, image, starts, ends, location } = info
 
 	return (
