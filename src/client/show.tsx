@@ -54,8 +54,13 @@ export function Show(props: Props) {
 					<ul>
 						{tracklist.map(function (track, index) {
 							const { title, artist } = track
+							function handleClick() {
+								//
+								navigator.clipboard.writeText(`${artist} - ${title}`)
+							}
+
 							return (
-								<li key={index}>
+								<li key={index} onClick={handleClick}>
 									<div className={css.artist}>{artist}</div>
 									<div>{title}</div>
 								</li>

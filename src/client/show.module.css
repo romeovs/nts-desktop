@@ -96,6 +96,10 @@
 	background: rgba(76, 76, 76, 0.35);
 }
 
+.tracklist li:active {
+	background: rgba(76, 76, 76, 0.45);
+}
+
 .artist {
 	font-weight: bold;
 }
