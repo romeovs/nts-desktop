@@ -10,6 +10,12 @@
 }
 
 .show {
+	overflow-y: auto;
+	width: 100vw;
+	height: 100vh;
+}
+
+.top {
 	position: relative;
 }
 
@@ -50,4 +56,22 @@
 	padding: 0.25rem 0.5rem;
 	background: black;
 	color: white;
+}
+
+.tracklist {
+	padding: 0.5rem;
+}
+
+.tracklist ul {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+.tracklist li {
+	margin-bottom: 0.5rem;
+}
+
+.artist {
+	font-weight: bold;
 }

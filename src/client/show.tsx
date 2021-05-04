@@ -18,18 +18,33 @@ export function Show(props: Props) {
 		)
 	}
 
-	const { image, name, location, date } = show
-	console.log(show)
+	const { image, name, location, date, tracklist } = show
 
 	return (
 		<div className={css.show}>
-			<img src={image} className={css.image} />
+			<div className={css.top}>
+				<img src={image} className={css.image} />
 
-			<div className={css.date}>{format(date)}</div>
-			<div className={css.footer}>
-				<div className={css.location}>{location}</div>
-				<br />
-				<span className={css.name}>{name}</span>
+				<div className={css.date}>{format(date)}</div>
+				<div className={css.footer}>
+					<div className={css.location}>{location}</div>
+					<br />
+					<span className={css.name}>{name}</span>
+				</div>
+			</div>
+
+			<div className={css.tracklist}>
+				<ul>
+					{tracklist.map(function (track, index) {
+						const { title, artist } = track
+						return (
+							<li key={index}>
+								<div className={css.artist}>{artist}</div>
+								<div className={css.title}>{title}</div>
+							</li>
+						)
+					})}
+				</ul>
 			</div>
 		</div>
 	)
