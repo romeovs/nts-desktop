@@ -6,7 +6,8 @@
 	bottom: 0;
 	z-index: 100;
 	background: black;
-	transition: opacity 500ms;
+	transition: opacity 800ms;
+	transition-delay: 200ms;
 	opacity: 1;
 }
 
@@ -16,8 +17,8 @@
 }
 
 .logo {
-	width: 60px;
-	height: 60px;
+	width: 80px;
+	height: 80px;
 	position: absolute;
 	margin: auto;
 	top: 0;
