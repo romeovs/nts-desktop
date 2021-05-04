@@ -16,7 +16,7 @@ export function Player(props: Props) {
 	const ref = React.useRef<HTMLAudioElement | null>(null)
 	React.useEffect(
 		function () {
-			if (!playing) {
+			if (!playing || channel > 1) {
 				ref.current?.pause()
 				return
 			}
