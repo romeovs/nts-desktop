@@ -33,9 +33,8 @@ export function App() {
 	const [live, setLive] = React.useState<State<Info>>({ loading: true, error: null, data: null })
 	const [show, setShow] = React.useState<State<ShowT>>({ loading: false, error: null, data: null })
 
-	const channel = 1
 	const [index, setIndex] = React.useState<number>(1)
-	const [playing, setPlaying] = React.useState(false)
+	const [playing, setPlaying] = React.useState<Channel | null>(null)
 
 	React.useEffect(function () {
 		async function load() {
@@ -57,7 +56,7 @@ export function App() {
 				const data = await getShow(url)
 				setShow({ loading: false, data, error: null })
 				setIndex(3)
-				setPlaying(true)
+				setPlaying("show")
 			} catch (error) {
 				setShow({ loading: false, data: null, error })
 			}
@@ -82,9 +81,9 @@ export function App() {
 					<Show show={show.data} />
 				</Slide>
 			</Slider>
-			<Player src={streams[1]} playing={playing} />
-			<Player src={streams[2]} playing={playing} />
-			<Mixcloud show={show.data} playing={playing && channel === 2} />
+			<Player src={streams[1]} playing={playing === 1} />
+			<Player src={streams[2]} playing={playing === 2} />
+			<Mixcloud show={show.data} playing={playing === "show"} />
 		</>
 	)
 }
