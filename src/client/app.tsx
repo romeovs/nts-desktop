@@ -72,15 +72,31 @@ export function App() {
 		setIndex(idx => (3 + idx - 1) % 3)
 	}
 
+	function onStop() {
+		setPlaying(null)
+	}
+
 	return (
 		<>
 			<Splash hide={!live.loading && !show.loading} />
 			<Slider index={index} animate={isOpen}>
 				<Slide>
-					<Channel channel={1} info={live.data?.channel1} />
+					<Channel
+						info={live.data?.channel1}
+						channel={1}
+						playing={playing === 1}
+						onPlay={() => setPlaying(1)}
+						onStop={onStop}
+					/>
 				</Slide>
 				<Slide>
-					<Channel channel={2} info={live.data?.channel2} />
+					<Channel
+						info={live.data?.channel2}
+						channel={2}
+						playing={playing === 2}
+						onPlay={() => setPlaying(2)}
+						onStop={onStop}
+					/>
 				</Slide>
 				<Slide>
 					<Show show={show.data} />

@@ -29,6 +29,33 @@
 	margin-right: 0.5rem;
 	font-weight: 900;
 	font-size: 1.2rem;
+
+	position: relative;
+	transition: color 200ms;
+}
+
+.play {
+	position: absolute;
+	left: 0;
+	right: 0;
+	top: 0;
+	bottom: 0;
+	height: auto;
+	width: 100%;
+	outline: none;
+	margin: auto;
+	padding-bottom: 0.1rem;
+	opacity: 0;
+	transition: opacity 200ms;
+	cursor: pointer;
+}
+
+.ch:hover {
+	color: transparent;
+}
+
+.ch:hover .play {
+	opacity: 1;
 }
 
 .live {
