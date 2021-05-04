@@ -17,6 +17,16 @@
 
 .top {
 	position: relative;
+	animation: enter 500ms;
+}
+
+@keyframes enter {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
 }
 
 .image {
@@ -63,7 +73,7 @@
 }
 
 .tracklist {
-	padding: 0.5rem;
+	padding: 0;
 }
 
 .tracklist ul {
@@ -73,7 +83,13 @@
 }
 
 .tracklist li {
-	margin-bottom: 0.5rem;
+	padding: 0.25rem 0.5rem;
+	transition: background 200ms;
+	cursor: pointer;
+}
+
+.tracklist li:hover {
+	background: rgba(76, 76, 76, 0.35);
 }
 
 .artist {
