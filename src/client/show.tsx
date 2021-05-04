@@ -1,14 +1,16 @@
 import * as React from "react"
 import css from "./show.module.css"
 
+import type { Show } from "./lib/show"
+
 type Props = {
-	url: string
+	show: Show | null
 }
 
 export function Show(props: Props) {
-	const { url } = props
+	const { show } = props
 
-	if (!url) {
+	if (!show) {
 		return (
 			<div className={css.empty}>
 				<div>Drop a link on the menu to load a show</div>
@@ -16,5 +18,7 @@ export function Show(props: Props) {
 		)
 	}
 
-	return <div> OK </div>
+	console.log("HERE", show)
+
+	return <div>OK</div>
 }
