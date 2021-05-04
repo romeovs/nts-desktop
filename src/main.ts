@@ -51,4 +51,8 @@ app.on("ready", function () {
 		window.show()
 		window.focus()
 	})
+
+	tray.on("drop-text", function (evt: Event, text: string) {
+		window.webContents.send("drop", text)
+	})
 })
