@@ -38,7 +38,11 @@ export function App() {
 
 	React.useEffect(function () {
 		live.load()
-		electron.on("drop", (_: Event, url: string) => show.load(url))
+		electron.on("drop", async function (_: Event, url: string) {
+			await show.load(url)
+			setPlaying("show")
+			setIndex(channelToIndex.show)
+		})
 		electron.on("open", () => live.load())
 		electron.on("close", function () {
 			if (!playing) {
