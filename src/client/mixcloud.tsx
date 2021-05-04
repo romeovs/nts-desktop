@@ -1,4 +1,5 @@
 import * as React from "react"
+import type { Show } from "./lib/show"
 
 type Props = {
 	show: Show | null
@@ -15,53 +16,52 @@ interface PlayerWidget {
 export function Mixcloud(props: Props) {
 	const { show, playing } = props
 
-	const ref = React.useRef<HTMLDivElement | null>(null)
-	const widget = React.useRef<PlayerWidget | null>(null)
-	React.useEffect(function () {
-		if (!ref.current) {
-			return
-		}
-
-		// @ts-expect-error
-		const w = window.Mixcloud.PlayerWidget(ref.current) as PlayerWidget
-		w.ready.then(function () {
-			widget.current = w
-
-			console.log("HERE", w)
-		})
-	}, [])
+	const ref = React.useRef<HTMLIFrameElement | null>(null)
+	const [widget, setWidget] = React.useState<PlayerWidget | null>(null)
 
 	React.useEffect(
 		function () {
-			if (!show) {
-				widget.current?.pause()
+			if (!ref.current || !show) {
 				return
 			}
 
-			widget.current?.load(key(show.mixcloud), playing)
+			// @ts-expect-error
+			const w = window.Mixcloud.PlayerWidget(ref.current) as PlayerWidget
+			w.ready.then(() => setWidget(w))
 		},
 		[show],
 	)
 
 	React.useEffect(
 		function () {
-			if (playing && show) {
-				widget.current?.play()
+			if (!show) {
+				widget?.pause()
 				return
 			}
 
-			widget.current?.pause()
+			widget?.load(key(show.mixcloud), playing)
 		},
-		[playing],
+		[show, widget],
 	)
 
-	const k = show && encodeURIComponent(key(show.mixcloud))
-	return (
-		<iframe
-			ref={ref}
-			src={k && `http://www.mixcloud.com/widget/iframe/?hide_cover=1&mini=1&feed=${encodeURIComponent(k)}`}
-		/>
+	React.useEffect(
+		function () {
+			if (playing && show) {
+				widget?.play()
+				return
+			}
+
+			widget?.pause()
+		},
+		[playing, widget],
 	)
+
+	if (!show) {
+		return null
+	}
+
+	const feed = encodeURIComponent(key(show.mixcloud))
+	return <iframe ref={ref} src={`http://www.mixcloud.com/widget/iframe/?hide_cover=1&mini=1&feed=${feed}`} />
 }
 
 function key(url: string) {
