@@ -21,7 +21,7 @@ export function Channel(props: Props) {
 					<div className={css.live}>
 						Live <span className={css.dot} />
 					</div>
-					<div className={css.times}>
+					<div>
 						{format(starts)} &mdash; {format(ends)}
 					</div>
 				</div>
