@@ -5,6 +5,9 @@ module.exports = {
 		},
 	},
 	plugins: ["@snowpack/plugin-react-refresh"],
+	devOptions: {
+		open: "none",
+	},
 	packageOptions: {
 		external: ["electron"],
 	},
