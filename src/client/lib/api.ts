@@ -1,3 +1,5 @@
+import { usePromise, PromiseState } from "./use-promise"
+
 export type ChannelInfo = {
 	name: string
 	starts: Date
@@ -59,4 +61,8 @@ function simplify(result: Result): ChannelInfo {
 		starts: new Date(start_timestamp),
 		ends: new Date(end_timestamp),
 	}
+}
+
+export function useLiveInfo(): PromiseState<never, Info> {
+	return usePromise(live)
 }

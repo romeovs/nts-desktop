@@ -1,3 +1,5 @@
+import { usePromise, PromiseState } from "./use-promise"
+
 export type Track = {
 	artist: string
 	title: string
@@ -51,4 +53,8 @@ export async function show(url: string): Promise<Show> {
 		tracklist: results,
 		mixcloud,
 	}
+}
+
+export function useShowInfo(): PromiseState<string, Show> {
+	return usePromise(show)
 }
