@@ -41,8 +41,9 @@ app.on("ready", function () {
 	const tray = new Tray(icon)
 	tray.on("click", function () {
 		if (window.isVisible()) {
-			window.hide()
 			window.webContents.send("close")
+
+			setTimeout(() => window.hide(), 10)
 			return
 		}
 
