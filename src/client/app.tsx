@@ -33,7 +33,7 @@ export function App() {
 	const live = useLiveInfo()
 	const show = useShowInfo()
 
-	const [index, setIndex] = React.useState<number>(1)
+	const [index, setIndex] = React.useState<number>(0)
 	const [playing, setPlaying] = React.useState<Channel | null>(null)
 	const [isOpen, setIsOpen] = React.useState(false)
 
