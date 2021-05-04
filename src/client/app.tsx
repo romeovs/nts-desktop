@@ -4,7 +4,7 @@ import classnames from "classnames"
 import "./global.css"
 
 import { electron } from "./electron"
-import { useLiveInfo } from "./lib/api"
+import { useLiveInfo } from "./lib/live"
 import { useShowInfo } from "./lib/show"
 
 import { Splash } from "./splash"
