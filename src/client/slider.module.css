@@ -1,0 +1,10 @@
+.slider {
+	display: flex;
+	transition: transform 500ms;
+	height: 100vh;
+}
+
+.slide {
+	width: 100vw;
+	height: 100vh;
+}
