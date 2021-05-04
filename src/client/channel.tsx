@@ -19,7 +19,7 @@ export function Channel(props: Props) {
 				<div className={css.ch}>{channel}</div>
 				<div>
 					<div className={css.live}>
-						Live <span className={css.dot} />
+						Live Now <span className={css.dot} />
 					</div>
 					<div>
 						{format(starts)} &mdash; {format(ends)}
