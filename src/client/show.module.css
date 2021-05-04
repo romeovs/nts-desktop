@@ -8,3 +8,46 @@
 	padding: 3em;
 	box-sizing: border-box;
 }
+
+.show {
+	position: relative;
+}
+
+.image {
+	object-fit: cover;
+	width: 100vw;
+	height: 100vh;
+}
+
+.footer {
+	position: absolute;
+	bottom: 1rem;
+	left: 0.5rem;
+	right: 0.5rem;
+	z-index: 10;
+}
+
+.name {
+	background: black;
+	font-size: 1.25em;
+	line-height: 1.3;
+	padding: 0.25rem 0.5rem;
+	box-decoration-break: clone;
+	-webkit-box-decoration-break: clone;
+}
+
+.location {
+	background: black;
+	display: inline-block;
+	padding: 0.25rem 0.5rem;
+	margin-bottom: 0.5rem;
+}
+
+.date {
+	position: absolute;
+	top: 0.5rem;
+	left: 0.5rem;
+	padding: 0.25rem 0.5rem;
+	background: black;
+	color: white;
+}

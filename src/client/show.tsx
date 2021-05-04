@@ -18,7 +18,23 @@ export function Show(props: Props) {
 		)
 	}
 
-	console.log("HERE", show)
+	const { image, name, location, date } = show
+	console.log(show)
 
-	return <div>OK</div>
+	return (
+		<div className={css.show}>
+			<img src={image} className={css.image} />
+
+			<div className={css.date}>{format(date)}</div>
+			<div className={css.footer}>
+				<div className={css.location}>{location}</div>
+				<br />
+				<span className={css.name}>{name}</span>
+			</div>
+		</div>
+	)
+}
+
+function format(date: Date): string {
+	return date.toLocaleDateString("en-GB", { day: "2-digit", month: "2-digit", year: "2-digit" }).replace(/\//g, ".")
 }
