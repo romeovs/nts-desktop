@@ -27,6 +27,7 @@ export function App() {
 			const show = await getShow(data)
 			setShow(show)
 			setChannel(2)
+			setPlaying(true)
 		})
 	}, [])
 
