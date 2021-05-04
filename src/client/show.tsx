@@ -2,13 +2,17 @@ import * as React from "react"
 import css from "./show.module.css"
 
 import type { Show } from "./lib/show"
+import { PlayButton } from "./play"
 
 type Props = {
 	show: Show | null
+	onPlay: () => void
+	onStop: () => void
+	playing: boolean
 }
 
 export function Show(props: Props) {
-	const { show } = props
+	const { show, onPlay, onStop, playing } = props
 
 	if (!show) {
 		return (
@@ -20,12 +24,23 @@ export function Show(props: Props) {
 
 	const { image, name, location, date, tracklist } = show
 
+	function handleClick() {
+		if (playing) {
+			onStop()
+		} else {
+			onPlay()
+		}
+	}
+
 	return (
 		<div className={css.show}>
 			<div className={css.top}>
 				<img src={image} className={css.image} draggable={false} />
 
-				<div className={css.date}>{format(date)}</div>
+				<div className={css.header}>
+					<PlayButton onClick={handleClick} playing={playing} className={css.play} />
+					<div className={css.date}>{format(date)}</div>
+				</div>
 				<div className={css.footer}>
 					<div className={css.location}>{location}</div>
 					<br />

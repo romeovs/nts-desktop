@@ -106,7 +106,7 @@ export function App() {
 					/>
 				</Slide>
 				<Slide>
-					<Show show={show.data} />
+					<Show show={show.data} onPlay={() => setPlaying("show")} onStop={onStop} playing={playing === "show"} />
 				</Slide>
 			</Slider>
 			<button type="button" onClick={prev} className={css.prev}>
