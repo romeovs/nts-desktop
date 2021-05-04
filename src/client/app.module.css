@@ -1,9 +1,14 @@
 .channels {
-	width: 200vw;
+	width: 300vw;
 	display: flex;
 	transition: transform 500ms;
+	transform: translateX(0);
 }
 
 .channel2 {
 	transform: translateX(-100vw);
+}
+
+.show {
+	transform: translateX(-200vw);
 }
