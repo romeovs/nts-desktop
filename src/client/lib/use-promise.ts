@@ -10,11 +10,11 @@ export interface PromiseState<A, T> extends State<T> {
 	load: (...args: A[]) => Promise<void>
 }
 
-export function usePromise<A, T>(fn: (...args: A[]) => Promise<T>): PromiseState<A, T> {
+export function usePromise<A, T>(fn: (...args: A[]) => Promise<T>, initialLoading: boolean = true): PromiseState<A, T> {
 	const [state, setState] = React.useState<State<T>>({
 		data: null,
 		error: null,
-		loading: true,
+		loading: initialLoading,
 	})
 
 	async function load(...args: A[]): Promise<void> {

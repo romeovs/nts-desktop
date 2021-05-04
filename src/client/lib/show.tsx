@@ -56,5 +56,5 @@ export async function show(url: string): Promise<Show> {
 }
 
 export function useShowInfo(): PromiseState<string, Show> {
-	return usePromise(show)
+	return usePromise(show, false)
 }
