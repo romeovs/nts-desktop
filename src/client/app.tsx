@@ -35,6 +35,7 @@ export function App() {
 
 	const [index, setIndex] = React.useState<number>(1)
 	const [playing, setPlaying] = React.useState<Channel | null>(null)
+	const [isOpen, setIsOpen] = React.useState(false)
 
 	React.useEffect(function () {
 		live.load()
@@ -43,8 +44,13 @@ export function App() {
 			setPlaying("show")
 			setIndex(channelToIndex.show)
 		})
-		electron.on("open", () => live.load())
+		electron.on("open", function () {
+			live.load()
+			setIsOpen(true)
+		})
 		electron.on("close", function () {
+			setIsOpen(false)
+
 			if (!playing) {
 				return
 			}
