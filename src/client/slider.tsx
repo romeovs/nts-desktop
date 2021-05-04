@@ -4,13 +4,16 @@ import css from "./slider.module.css"
 type SliderProps = {
 	index: number
 	children: React.ReactElement[]
+	animate: boolean
 }
 
 export function Slider(props: SliderProps) {
-	const { index, children } = props
+	const { index, children, animate } = props
+
 	const style = {
 		width: `${React.Children.count(children) * 100}vw`,
 		transform: `translateX(${-index * 100}vw)`,
+		transition: animate ? "transform 500ms" : "",
 	}
 
 	return (

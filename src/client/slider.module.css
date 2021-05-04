@@ -1,6 +1,5 @@
 .slider {
 	display: flex;
-	transition: transform 500ms;
 	height: 100vh;
 }
 
