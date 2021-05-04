@@ -23,7 +23,7 @@ export function Show(props: Props) {
 	return (
 		<div className={css.show}>
 			<div className={css.top}>
-				<img src={image} className={css.image} />
+				<img src={image} className={css.image} draggable={false} />
 
 				<div className={css.date}>{format(date)}</div>
 				<div className={css.footer}>

@@ -19,7 +19,7 @@ export function Channel(props: Props) {
 
 	return (
 		<div className={css.channel}>
-			<img src={image} className={css.image} />
+			<img src={image} className={css.image} draggable={false} />
 			<div className={css.header}>
 				<div className={css.ch}>{channel}</div>
 				<div>
