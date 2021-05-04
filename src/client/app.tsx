@@ -12,6 +12,7 @@ import { Channel } from "./channel"
 import { Player } from "./player"
 import { Mixcloud } from "./mixcloud"
 import { Show } from "./show"
+import { Slider, Slide } from "./slider"
 
 import css from "./app.module.css"
 
@@ -21,11 +22,14 @@ type State<T> = {
 	error: Error | null
 }
 
+type Channel = 1 | 2 | "show"
+
 export function App() {
 	const [live, setLive] = React.useState<State<Info>>({ loading: true, error: null, data: null })
 	const [show, setShow] = React.useState<State<ShowT>>({ loading: false, error: null, data: null })
 
-	const [channel, setChannel] = React.useState(0)
+	const channel = 1
+	const [index, setIndex] = React.useState<number>(1)
 	const [playing, setPlaying] = React.useState(false)
 
 	React.useEffect(function () {
@@ -47,7 +51,7 @@ export function App() {
 			try {
 				const data = await getShow(url)
 				setShow({ loading: false, data, error: null })
-				setChannel(2)
+				setIndex(3)
 				setPlaying(true)
 			} catch (error) {
 				setShow({ loading: false, data: null, error })
@@ -55,23 +59,24 @@ export function App() {
 		})
 	}, [])
 
-	function toggleChannel() {
-		setChannel(idx => (idx + 1) % 3)
+	function next() {
+		setIndex(idx => (idx + 1) % 3)
 	}
-
-	const classname = classnames(css.channels, {
-		[css.channel2]: channel === 1,
-		[css.show]: channel === 2,
-	})
 
 	return (
 		<>
 			<Splash hide={!live.loading} />
-			<div className={classname} onClick={toggleChannel}>
-				{live.data && <Channel channel={1} info={live.data.channel1} />}
-				{live.data && <Channel channel={2} info={live.data.channel2} />}
-				<Show show={show.data} />
-			</div>
+			<Slider index={index}>
+				<Slide>
+					<Channel channel={1} info={live.data?.channel1} />
+				</Slide>
+				<Slide>
+					<Channel channel={2} info={live.data?.channel2} />
+				</Slide>
+				<Slide>
+					<Show show={show.data} />
+				</Slide>
+			</Slider>
 			<Player channel={channel} playing={playing} />
 			<Mixcloud show={show.data} playing={playing && channel === 2} />
 		</>
