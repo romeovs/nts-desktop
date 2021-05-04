@@ -6,7 +6,12 @@ typecheck:
 index: src/main.ts
 	@env NODE_ENV=development $(bin)/esbuild --bundle --platform=node --external:electron --loader:.png=file src/main.ts --outfile=dist/index.js
 
-start: index
+dist/preload.js: src/preload.js
+	@cp src/preload.js dist/preload.js
+
+preload: dist/preload.js
+
+start: index preload
 	@$(bin)/electron dist
 
 client.dev:
