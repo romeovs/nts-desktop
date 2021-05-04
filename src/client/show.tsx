@@ -13,7 +13,7 @@ export function Show(props: Props) {
 	if (!show) {
 		return (
 			<div className={css.empty}>
-				<div>Drop a link on the menu to load a show</div>
+				<div>Drop a link on the menu icon to load an episode</div>
 			</div>
 		)
 	}
