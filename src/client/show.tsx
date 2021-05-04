@@ -34,17 +34,20 @@ export function Show(props: Props) {
 			</div>
 
 			<div className={css.tracklist}>
-				<ul>
-					{tracklist.map(function (track, index) {
-						const { title, artist } = track
-						return (
-							<li key={index}>
-								<div className={css.artist}>{artist}</div>
-								<div className={css.title}>{title}</div>
-							</li>
-						)
-					})}
-				</ul>
+				{tracklist.length === 0 && <div className={css.notracklist}>No tracklist provided</div>}
+				{tracklist.length > 0 && (
+					<ul>
+						{tracklist.map(function (track, index) {
+							const { title, artist } = track
+							return (
+								<li key={index}>
+									<div className={css.artist}>{artist}</div>
+									<div>{title}</div>
+								</li>
+							)
+						})}
+					</ul>
+				)}
 			</div>
 		</div>
 	)
