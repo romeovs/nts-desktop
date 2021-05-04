@@ -67,6 +67,10 @@ export function App() {
 		setIndex(idx => (idx + 1) % 3)
 	}
 
+	function prev() {
+		setIndex(idx => (3 + idx - 1) % 3)
+	}
+
 	return (
 		<>
 			<Splash hide={!live.loading && !show.loading} />
@@ -81,6 +85,8 @@ export function App() {
 					<Show show={show.data} />
 				</Slide>
 			</Slider>
+			<button type="button" onClick={next} className={css.next} />
+			<button type="button" onClick={prev} className={css.prev} />
 			<Player src={streams[1]} playing={playing === 1} />
 			<Player src={streams[2]} playing={playing === 2} />
 			<Mixcloud show={show.data} playing={playing === "show"} />
