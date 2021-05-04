@@ -23,9 +23,10 @@ type State<T> = {
 
 export function App() {
 	const [live, setLive] = React.useState<State<Info>>({ loading: true, error: null, data: null })
+	const [show, setShow] = React.useState<State<ShowT>>({ loading: false, error: null, data: null })
+
 	const [channel, setChannel] = React.useState(0)
 	const [playing, setPlaying] = React.useState(false)
-	const [show, setShow] = React.useState<ShowT | null>(null)
 
 	React.useEffect(function () {
 		async function load() {
@@ -41,11 +42,16 @@ export function App() {
 		load()
 
 		electron.on("open", load)
-		electron.on("drop", async function (evt: Event, data: string) {
-			const show = await getShow(data)
-			setShow(show)
-			setChannel(2)
-			setPlaying(true)
+		electron.on("drop", async function (evt: Event, url: string) {
+			setShow({ loading: true, data: null, error: null })
+			try {
+				const data = await getShow(url)
+				setShow({ loading: false, data, error: null })
+				setChannel(2)
+				setPlaying(true)
+			} catch (error) {
+				setShow({ loading: false, data: null, error })
+			}
 		})
 	}, [])
 
@@ -64,10 +70,10 @@ export function App() {
 			<div className={classname} onClick={toggleChannel}>
 				{live.data && <Channel channel={1} info={live.data.channel1} />}
 				{live.data && <Channel channel={2} info={live.data.channel2} />}
-				<Show show={show} />
+				<Show show={show.data} />
 			</div>
 			<Player channel={channel} playing={playing} />
-			<Mixcloud show={show} playing={playing && channel === 2} />
+			<Mixcloud show={show.data} playing={playing && channel === 2} />
 		</>
 	)
 }
