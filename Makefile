@@ -1,14 +1,16 @@
+bin = ./node_modules/.bin
+
 typecheck:
-	@tsc --noEmit
+	@$(bin)/tsc --noEmit
 
 index: src/main.ts
-	env NODE_ENV=development esbuild --bundle --platform=node --external:electron --loader:.png=file src/main.ts --outfile=dist/index.js
+	@env NODE_ENV=development $(bin)/esbuild --bundle --platform=node --external:electron --loader:.png=file src/main.ts --outfile=dist/index.js
 
 start: index
-	electron dist
+	@$(bin)/electron dist
 
 client.dev:
-	@snowpack dev
+	@$(bin)/snowpack dev
 
 dev:
-	concurrently "make client.dev" "make start"
+	@$(bin)/concurrently "make client.dev" "make start"
