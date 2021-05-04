@@ -23,6 +23,12 @@ const streams = {
 
 type Channel = 1 | 2 | "show"
 
+const channelToIndex: Record<Channel, number> = {
+	1: 0,
+	2: 1,
+	show: 2,
+}
+
 export function App() {
 	const live = useLiveInfo()
 	const show = useShowInfo()
@@ -32,8 +38,19 @@ export function App() {
 
 	React.useEffect(function () {
 		live.load()
-		electron.on("open", () => live.load())
 		electron.on("drop", (_: Event, url: string) => show.load(url))
+		electron.on("open", () => live.load())
+		electron.on("close", function () {
+			if (!playing) {
+				return
+			}
+
+			// Move the slider to the item that is currently playing
+			setTimeout(function () {
+				const idx = channelToIndex[playing]
+				setIndex(idx)
+			}, 100)
+		})
 	}, [])
 
 	function next() {
