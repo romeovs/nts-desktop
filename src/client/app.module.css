@@ -9,19 +9,20 @@
 	border: none;
 	cursor: pointer;
 	outline: none;
+	background: none;
+	text-align: center;
+	padding: 0;
 
-	opacity: 0;
+	opacity: 0.15;
 	transition: opacity 200ms, background 200ms;
 }
 
 .next {
 	right: 0;
-	background: linear-gradient(to right, transparent, rgba(0, 0, 0, 0.25));
 }
 
 .prev {
 	left: 0;
-	background: linear-gradient(to left, transparent, rgba(0, 0, 0, 0.25));
 }
 
 .prev:hover,

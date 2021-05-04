@@ -13,6 +13,7 @@ import { Player } from "./player"
 import { Mixcloud } from "./mixcloud"
 import { Show } from "./show"
 import { Slider, Slide } from "./slider"
+import { Arrow } from "./arrow"
 
 import css from "./app.module.css"
 
@@ -85,8 +86,12 @@ export function App() {
 					<Show show={show.data} />
 				</Slide>
 			</Slider>
-			<button type="button" onClick={next} className={css.next} />
-			<button type="button" onClick={prev} className={css.prev} />
+			<button type="button" onClick={prev} className={css.prev}>
+				<Arrow direction="left" />
+			</button>
+			<button type="button" onClick={next} className={css.next}>
+				<Arrow direction="right" />
+			</button>
 			<Player src={streams[1]} playing={playing === 1} />
 			<Player src={streams[2]} playing={playing === 2} />
 			<Mixcloud show={show.data} playing={playing === "show"} />
