@@ -42,8 +42,11 @@ app.on("ready", function () {
 	tray.on("click", function () {
 		if (window.isVisible()) {
 			window.hide()
+			window.webContents.send("close")
 			return
 		}
+
+		window.webContents.send("open")
 
 		app.dock.hide() // Needed to ensure window appears on top of fullscreen apps
 		const trayPos = tray.getBounds()
