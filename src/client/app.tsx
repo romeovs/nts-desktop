@@ -49,20 +49,27 @@ export function App() {
 			live.load()
 			setIsOpen(true)
 		})
-		electron.on("close", function () {
-			setIsOpen(false)
+	}, [])
 
-			if (!playing) {
-				return
-			}
+	React.useEffect(
+		function () {
+			function handleClose() {
+				setIsOpen(false)
 
-			// Move the slider to the item that is currently playing
-			setTimeout(function () {
+				if (!playing) {
+					return
+				}
+
+				// Move the slider to the item that is currently playing
 				const idx = channelToIndex[playing]
 				setIndex(idx)
-			}, 100)
-		})
-	}, [])
+			}
+
+			electron.on("close", handleClose)
+			return () => electron.removeAllListeners("close")
+		},
+		[playing],
+	)
 
 	function next() {
 		setIndex(idx => (idx + 1) % 3)
