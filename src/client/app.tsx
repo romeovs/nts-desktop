@@ -65,7 +65,7 @@ export function App() {
 
 	return (
 		<>
-			<Splash hide={!live.loading} />
+			<Splash hide={!live.loading && !show.loading} />
 			<Slider index={index}>
 				<Slide>
 					<Channel channel={1} info={live.data?.channel1} />
