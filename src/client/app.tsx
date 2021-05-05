@@ -129,6 +129,7 @@ export function App() {
 			<Player src={streams[1]} playing={playing === 1} onPlay={() => setPlaying(1)} onStop={onStop} />
 			<Player src={streams[2]} playing={playing === 2} onPlay={() => setPlaying(2)} onStop={onStop} />
 			<Mixcloud
+				key={show.data?.mixcloud}
 				show={show.data}
 				playing={playing === "show"}
 				onPlay={() => setPlaying("show")}
