@@ -2,6 +2,8 @@ import path from "path"
 import { app, Tray, nativeImage, BrowserWindow, globalShortcut } from "electron"
 import menubar from "./logo-menu.png"
 
+const _keep: Record<string, unknown> = {}
+
 app.on("ready", function () {
 	// Initialise window
 	const window = new BrowserWindow({
@@ -66,4 +68,8 @@ app.on("ready", function () {
 	tray.on("drop-text", function (evt: Event, text: string) {
 		window.webContents.send("drop", text)
 	})
+
+	_keep.window = window
+	_keep.tray = tray
+	_keep.icon = icon
 })
