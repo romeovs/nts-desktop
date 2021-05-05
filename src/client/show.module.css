@@ -109,16 +109,3 @@
 	padding: 0.5rem 0;
 	font-size: 0.75rem;
 }
-
-.play {
-	background: black;
-	height: 1.7rem;
-	width: 1.7rem;
-	margin-right: 0.25rem;
-	cursor: pointer;
-}
-
-.play svg {
-	fill: white;
-	cursor: pointer;
-}

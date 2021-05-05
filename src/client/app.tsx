@@ -38,6 +38,9 @@ export function App() {
 	const [playing, setPlaying] = React.useState<Channel | null>(null)
 	const [isOpen, setIsOpen] = React.useState(false)
 
+	const [duration, setDuration] = React.useState(0)
+	const [position, setPosition] = React.useState(0)
+
 	React.useEffect(function () {
 		live.load()
 		electron.on("drop", async function (_: Event, url: string) {
@@ -106,7 +109,15 @@ export function App() {
 					/>
 				</Slide>
 				<Slide>
-					<Show show={show.data} onPlay={() => setPlaying("show")} onStop={onStop} playing={playing === "show"} />
+					<Show
+						show={show.data}
+						onPlay={() => setPlaying("show")}
+						onStop={onStop}
+						onSeek={pos => setPosition(pos)}
+						playing={playing === "show"}
+						duration={duration}
+						position={position}
+					/>
 				</Slide>
 			</Slider>
 			<button type="button" onClick={prev} className={css.prev}>
@@ -117,7 +128,15 @@ export function App() {
 			</button>
 			<Player src={streams[1]} playing={playing === 1} onPlay={() => setPlaying(1)} onStop={onStop} />
 			<Player src={streams[2]} playing={playing === 2} onPlay={() => setPlaying(2)} onStop={onStop} />
-			<Mixcloud show={show.data} playing={playing === "show"} onPlay={() => setPlaying("show")} onStop={onStop} />
+			<Mixcloud
+				show={show.data}
+				playing={playing === "show"}
+				onPlay={() => setPlaying("show")}
+				onStop={onStop}
+				onLoad={dur => setDuration(Math.round(dur))}
+				onProgress={pos => setPosition(Math.round(pos))}
+				position={position}
+			/>
 		</>
 	)
 }
