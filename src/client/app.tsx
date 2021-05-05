@@ -115,9 +115,9 @@ export function App() {
 			<button type="button" onClick={next} className={css.next}>
 				<Arrow direction="right" />
 			</button>
-			<Player src={streams[1]} playing={playing === 1} />
-			<Player src={streams[2]} playing={playing === 2} />
-			<Mixcloud show={show.data} playing={playing === "show"} />
+			<Player src={streams[1]} playing={playing === 1} onPlay={() => setPlaying(1)} onStop={onStop} />
+			<Player src={streams[2]} playing={playing === 2} onPlay={() => setPlaying(2)} onStop={onStop} />
+			<Mixcloud show={show.data} playing={playing === "show"} onPlay={() => setPlaying("show")} onStop={onStop} />
 		</>
 	)
 }

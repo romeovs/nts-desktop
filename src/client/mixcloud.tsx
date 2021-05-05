@@ -4,6 +4,12 @@ import type { Show } from "./lib/show"
 type Props = {
 	show: Show | null
 	playing: boolean
+	onStop: () => void
+	onPlay: () => void
+}
+
+type EventGroup = {
+	on: (handler: (evt: Event) => void) => void
 }
 
 interface PlayerWidget {
@@ -11,10 +17,18 @@ interface PlayerWidget {
 	pause(): void
 	load(key: string, startPlaying?: boolean): void
 	ready: Promise<void>
+	events: {
+		progress: EventGroup
+		buffering: EventGroup
+		play: EventGroup
+		pause: EventGroup
+		ended: EventGroup
+		error: EventGroup
+	}
 }
 
 export function Mixcloud(props: Props) {
-	const { show, playing } = props
+	const { show, playing, onStop, onPlay } = props
 
 	const ref = React.useRef<HTMLIFrameElement | null>(null)
 	const [widget, setWidget] = React.useState<PlayerWidget | null>(null)
@@ -27,7 +41,12 @@ export function Mixcloud(props: Props) {
 
 			// @ts-expect-error
 			const w = window.Mixcloud.PlayerWidget(ref.current) as PlayerWidget
-			w.ready.then(() => setWidget(w))
+			w.ready.then(function () {
+				w.events.play.on(onPlay)
+				w.events.pause.on(onStop)
+				w.events.ended.on(onStop)
+				setWidget(w)
+			})
 		},
 		[show],
 	)

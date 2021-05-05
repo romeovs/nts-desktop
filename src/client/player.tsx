@@ -3,12 +3,21 @@ import * as React from "react"
 type Props = {
 	src: string
 	playing: boolean
+	onPlay: () => void
+	onStop: () => void
 }
 
 export function Player(props: Props) {
-	const { src, playing } = props
+	const { src, playing, onStop, onPlay } = props
 
 	const ref = React.useRef<HTMLAudioElement | null>(null)
+
+	React.useEffect(function () {
+		ref.current?.addEventListener("play", onPlay)
+		ref.current?.addEventListener("pause", onStop)
+		ref.current?.addEventListener("stop", onStop)
+	}, [])
+
 	React.useEffect(
 		function () {
 			if (!playing) {
