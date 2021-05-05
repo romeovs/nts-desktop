@@ -1,0 +1,9 @@
+productName: NTS Desktop
+appId: "be.romeovansnick.nts"
+
+directories:
+  app: dist
+  output: bundle
+
+mac:
+  target: dir
