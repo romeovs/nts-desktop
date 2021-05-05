@@ -1,6 +1,8 @@
 import * as React from "react"
 import type { Show } from "./lib/show"
 
+import css from "./mixcloud.module.css"
+
 type Props = {
 	show: Show | null
 	playing: boolean
@@ -80,7 +82,13 @@ export function Mixcloud(props: Props) {
 	}
 
 	const feed = encodeURIComponent(key(show.mixcloud))
-	return <iframe ref={ref} src={`http://www.mixcloud.com/widget/iframe/?hide_cover=1&mini=1&feed=${feed}`} />
+	return (
+		<iframe
+			ref={ref}
+			src={`http://www.mixcloud.com/widget/iframe/?hide_cover=1&mini=1&feed=${feed}`}
+			class={css.frame}
+		/>
+	)
 }
 
 function key(url: string) {
