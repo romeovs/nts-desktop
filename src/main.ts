@@ -24,8 +24,9 @@ app.on("ready", function () {
 	window.setVisibleOnAllWorkspaces(true)
 	window.fullScreenable = false
 
-	if (process.env.NODE_ENV === "production") {
-		window.loadFile("./dist/index.html")
+	const prod = __dirname.endsWith(".asar")
+	if (prod) {
+		window.loadFile(path.resolve(__dirname, "client/index.html"))
 	} else {
 		window.loadURL("http://localhost:8080")
 	}
@@ -57,7 +58,7 @@ app.on("ready", function () {
 		const x = Math.round(trayPos.x + trayPos.width / 2 - windowPos.width / 2)
 		const y = Math.round(trayPos.y + trayPos.height * yScale)
 
-		window.setPosition(x, y + 16, false)
+		window.setPosition(x, y + 8, false)
 		window.show()
 		window.focus()
 	})
