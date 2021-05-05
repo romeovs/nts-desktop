@@ -74,6 +74,13 @@ export function App() {
 		[playing],
 	)
 
+	React.useEffect(
+		function () {
+			setPosition(0)
+		},
+		[show.data?.mixcloud],
+	)
+
 	function next() {
 		setIndex(idx => (idx + 1) % 3)
 	}
