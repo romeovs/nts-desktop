@@ -6,4 +6,5 @@ directories:
   output: bundle
 
 mac:
+  icon: src/logo.icns
   target: dir
