@@ -18,8 +18,21 @@ client.dev:
 	@$(bin)/snowpack dev
 
 client:
-	@rm -r dist/*
+	@rm -rf dist/client/*
 	@snowpack build
+	@cp -r dist/client/assets dist/client/css/assets
 
 dev:
 	@$(bin)/concurrently "make client.dev" "make start"
+
+dist/yarn.lock: package.json
+	@cat package.json | jq 'del(.devDependencies)' > dist/package.json
+	@cd dist && yarn --production
+
+packages: dist/yarn.lock
+
+main: index preload
+build: main client
+
+package: packages
+	@electron-builder build
