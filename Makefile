@@ -35,4 +35,4 @@ main: index preload
 build: main client
 
 package: packages
-	@electron-builder build
+	@electron-builder build --mac --universal
