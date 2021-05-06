@@ -53,7 +53,11 @@ export function App() {
 		setIndex(idx => (3 + idx - 1) % 3)
 	}
 
-	function onStop() {
+	function onStop(channel: Channel) {
+		setPlaying(curr => (curr === channel ? null : curr))
+	}
+
+	function onStopAny() {
 		setPlaying(null)
 	}
 
@@ -159,7 +163,7 @@ export function App() {
 						channel={1}
 						playing={playing === 1}
 						onPlay={() => setPlaying(1)}
-						onStop={onStop}
+						onStop={onStopAny}
 					/>
 				</Slide>
 				<Slide>
@@ -168,14 +172,14 @@ export function App() {
 						channel={2}
 						playing={playing === 2}
 						onPlay={() => setPlaying(2)}
-						onStop={onStop}
+						onStop={onStopAny}
 					/>
 				</Slide>
 				<Slide>
 					<Show
 						show={show.data}
 						onPlay={() => setPlaying("show")}
-						onStop={onStop}
+						onStop={onStopAny}
 						onSeek={pos => setPosition(pos)}
 						playing={playing === "show"}
 						duration={duration}
@@ -189,14 +193,14 @@ export function App() {
 			<button type="button" onClick={next} className={css.next}>
 				<Arrow direction="right" />
 			</button>
-			<Player src={streams[1]} playing={playing === 1} onPlay={() => setPlaying(1)} onStop={onStop} />
-			<Player src={streams[2]} playing={playing === 2} onPlay={() => setPlaying(2)} onStop={onStop} />
+			<Player src={streams[1]} playing={playing === 1} onPlay={() => setPlaying(1)} onStop={() => onStop(1)} />
+			<Player src={streams[2]} playing={playing === 2} onPlay={() => setPlaying(2)} onStop={() => onStop(2)} />
 			<Mixcloud
 				key={show.data?.mixcloud}
 				show={show.data}
 				playing={playing === "show"}
 				onPlay={() => setPlaying("show")}
-				onStop={onStop}
+				onStop={() => onStop("show")}
 				onLoad={dur => setDuration(Math.round(dur))}
 				onProgress={pos => setPosition(Math.round(pos))}
 				position={position}
