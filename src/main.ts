@@ -4,10 +4,11 @@ import serve from "electron-serve"
 import bplist from "bplist-parser"
 import menubar from "./logo-menu.png"
 
-const _keep: Record<string, unknown> = {}
 const loadURL = serve({ directory: "client" })
 
-app.on("ready", function () {
+async function main() {
+	await app.whenReady()
+
 	// Initialise window
 	const window = new BrowserWindow({
 		width: 320,
@@ -31,7 +32,8 @@ app.on("ready", function () {
 
 	const prod = __dirname.endsWith(".asar")
 	if (prod) {
-		loadURL(window).then(() => window.loadURL("app://-"))
+		await loadURL(window)
+		window.loadURL("app://-")
 	} else {
 		window.loadURL("http://localhost:8080")
 	}
@@ -80,8 +82,6 @@ app.on("ready", function () {
 			window.webContents.send("drop", url)
 		}
 	})
+}
 
-	_keep.window = window
-	_keep.tray = tray
-	_keep.icon = icon
-})
+main()
