@@ -99,7 +99,7 @@ export function Mixcloud(props: Props) {
 	return (
 		<iframe
 			ref={ref}
-			src={`http://www.mixcloud.com/widget/iframe/?hide_cover=1&mini=1&feed=${feed}`}
+			src={`https://www.mixcloud.com/widget/iframe/?hide_cover=1&mini=1&feed=${feed}`}
 			className={css.frame}
 		/>
 	)
