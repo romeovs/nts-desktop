@@ -5,8 +5,10 @@ A simple desktop app for NTS build in Electron.
 ## Usage
 
 - Click the NTS logo in the menubar to open the player.
-- Use the left and right buttons on the player to navigate between channels.
-- Click the play/stop button on the live streams to play them.
+- Use the left and right buttons on the player to navigate between channels. You
+	can also use the arrow keys.
+- Click the play/stop button on the live streams to play them. Spacebar works
+	too.
 - Drop the link from the browser to an archive show on the menubar icon to play
 	it, `.webloc` files work too.
 - On the archive screen, you can scroll down to reveal the controls and
