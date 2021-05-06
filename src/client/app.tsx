@@ -30,6 +30,8 @@ const channelToIndex: Record<Channel, number> = {
 	show: 2,
 }
 
+const indexToChannel: Channel[] = [1, 2, "show"]
+
 export function App() {
 	const live = useLiveInfo()
 	const show = useShowInfo()
@@ -40,6 +42,18 @@ export function App() {
 
 	const [duration, setDuration] = React.useState(0)
 	const [position, setPosition] = React.useState(0)
+
+	function next() {
+		setIndex(idx => (idx + 1) % 3)
+	}
+
+	function prev() {
+		setIndex(idx => (3 + idx - 1) % 3)
+	}
+
+	function onStop() {
+		setPlaying(null)
+	}
 
 	React.useEffect(function () {
 		live.load()
@@ -53,6 +67,34 @@ export function App() {
 			setIsOpen(true)
 		})
 	}, [])
+
+	React.useEffect(
+		function () {
+			function handler(evt: KeyboardEvent) {
+				switch (evt.key) {
+					case "ArrowLeft":
+						evt.preventDefault()
+						prev()
+						return
+					case "ArrowRight":
+						evt.preventDefault()
+						next()
+						return
+					case " ":
+						evt.preventDefault()
+						if (playing) {
+							setPlaying(null)
+							return
+						}
+						setPlaying(indexToChannel[index])
+						return
+				}
+			}
+			window.addEventListener("keydown", handler)
+			return () => window.removeEventListener("keydown", handler)
+		},
+		[playing, index],
+	)
 
 	React.useEffect(
 		function () {
@@ -80,18 +122,6 @@ export function App() {
 		},
 		[show.data?.mixcloud],
 	)
-
-	function next() {
-		setIndex(idx => (idx + 1) % 3)
-	}
-
-	function prev() {
-		setIndex(idx => (3 + idx - 1) % 3)
-	}
-
-	function onStop() {
-		setPlaying(null)
-	}
 
 	return (
 		<>
