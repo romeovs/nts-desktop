@@ -1,5 +1,6 @@
 import path from "path"
 import { app, Tray, nativeImage, BrowserWindow, globalShortcut } from "electron"
+import log from "electron-log"
 import serve from "electron-serve"
 import bplist from "bplist-parser"
 import menubar from "./logo-menu.png"
@@ -40,12 +41,6 @@ async function main() {
 		window.loadURL("http://localhost:8080")
 	}
 
-	window.on("blur", function () {
-		if (!window.webContents.isDevToolsOpened()) {
-			window.hide()
-		}
-	})
-
 	// Initialise menubar icon
 	const icon = nativeImage.createFromPath(path.resolve(__dirname, menubar)).resize({ width: 16, height: 16 })
 	const tray = new Tray(icon)
@@ -70,6 +65,14 @@ async function main() {
 		window.setPosition(x, y + 8, false)
 		window.show()
 		window.focus()
+
+		setTimeout(function () {
+			window.once("blur", function () {
+				if (!window.webContents.isDevToolsOpened()) {
+					window.hide()
+				}
+			})
+		}, 300)
 	})
 
 	tray.on("drop-text", function (evt: Event, text: string) {
