@@ -1,9 +1,11 @@
 import path from "path"
 import { app, Tray, nativeImage, BrowserWindow, globalShortcut } from "electron"
+import serve from "electron-serve"
 import bplist from "bplist-parser"
 import menubar from "./logo-menu.png"
 
 const _keep: Record<string, unknown> = {}
+const loadURL = serve({ directory: "client" })
 
 app.on("ready", function () {
 	// Initialise window
@@ -29,7 +31,7 @@ app.on("ready", function () {
 
 	const prod = __dirname.endsWith(".asar")
 	if (prod) {
-		window.loadFile(path.resolve(__dirname, "client/index.html"))
+		loadURL(window).then(() => window.loadURL("app://-"))
 	} else {
 		window.loadURL("http://localhost:8080")
 	}

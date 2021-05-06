@@ -13,7 +13,6 @@ module.exports = {
 	},
 	buildOptions: {
 		out: "./dist/client",
-		baseUrl: "./",
 	},
 	optimize: {
 		target: "es2017",

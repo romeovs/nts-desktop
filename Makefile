@@ -20,7 +20,6 @@ client.dev:
 client:
 	@rm -rf dist/client/*
 	@snowpack build
-	@cp -r dist/client/assets dist/client/css/assets
 
 dev:
 	@$(bin)/concurrently "make client.dev" "make start"
