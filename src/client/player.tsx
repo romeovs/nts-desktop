@@ -16,6 +16,7 @@ export function Player(props: Props) {
 		ref.current?.addEventListener("play", onPlay)
 		ref.current?.addEventListener("pause", onStop)
 		ref.current?.addEventListener("stop", onStop)
+		ref.current?.load()
 	}, [])
 
 	React.useEffect(
@@ -25,7 +26,6 @@ export function Player(props: Props) {
 				return
 			}
 
-			ref.current?.load()
 			ref.current?.play()
 		},
 		[playing, src],
