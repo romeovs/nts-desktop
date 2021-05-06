@@ -25,7 +25,7 @@ dev:
 	@$(bin)/concurrently "make client.dev" "make start"
 
 dist/yarn.lock: package.json
-	@cat package.json | jq 'del(.devDependencies)' > dist/package.json
+	@cat package.json | jq 'del(.devDependencies)' | jq 'del(.dependencies)' > dist/package.json
 	@cd dist && yarn --production
 
 packages: dist/yarn.lock
