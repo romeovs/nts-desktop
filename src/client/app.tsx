@@ -14,6 +14,7 @@ import { Mixcloud } from "./mixcloud"
 import { Show } from "./show"
 import { Slider, Slide } from "./slider"
 import { Arrow } from "./arrow"
+import { Help } from "./help"
 
 import css from "./app.module.css"
 
@@ -39,6 +40,7 @@ export function App() {
 	const [index, setIndex] = React.useState<number>(0)
 	const [playing, setPlaying] = React.useState<Channel | null>(null)
 	const [isOpen, setIsOpen] = React.useState(false)
+	const [isShowingHelp, setIsShowingHelp] = React.useState(false)
 
 	const [duration, setDuration] = React.useState(0)
 	const [position, setPosition] = React.useState(0)
@@ -87,6 +89,9 @@ export function App() {
 							return
 						}
 						setPlaying(indexToChannel[index])
+						return
+					case "?":
+						setIsShowingHelp(x => !x)
 						return
 				}
 			}
@@ -196,6 +201,7 @@ export function App() {
 				onProgress={pos => setPosition(Math.round(pos))}
 				position={position}
 			/>
+			<Help hide={!isShowingHelp} onHide={() => setIsShowingHelp(false)} />
 		</>
 	)
 }
