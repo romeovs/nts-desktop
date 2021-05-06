@@ -39,9 +39,6 @@ export function Controls(props: Props) {
 		const x = evt.clientX - left
 		const percentage = x / width
 		const pos = Math.round(duration * percentage)
-		if (pos < position) {
-			return
-		}
 
 		onSeek(pos)
 	}

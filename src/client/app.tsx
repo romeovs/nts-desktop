@@ -74,6 +74,8 @@ export function App() {
 		})
 	}, [])
 
+	const [looped, setLooped] = React.useState(0)
+
 	React.useEffect(
 		function () {
 			function handler(evt: KeyboardEvent) {
@@ -153,6 +155,13 @@ export function App() {
 		[live.data?.channel1.now.ends, live.data?.channel2.now.ends],
 	)
 
+	function seek(pos: number) {
+		setPosition(pos)
+		if (pos < position) {
+			setLooped(x => x + 1)
+		}
+	}
+
 	return (
 		<>
 			<Splash hide={!live.loading && !show.loading} />
@@ -180,7 +189,7 @@ export function App() {
 						show={show.data}
 						onPlay={() => setPlaying("show")}
 						onStop={onStopAny}
-						onSeek={pos => setPosition(pos)}
+						onSeek={seek}
 						playing={playing === "show"}
 						duration={duration}
 						position={position}
@@ -196,7 +205,7 @@ export function App() {
 			<Player src={streams[1]} playing={playing === 1} onPlay={() => setPlaying(1)} onStop={() => onStop(1)} />
 			<Player src={streams[2]} playing={playing === 2} onPlay={() => setPlaying(2)} onStop={() => onStop(2)} />
 			<Mixcloud
-				key={show.data?.mixcloud}
+				key={`${show.data?.mixcloud}_${looped}`}
 				show={show.data}
 				playing={playing === "show"}
 				onPlay={() => setPlaying("show")}

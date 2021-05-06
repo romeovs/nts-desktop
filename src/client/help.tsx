@@ -28,7 +28,6 @@ export function Help(props: Props) {
 				too.
 			</p>
 			<p>On the archive show screen, you can scroll down to reveal the controls and tracklist.</p>
-			<p>Due to restrictions with Mixcloud it is not possible to seek backwards.</p>
 			<p>Click a track in the tracklist to copy the information to the clipboard.</p>
 		</div>
 	)
