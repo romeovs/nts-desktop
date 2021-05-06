@@ -6,6 +6,8 @@ import menubar from "./logo-menu.png"
 
 const loadURL = serve({ directory: "client" })
 
+let global = {}
+
 async function main() {
 	await app.whenReady()
 
@@ -82,6 +84,8 @@ async function main() {
 			window.webContents.send("drop", url)
 		}
 	})
+
+	global = { window, tray, icon }
 }
 
 main()
