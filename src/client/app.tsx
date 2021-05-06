@@ -123,6 +123,22 @@ export function App() {
 		[show.data?.mixcloud],
 	)
 
+	React.useEffect(
+		function () {
+			if (!live.data) {
+				return
+			}
+			const ends1 = live.data.channel1.now.ends
+			const ends2 = live.data.channel2.now.ends
+
+			const first = ends1 < ends2 ? ends1 : ends2
+			const left = ends1.getTime() - Date.now()
+			const t = setTimeout(live.load, left + 500)
+			return () => clearTimeout(t)
+		},
+		[live.data],
+	)
+
 	return (
 		<>
 			<Splash hide={!live.loading && !show.loading} />
