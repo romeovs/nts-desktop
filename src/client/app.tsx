@@ -133,10 +133,15 @@ export function App() {
 
 			const first = ends1 < ends2 ? ends1 : ends2
 			const left = ends1.getTime() - Date.now()
+
+			if (left < 0) {
+				return
+			}
+
 			const t = setTimeout(live.load, left + 500)
 			return () => clearTimeout(t)
 		},
-		[live.data],
+		[live.data?.channel1.now.ends, live.data?.channel2.now.ends],
 	)
 
 	return (
