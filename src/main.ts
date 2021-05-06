@@ -1,5 +1,6 @@
 import path from "path"
 import { app, Tray, nativeImage, BrowserWindow, globalShortcut } from "electron"
+import bplist from "bplist-parser"
 import menubar from "./logo-menu.png"
 
 const _keep: Record<string, unknown> = {}
@@ -67,6 +68,15 @@ app.on("ready", function () {
 
 	tray.on("drop-text", function (evt: Event, text: string) {
 		window.webContents.send("drop", text)
+	})
+
+	tray.on("drop-files", async function (evt: Event, files: string[]) {
+		const [file] = files
+		if (file.endsWith(".webloc")) {
+			const content = await bplist.parseFile(file)
+			const url = content[0].URL
+			window.webContents.send("drop", url)
+		}
 	})
 
 	_keep.window = window
