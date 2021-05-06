@@ -31,7 +31,7 @@ type Content = {
 
 export async function show(url: string): Promise<Show> {
 	const api = url.replace(/^(https?:\/\/)?(www\.)?nts\.live\//, "https://www.nts.live/api/v2/")
-	const resp = await fetch(api)
+	const resp = await fetch(api, { cache: "no-cache" })
 	const content = (await resp.json()) as Content
 
 	const {

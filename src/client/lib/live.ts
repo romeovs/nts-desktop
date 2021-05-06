@@ -19,7 +19,7 @@ export type Info = {
 }
 
 export async function live(): Promise<Info> {
-	const resp = await fetch("https://www.nts.live/api/v2/live")
+	const resp = await fetch("https://www.nts.live/api/v2/live", { cache: "no-cache" })
 	const content = await resp.json()
 
 	return {
