@@ -1,5 +1,6 @@
 import path from "path"
-import { app, Tray, nativeImage, BrowserWindow, globalShortcut } from "electron"
+import EventEmitter from "events"
+import { app, Tray, nativeImage, BrowserWindow, globalShortcut, Notification } from "electron"
 import log from "electron-log"
 import serve from "electron-serve"
 import bplist from "bplist-parser"
@@ -10,6 +11,7 @@ const loadURL = serve({ directory: "client" })
 let global = {}
 
 async function main() {
+	const evts = new EventEmitter()
 	await app.whenReady()
 
 	setTimeout(() => app.dock.hide(), 500)
@@ -77,6 +79,10 @@ async function main() {
 	})
 
 	tray.on("drop-text", function (evt: Event, text: string) {
+		if (!text.startsWith("https://www.nts.live/shows/")) {
+			evts.emit("error", "Please use a valid NTS show URL")
+			return
+		}
 		window.webContents.send("drop", text)
 	})
 
@@ -85,8 +91,20 @@ async function main() {
 		if (file.endsWith(".webloc")) {
 			const content = await bplist.parseFile(file)
 			const url = content[0].URL
+			if (!url.startsWith("https://www.nts.live/shows/")) {
+				evts.emit("error", "Please use a valid NTS show URL")
+				return
+			}
 			window.webContents.send("drop", url)
 		}
+	})
+
+	evts.on("error", function (msg: string) {
+		const notification = new Notification({
+			body: msg,
+			silent: true,
+		})
+		notification.show()
 	})
 
 	global = { window, tray, icon }
