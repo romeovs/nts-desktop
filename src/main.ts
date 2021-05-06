@@ -12,6 +12,8 @@ let global = {}
 async function main() {
 	await app.whenReady()
 
+	setTimeout(() => app.dock.hide(), 500)
+
 	// Initialise window
 	const window = new BrowserWindow({
 		width: 320,
@@ -54,7 +56,6 @@ async function main() {
 
 		window.webContents.send("open")
 
-		app.dock.hide() // Needed to ensure window appears on top of fullscreen apps
 		const trayPos = tray.getBounds()
 		const windowPos = window.getBounds()
 
