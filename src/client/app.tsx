@@ -6,6 +6,7 @@ import "./global.css"
 import { electron } from "./electron"
 import { useLiveInfo } from "./lib/live"
 import { useShowInfo } from "./lib/show"
+import { useKeydown } from "./lib/use-keydown"
 
 import { Splash } from "./splash"
 import { Channel } from "./channel"
@@ -76,36 +77,14 @@ export function App() {
 
 	const [looped, setLooped] = React.useState(0)
 
-	React.useEffect(
-		function () {
-			function handler(evt: KeyboardEvent) {
-				switch (evt.key) {
-					case "ArrowLeft":
-						evt.preventDefault()
-						prev()
-						return
-					case "ArrowRight":
-						evt.preventDefault()
-						next()
-						return
-					case " ":
-						evt.preventDefault()
-						if (playing) {
-							setPlaying(null)
-							return
-						}
-						setPlaying(indexToChannel[index])
-						return
-					case "?":
-						setIsShowingHelp(x => !x)
-						return
-				}
-			}
-			window.addEventListener("keydown", handler)
-			return () => window.removeEventListener("keydown", handler)
-		},
-		[playing, index],
-	)
+	function togglePlaying() {
+		setPlaying(playing => (playing ? null : indexToChannel[index]))
+	}
+
+	useKeydown("ArrowRight", next)
+	useKeydown("ArrowLeft", prev)
+	useKeydown("?", () => setIsShowingHelp(x => !x))
+	useKeydown(" ", togglePlaying, [playing, index])
 
 	React.useEffect(
 		function () {
