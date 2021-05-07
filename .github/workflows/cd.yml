@@ -1,0 +1,32 @@
+name: cd
+on:
+  push:
+    branches:
+      - main
+    tags:
+      - v*
+jobs:
+  release:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [macos-latest]
+    steps:
+      - name: Check out
+        uses: actions/checkout@v1
+      - name: Set up node
+        uses: actions/setup-node@v1
+        with:
+          node-version: '14'
+      - name: Install dependencies
+        uses: bahmutov/npm-install@v1
+        with:
+          install-command: yarn --frozen-lockfile
+      - name: Build renderer
+        run: make build packages
+      - name: Build and Release Electron app
+        uses: samuelmeuli/action-electron-builder@v1
+        with:
+          github_token: ${{ secrets.github_token }}
+          release: true
+          args: --universal
