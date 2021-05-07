@@ -143,6 +143,16 @@ export function App() {
 		[live.data?.channel1.now.ends, live.data?.channel2.now.ends],
 	)
 
+	React.useEffect(
+		function () {
+			if (isOffline) {
+				return
+			}
+			live.load()
+		},
+		[isOffline],
+	)
+
 	return (
 		<>
 			<Splash hide={!live.loading && !show.loading} />
