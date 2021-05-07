@@ -1,8 +1,6 @@
 name: cd
 on:
   push:
-    branches:
-      - main
     tags:
       - v*
 jobs:
