@@ -146,8 +146,10 @@ export function App() {
 	React.useEffect(
 		function () {
 			if (isOffline) {
+				stopAny()
 				return
 			}
+
 			live.load()
 		},
 		[isOffline],
