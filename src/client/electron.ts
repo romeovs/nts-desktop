@@ -1,7 +1,7 @@
 interface Electron {
 	on(name: string, callback: (evt: Event, ...args: any[]) => void): void
 	removeListener(name: string, callback: (evt: Event, ...args: any[]) => void): void
-	removeAllListeners(name: string, callback: (evt: Event, ...args: any[]) => void): void
+	removeAllListeners(name: string): void
 }
 
 // @ts-expect-error
