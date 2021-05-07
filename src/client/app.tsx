@@ -60,6 +60,10 @@ export function App() {
 	}
 
 	function togglePlaying() {
+		if (isOffline) {
+			return
+		}
+
 		setPlaying(playing => (playing ? null : indexToChannel[index]))
 	}
 
