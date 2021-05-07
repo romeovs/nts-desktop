@@ -9,6 +9,14 @@
 	box-sizing: border-box;
 }
 
+.empty svg {
+	width: 24px;
+	height: 24px;
+	fill: none;
+	stroke: currentColor;
+	stroke-width: 2;
+}
+
 .show {
 	overflow-y: auto;
 	width: 100vw;

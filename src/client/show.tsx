@@ -21,7 +21,12 @@ export function Show(props: Props) {
 	if (!show) {
 		return (
 			<div className={css.empty}>
-				<div>Drop a link on the menu icon to load an episode</div>
+				<div>
+					<svg viewBox="0 0 24 24">
+						<path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3" />
+					</svg>
+					<p>Drop a link on the menu icon to load an episode</p>
+				</div>
 			</div>
 		)
 	}
