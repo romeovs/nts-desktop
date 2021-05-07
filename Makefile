@@ -1,7 +1,11 @@
 bin = ./node_modules/.bin
 
+TSC_FLAGS =
 typecheck:
-	@$(bin)/tsc --noEmit
+	@$(bin)/tsc --noEmit $(TSC_FLAGS)
+
+typecheck.watch: TSC_FLAGS = --watch
+typecheck.watch: typecheck
 
 index: src/main.ts
 	@env NODE_ENV=development $(bin)/esbuild --bundle --platform=node --external:electron --loader:.png=file src/main.ts --outfile=dist/index.js
