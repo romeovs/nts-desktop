@@ -63,11 +63,11 @@ export function App() {
 		setPlaying(playing => (playing ? null : indexToChannel[index]))
 	}
 
-	function onStop(channel: Channel) {
+	function stop(channel: Channel) {
 		setPlaying(curr => (curr === channel ? null : curr))
 	}
 
-	function onStopAny() {
+	function stopAll() {
 		setPlaying(null)
 	}
 
@@ -146,7 +146,7 @@ export function App() {
 	React.useEffect(
 		function () {
 			if (isOffline) {
-				stopAny()
+				stopAll()
 				return
 			}
 
@@ -165,7 +165,7 @@ export function App() {
 						channel={1}
 						playing={playing === 1}
 						onPlay={() => setPlaying(1)}
-						onStop={onStopAny}
+						onStop={stopAll}
 					/>
 				</Slide>
 				<Slide>
@@ -174,14 +174,14 @@ export function App() {
 						channel={2}
 						playing={playing === 2}
 						onPlay={() => setPlaying(2)}
-						onStop={onStopAny}
+						onStop={stopAll}
 					/>
 				</Slide>
 				<Slide>
 					<Show
 						show={show.data}
 						onPlay={() => setPlaying("show")}
-						onStop={onStopAny}
+						onStop={stopAll}
 						onSeek={seek}
 						playing={playing === "show"}
 						duration={duration}
@@ -195,14 +195,14 @@ export function App() {
 			<button type="button" onClick={next} className={css.next}>
 				<Arrow direction="right" />
 			</button>
-			<Player src={streams[1]} playing={playing === 1} onPlay={() => setPlaying(1)} onStop={() => onStop(1)} />
-			<Player src={streams[2]} playing={playing === 2} onPlay={() => setPlaying(2)} onStop={() => onStop(2)} />
+			<Player src={streams[1]} playing={playing === 1} onPlay={() => setPlaying(1)} onStop={() => stop(1)} />
+			<Player src={streams[2]} playing={playing === 2} onPlay={() => setPlaying(2)} onStop={() => stop(2)} />
 			<Mixcloud
 				key={`${show.data?.mixcloud}_${looped}`}
 				show={show.data}
 				playing={playing === "show"}
 				onPlay={() => setPlaying("show")}
-				onStop={() => onStop("show")}
+				onStop={() => stop("show")}
 				onLoad={dur => setDuration(Math.round(dur))}
 				onProgress={pos => setPosition(Math.round(pos))}
 				position={position}
