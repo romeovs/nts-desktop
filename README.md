@@ -1,5 +1,7 @@
 # NTS Desktop
 
+[![cd](https://github.com/romeovs/nts-desktop/actions/workflows/cd.yml/badge.svg?branch=main)](https://github.com/romeovs/nts-desktop/actions/workflows/cd.yml)
+
 A simple desktop app for NTS build in Electron.
 
 ## Usage
