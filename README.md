@@ -1,3 +1,5 @@
+<img src="./screens/icon.png" width="144" height="144" />
+
 # NTS Desktop
 
 [![cd](https://github.com/romeovs/nts-desktop/actions/workflows/cd.yml/badge.svg?branch=main)](https://github.com/romeovs/nts-desktop/actions/workflows/cd.yml)
