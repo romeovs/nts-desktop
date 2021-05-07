@@ -8,3 +8,5 @@ directories:
 mac:
   icon: src/logo.icns
   target: dir
+  publish:
+    - github
