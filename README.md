@@ -2,7 +2,7 @@
 
 # NTS Desktop
 
-[![cd](https://github.com/romeovs/nts-desktop/actions/workflows/cd.yml/badge.svg?branch=main)](https://github.com/romeovs/nts-desktop/actions/workflows/cd.yml)
+[![ci](https://github.com/romeovs/nts-desktop/actions/workflows/ci.yml/badge.svg)](https://github.com/romeovs/nts-desktop/actions/workflows/ci.yml)
 
 An unofficial desktop app for NTS build in Electron.
 
