@@ -1,0 +1,39 @@
+.offline {
+	position: fixed;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	background: black;
+	color: white;
+	opacity: 1;
+	transition: opacity 500ms;
+
+	overflow-y: auto;
+	text-align: center;
+
+	z-index: 1001;
+}
+
+.offline svg {
+	width: 24px;
+	height: 24px;
+	stroke: white;
+	stroke-width: 2;
+}
+
+.offline div {
+	margin: auto;
+	height: 30vh;
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	margin: auto;
+	left: 0;
+	right: 0;
+}
+
+.hide {
+	opacity: 0;
+	pointer-events: none;
+}
