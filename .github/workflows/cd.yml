@@ -22,9 +22,15 @@ jobs:
           install-command: yarn --frozen-lockfile
       - name: Build renderer
         run: make build packages
-      - name: Build and Release Electron app
+      - name: Build Electron app
         uses: samuelmeuli/action-electron-builder@v1
         with:
           github_token: ${{ secrets.github_token }}
-          release: true
+          release: false
           args: --universal
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: bundle/mac/NTS Desktop.app
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
