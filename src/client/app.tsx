@@ -46,6 +46,7 @@ export function App() {
 
 	const [duration, setDuration] = React.useState(0)
 	const [position, setPosition] = React.useState(0)
+	const [looped, setLooped] = React.useState(0)
 
 	function next() {
 		setIndex(idx => (idx + 1) % 3)
@@ -53,6 +54,10 @@ export function App() {
 
 	function prev() {
 		setIndex(idx => (3 + idx - 1) % 3)
+	}
+
+	function togglePlaying() {
+		setPlaying(playing => (playing ? null : indexToChannel[index]))
 	}
 
 	function onStop(channel: Channel) {
@@ -63,31 +68,32 @@ export function App() {
 		setPlaying(null)
 	}
 
+	function seek(pos: number) {
+		setPosition(pos)
+		if (pos < position) {
+			setLooped(x => x + 1)
+		}
+	}
+
 	React.useEffect(function () {
 		live.load()
 	}, [])
-
-	useEvent("drop", async function (url: string) {
-		void show.load(url)
-		setPlaying("show")
-		setIndex(channelToIndex.show)
-	})
-
-	useEvent("open", function () {
-		void live.load()
-		setIsOpen(true)
-	})
-
-	const [looped, setLooped] = React.useState(0)
-
-	function togglePlaying() {
-		setPlaying(playing => (playing ? null : indexToChannel[index]))
-	}
 
 	useKeydown("ArrowRight", next)
 	useKeydown("ArrowLeft", prev)
 	useKeydown("?", () => setIsShowingHelp(x => !x))
 	useKeydown(" ", togglePlaying, [playing, index])
+
+	useEvent("drop", async function (url: string) {
+		await show.load(url)
+		setPlaying("show")
+		setIndex(channelToIndex.show)
+	})
+
+	useEvent("open", async function () {
+		await live.load()
+		setIsOpen(true)
+	})
 
 	useEvent(
 		"close",
@@ -108,6 +114,7 @@ export function App() {
 	React.useEffect(
 		function () {
 			setPosition(0)
+			setLooped(0)
 		},
 		[show.data?.mixcloud],
 	)
@@ -132,13 +139,6 @@ export function App() {
 		},
 		[live.data?.channel1.now.ends, live.data?.channel2.now.ends],
 	)
-
-	function seek(pos: number) {
-		setPosition(pos)
-		if (pos < position) {
-			setLooped(x => x + 1)
-		}
-	}
 
 	return (
 		<>
