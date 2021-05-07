@@ -13,33 +13,11 @@ type Props = {
 	position: number
 }
 
-type EventGroup = {
-	on: (handler: (evt: Event) => void) => void
-}
-
-interface PlayerWidget {
-	play(): void
-	pause(): void
-	load(key: string, startPlaying?: boolean): void
-	seek(pos: number): Promise<boolean>
-	ready: Promise<void>
-	getDuration(): Promise<number>
-	getPosition(): Promise<number>
-	events: {
-		progress: EventGroup
-		buffering: EventGroup
-		play: EventGroup
-		pause: EventGroup
-		ended: EventGroup
-		error: EventGroup
-	}
-}
-
 export function Mixcloud(props: Props) {
 	const { show, playing, onStop, onPlay, onProgress, onLoad, position } = props
 
 	const ref = React.useRef<HTMLIFrameElement | null>(null)
-	const [widget, setWidget] = React.useState<PlayerWidget | null>(null)
+	const [widget, setWidget] = React.useState<Mixcloud.PlayerWidget | null>(null)
 
 	React.useEffect(
 		function () {
@@ -48,7 +26,7 @@ export function Mixcloud(props: Props) {
 			}
 
 			// @ts-expect-error
-			const w = window.Mixcloud.PlayerWidget(ref.current) as PlayerWidget
+			const w = window.Mixcloud.PlayerWidget(ref.current) as Mixcloud.PlayerWidget
 			w.ready
 				.then(function () {
 					w.events.play.on(onPlay)
