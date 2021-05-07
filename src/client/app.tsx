@@ -7,6 +7,7 @@ import { electron } from "./electron"
 import { useLiveInfo } from "./lib/live"
 import { useShowInfo } from "./lib/show"
 import { useKeydown } from "./lib/use-keydown"
+import { useEvent } from "./lib/use-event"
 
 import { Splash } from "./splash"
 import { Channel } from "./channel"
@@ -64,16 +65,18 @@ export function App() {
 
 	React.useEffect(function () {
 		live.load()
-		electron.on("drop", async function (_: Event, url: string) {
-			await show.load(url)
-			setPlaying("show")
-			setIndex(channelToIndex.show)
-		})
-		electron.on("open", function () {
-			live.load()
-			setIsOpen(true)
-		})
 	}, [])
+
+	useEvent("drop", async function (url: string) {
+		void show.load(url)
+		setPlaying("show")
+		setIndex(channelToIndex.show)
+	})
+
+	useEvent("open", function () {
+		void live.load()
+		setIsOpen(true)
+	})
 
 	const [looped, setLooped] = React.useState(0)
 
@@ -86,22 +89,18 @@ export function App() {
 	useKeydown("?", () => setIsShowingHelp(x => !x))
 	useKeydown(" ", togglePlaying, [playing, index])
 
-	React.useEffect(
+	useEvent(
+		"close",
 		function () {
-			function handleClose() {
-				setIsOpen(false)
+			setIsOpen(false)
 
-				if (!playing) {
-					return
-				}
-
-				// Move the slider to the item that is currently playing
-				const idx = channelToIndex[playing]
-				setIndex(idx)
+			if (!playing) {
+				return
 			}
 
-			electron.on("close", handleClose)
-			return () => electron.removeAllListeners("close")
+			// Move the slider to the item that is currently playing
+			const idx = channelToIndex[playing]
+			setIndex(idx)
 		},
 		[playing],
 	)
