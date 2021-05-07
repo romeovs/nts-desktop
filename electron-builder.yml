@@ -7,6 +7,12 @@ directories:
 
 mac:
   icon: src/logo.icns
-  target: dir
+  target:
+    - target: dir
+      arch:
+        - universal
+    - target: dmg
+      arch:
+        - universal
   publish:
     - github

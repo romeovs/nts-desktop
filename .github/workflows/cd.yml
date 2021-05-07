@@ -31,6 +31,6 @@ jobs:
       - name: Release
         uses: softprops/action-gh-release@v1
         with:
-          files: bundle/mac/NTS Desktop.app
+          files: bundle/NTS Desktop-*.dmg
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
