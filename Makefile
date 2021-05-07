@@ -33,7 +33,7 @@ dev:
 
 dist/yarn.lock: package.json
 	@mkdir -p dist
-	@cat package.json | jq 'del(.devDependencies)' | jq 'del(.dependencies)' > dist/package.json
+	@cat package.json | $(bin)/json -e 'this.dependencies=undefined' -e 'this.devDependencies=undefined' > dist/package.json
 	@cd dist && yarn --production
 
 packages: dist/yarn.lock
