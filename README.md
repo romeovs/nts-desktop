@@ -17,8 +17,8 @@ A simple desktop app for NTS build in Electron.
 	tracklist.
 - Click on a tracklist item to copy the information.
 
-![](./screens/play.gif)
-![](./screens/archive.gif)
+<img src="./screens/play.gif" width="402" height="302" />
+<img src="./screens/archive.gif" width="402" height="302" />
 
 ## Local Development
 The project is structured as follows:
