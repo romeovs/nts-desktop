@@ -16,6 +16,7 @@ A simple desktop app for NTS build in Electron.
 - On the archive screen, you can scroll down to reveal the controls and
 	tracklist.
 - Click on a tracklist item to copy the information.
+- Press `⌘Q` when the window is open.
 
 <img src="./screens/play.gif" width="402" height="302" />
 <img src="./screens/archive.gif" width="402" height="302" />
