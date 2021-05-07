@@ -8,6 +8,7 @@ import { useLiveInfo } from "./lib/live"
 import { useShowInfo } from "./lib/show"
 import { useKeydown } from "./lib/use-keydown"
 import { useEvent } from "./lib/use-event"
+import { useOffline } from "./lib/use-offline"
 
 import { Splash } from "./splash"
 import { Channel } from "./channel"
@@ -17,6 +18,7 @@ import { Show } from "./show"
 import { Slider, Slide } from "./slider"
 import { Arrow } from "./arrow"
 import { Help } from "./help"
+import { Offline } from "./offline"
 
 import css from "./app.module.css"
 
@@ -47,6 +49,7 @@ export function App() {
 	const [duration, setDuration] = React.useState(0)
 	const [position, setPosition] = React.useState(0)
 	const [looped, setLooped] = React.useState(0)
+	const isOffline = useOffline()
 
 	function next() {
 		setIndex(idx => (idx + 1) % 3)
@@ -192,6 +195,7 @@ export function App() {
 				onProgress={pos => setPosition(Math.round(pos))}
 				position={position}
 			/>
+			<Offline hide={!isOffline} />
 			<Help hide={!isShowingHelp} onHide={() => setIsShowingHelp(false)} />
 		</>
 	)
