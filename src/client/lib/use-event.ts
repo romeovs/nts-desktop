@@ -8,6 +8,7 @@ export function useEvent<A>(name: string, handler: (...args: A[]) => void, deps:
 		}
 
 		electron.on(name, handle)
-		return () => electron.removeAllListeners(name, handle)
+		// TODO: we should be able to use removeEventListener here, but it does not seem to work.
+		return () => electron.removeAllListeners(name)
 	}, deps)
 }
