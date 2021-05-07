@@ -37,6 +37,9 @@ To open the app anyway, you can:
 System Preferences > Security & Privacy > General > Open Anyway
 ```
 
+I have only tested this app on macOS, so I can't guarantee it works on Linux or
+Windows.  If people want to help me port it over, shoot me a message, PR's are welcome!
+
 ## Local Development
 The project is structured as follows:
 ```
