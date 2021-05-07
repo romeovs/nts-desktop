@@ -16,6 +16,7 @@
 	display: flex;
 	padding: 0.25rem;
 	padding-right: 0.5rem;
+	transition: background 300ms, color 300ms;
 }
 
 .ch {
@@ -31,7 +32,21 @@
 	font-size: 1.2rem;
 
 	position: relative;
-	transition: color 200ms;
+	transition: background 300ms, color 300ms;
+}
+
+.playing .header {
+	background: white;
+	color: black;
+}
+
+.playing .ch {
+	color: white;
+	background: black;
+}
+
+.playing .play svg {
+	fill: white;
 }
 
 .play {

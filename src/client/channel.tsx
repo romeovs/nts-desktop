@@ -1,4 +1,5 @@
 import * as React from "react"
+import classnames from "classnames"
 import type { ChannelInfo } from "./lib/live"
 
 import { PlayButton } from "./play"
@@ -32,7 +33,7 @@ export function Channel(props: Props) {
 	}
 
 	return (
-		<div className={css.channel}>
+		<div className={classnames(css.channel, playing && css.playing)}>
 			<img src={image} className={css.image} draggable={false} />
 			<div className={css.header}>
 				<div className={css.ch}>
