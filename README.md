@@ -20,6 +20,22 @@ A simple desktop app for NTS build in Electron.
 <img src="./screens/play.gif" width="402" height="302" />
 <img src="./screens/archive.gif" width="402" height="302" />
 
+## Installation
+
+Go to the [Releases Page](https://github.com/romeovs/nts-desktop/releases) and
+fetch the `.dmg` file from the latest release.
+
+Open the disk image and drag the `NTS Desktop` app to `Applications` and open
+it.
+
+The first time you open the app, it will show an erro because the app isn't
+signed. I do not have a Mac Developer license.
+
+To open the app anyway, you can:
+```
+System Preferences > Security & Privacy > General > Open Anyway
+```
+
 ## Local Development
 The project is structured as follows:
 ```
