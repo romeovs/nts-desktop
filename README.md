@@ -4,7 +4,7 @@
 
 [![ci](https://github.com/romeovs/nts-desktop/actions/workflows/ci.yml/badge.svg)](https://github.com/romeovs/nts-desktop/actions/workflows/ci.yml)
 
-An unofficial desktop app for NTS build in Electron.
+An unofficial desktop app for NTS built in Electron.
 
 ## Usage
 
