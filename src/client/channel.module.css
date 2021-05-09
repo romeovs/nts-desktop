@@ -17,6 +17,15 @@
 	padding: 0.25rem;
 	padding-right: 0.5rem;
 	transition: background 300ms, color 300ms;
+
+	letter-spacing: inherit;
+	text-transform: inherit;
+	font: inherit;
+	color: white;
+	border: none;
+	outline: none;
+	text-align: left;
+	cursor: pointer;
 }
 
 .ch {
@@ -65,11 +74,11 @@
 	cursor: pointer;
 }
 
-.ch:hover {
+.header:hover .ch {
 	color: transparent;
 }
 
-.ch:hover .play {
+.header:hover .play {
 	opacity: 1;
 }
 

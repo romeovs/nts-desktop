@@ -35,10 +35,10 @@ export function Channel(props: Props) {
 	return (
 		<div className={classnames(css.channel, playing && css.playing)}>
 			<img src={image} className={css.image} draggable={false} />
-			<div className={css.header}>
+			<button type="button" className={css.header} onClick={handleClick}>
 				<div className={css.ch}>
 					{channel}
-					<PlayButton playing={playing} className={css.play} onClick={handleClick} />
+					<PlayButton playing={playing} className={css.play} />
 				</div>
 				<div>
 					<div className={css.live}>
@@ -48,7 +48,7 @@ export function Channel(props: Props) {
 						{format(starts)} &mdash; {format(ends)}
 					</div>
 				</div>
-			</div>
+			</button>
 			<div className={css.footer}>
 				<div className={css.location}>{location}</div>
 				<br />
