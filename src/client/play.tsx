@@ -6,7 +6,7 @@ import css from "./play.module.css"
 type Props = {
 	playing: boolean
 	className?: string
-	onClick: () => void
+	onClick?: () => void
 }
 
 export function PlayButton(props: Props) {
