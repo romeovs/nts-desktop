@@ -82,6 +82,10 @@ export function App() {
 		}
 	}
 
+	function close() {
+		electron.send("close")
+	}
+
 	React.useEffect(function () {
 		live.load()
 	}, [])
@@ -90,6 +94,7 @@ export function App() {
 	useKeydown("ArrowLeft", prev)
 	useKeydown("?", () => setIsShowingHelp(x => !x))
 	useKeydown(" ", togglePlaying, [playing, index])
+	useKeydown("Escape", close)
 
 	useEvent("drop", async function (url: string) {
 		await show.load(url)
