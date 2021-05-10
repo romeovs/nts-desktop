@@ -111,7 +111,6 @@ async function main() {
 	})
 
 	ipcMain.on("close", function () {
-		console.log("CLOSING")
 		close()
 	})
 
