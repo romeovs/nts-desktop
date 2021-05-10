@@ -1,0 +1,23 @@
+.tracklist {
+	position: absolute;
+	top: 0.5rem;
+	right: 0.5rem;
+	color: white;
+	background: none;
+	border: none;
+	padding: 0;
+	outline: none;
+	opacity: 0.5;
+	transition: opacity 300ms;
+	cursor: pointer;
+}
+
+.tracklist:hover {
+	opacity: 1;
+}
+
+.tracklist svg {
+	width: 24px;
+	height: 24px;
+	fill: white;
+}
