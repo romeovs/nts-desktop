@@ -26,10 +26,11 @@ export function Player(props: Props) {
 				return
 			}
 
+			ref.current?.load()
 			ref.current?.play()
 		},
 		[playing, src],
 	)
 
-	return <audio src={src} ref={ref} />
+	return <audio src={playing ? src : ""} ref={ref} />
 }
