@@ -10,4 +10,7 @@ contextBridge.exposeInMainWorld("electron", {
 	removeAllListeners: function (...arguments) {
 		return ipcRenderer.removeAllListeners(...arguments)
 	},
+	send(...arguments) {
+		return ipcRenderer.send(...arguments)
+	},
 })
