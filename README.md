@@ -13,6 +13,9 @@ An unofficial desktop app for NTS built in Electron.
 	can also use the arrow keys.
 - Click the play/stop button on the live streams to play them. Spacebar works
 	too.
+- On the live streams click the tracklist button in to top right corner to open
+	the live tracklist in the browser. (This will only work if you are an [NTS
+	Supporter](https://www.nts.live/supporters)).
 - Drop the link from the browser to an archive show on the menubar icon to play
 	it, `.webloc` files work too.
 - On the archive screen, you can scroll down to reveal the controls and
