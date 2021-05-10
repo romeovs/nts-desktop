@@ -1,16 +1,9 @@
 .play {
-	border: none;
-	background: none;
-	padding: 0;
-	cursor: pointer;
-	outline: none;
-	padding: 0 3px;
-}
-
-.play svg {
 	width: 16px;
+	height: 16px;
 	fill: black;
 	position: relative;
 	top: 2px;
 	cursor: pointer;
+	position: absolute;
 }
