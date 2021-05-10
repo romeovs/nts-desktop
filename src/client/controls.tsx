@@ -45,7 +45,9 @@ export function Controls(props: Props) {
 
 	return (
 		<div className={css.controls}>
-			<PlayButton onClick={handlePlayClick} playing={playing} className={css.play} />
+			<button onClick={handlePlayClick} type="button" className={css.play}>
+				<PlayButton playing={playing} />
+			</button>
 			<div className={css.bar} onClick={handleClick} ref={ref}>
 				<div className={css.pos} style={{ width: `${width}%` }} />
 			</div>
