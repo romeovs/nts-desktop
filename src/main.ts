@@ -1,6 +1,6 @@
 import path from "path"
 import EventEmitter from "events"
-import { app, ipcMain, Tray, nativeImage, BrowserWindow, globalShortcut, Notification } from "electron"
+import { app, shell, ipcMain, Tray, nativeImage, BrowserWindow, globalShortcut, Notification } from "electron"
 import log from "electron-log"
 import serve from "electron-serve"
 import bplist from "bplist-parser"
@@ -113,6 +113,10 @@ async function main() {
 	ipcMain.on("close", function () {
 		console.log("CLOSING")
 		close()
+	})
+
+	ipcMain.on("tracklist", function (evt: Event, channel: number | string) {
+		shell.openExternal(`https://www.nts.live/live-tracklist/${channel}`)
 	})
 
 	global = { window, tray, icon }
