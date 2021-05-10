@@ -22,6 +22,7 @@ An unofficial desktop app for NTS built in Electron.
 	tracklist.
 - Click on a tracklist item to copy the information.
 - Press `⌘Q` when the window is open.
+- You can refresh the app with `⌘R`
 
 <img src="./screens/play.gif" width="402" height="302" />
 <img src="./screens/archive.gif" width="402" height="302" />
