@@ -43,7 +43,7 @@ export function App() {
 
 	const [index, setIndex] = React.useState<number>(0)
 	const [playing, setPlaying] = React.useState<Channel | null>(null)
-	const [isOpen, setIsOpen] = React.useState(false)
+	const [isOpen, setIsOpen] = React.useState(document.hasFocus())
 	const [isShowingHelp, setIsShowingHelp] = React.useState(false)
 
 	const [duration, setDuration] = React.useState(0)
