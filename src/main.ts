@@ -1,6 +1,6 @@
 import path from "path"
 import EventEmitter from "events"
-import { app, Tray, nativeImage, BrowserWindow, globalShortcut, Notification } from "electron"
+import { app, ipcMain, Tray, nativeImage, BrowserWindow, globalShortcut, Notification } from "electron"
 import log from "electron-log"
 import serve from "electron-serve"
 import bplist from "bplist-parser"
@@ -45,14 +45,17 @@ async function main() {
 		window.loadURL("http://localhost:8080")
 	}
 
+	function close() {
+		window.webContents.send("close")
+		setTimeout(() => window.hide(), 10)
+	}
+
 	// Initialise menubar icon
 	const icon = nativeImage.createFromPath(path.resolve(__dirname, menubar)).resize({ width: 16, height: 16 })
 	const tray = new Tray(icon)
 	tray.on("click", function () {
 		if (window.isVisible()) {
-			window.webContents.send("close")
-
-			setTimeout(() => window.hide(), 10)
+			close()
 			return
 		}
 
@@ -105,6 +108,11 @@ async function main() {
 			silent: true,
 		})
 		notification.show()
+	})
+
+	ipcMain.on("close", function () {
+		console.log("CLOSING")
+		close()
 	})
 
 	global = { window, tray, icon }
