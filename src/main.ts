@@ -118,6 +118,14 @@ async function main() {
 		shell.openExternal(`https://www.nts.live/live-tracklist/${channel}`)
 	})
 
+	ipcMain.on("my-nts", function (evt: Event, channel: number | string) {
+		shell.openExternal("https://www.nts.live/my-nts/favourites/shows")
+	})
+
+	ipcMain.on("explore", function (evt: Event, channel: number | string) {
+		shell.openExternal("https://www.nts.live/explore")
+	})
+
 	global = { window, tray, icon }
 }
 
