@@ -4,6 +4,7 @@ import css from "./show.module.css"
 import type { Show } from "./lib/show"
 import { PlayButton } from "./play"
 import { Controls } from "./controls"
+import { electron } from "./electron"
 
 type Props = {
 	show: Show | null
@@ -19,6 +20,14 @@ export function Show(props: Props) {
 	const { show, onPlay, onStop, onSeek, playing, duration, position } = props
 
 	if (!show) {
+		function handleMyNTSClick() {
+			electron.send("my-nts")
+		}
+
+		function handleExploreClick() {
+			electron.send("explore")
+		}
+
 		return (
 			<div className={css.empty}>
 				<div>
@@ -26,6 +35,14 @@ export function Show(props: Props) {
 						<path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3" />
 					</svg>
 					<p>Drop a link on the menu icon to load an episode</p>
+					<div className={css.nav}>
+						<button type="button" onClick={handleMyNTSClick}>
+							My NTS
+						</button>
+						<button type="button" onClick={handleExploreClick}>
+							Explore
+						</button>
+					</div>
 				</div>
 			</div>
 		)

@@ -117,3 +117,24 @@
 	padding: 0.5rem 0;
 	font-size: 0.75rem;
 }
+
+.nav {
+	position: relative;
+	top: 1rem;
+	font-size: 0.85em;
+}
+
+.nav button {
+	background: none;
+	border: none;
+	font: inherit;
+	color: inherit;
+	text-transform: inherit;
+	letter-spacing: inherit;
+	outline: none;
+	cursor: pointer;
+}
+
+.nav button:first-child {
+	margin-right: 1rem;
+}
