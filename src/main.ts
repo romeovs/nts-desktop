@@ -50,15 +50,7 @@ async function main() {
 		setTimeout(() => window.hide(), 10)
 	}
 
-	// Initialise menubar icon
-	const icon = nativeImage.createFromPath(path.resolve(__dirname, menubar)).resize({ width: 16, height: 16 })
-	const tray = new Tray(icon)
-	tray.on("click", function () {
-		if (window.isVisible()) {
-			close()
-			return
-		}
-
+	function open() {
 		window.webContents.send("open")
 
 		const trayPos = tray.getBounds()
@@ -79,6 +71,18 @@ async function main() {
 				}
 			})
 		}, 300)
+	}
+
+	// Initialise menubar icon
+	const icon = nativeImage.createFromPath(path.resolve(__dirname, menubar)).resize({ width: 16, height: 16 })
+	const tray = new Tray(icon)
+	tray.on("click", function () {
+		if (window.isVisible()) {
+			close()
+			return
+		}
+
+		open()
 	})
 
 	tray.on("drop-text", function (evt: Event, text: string) {
