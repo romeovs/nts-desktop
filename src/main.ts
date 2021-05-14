@@ -11,6 +11,7 @@ import {
 	Notification,
 	Menu,
 	GlobalShortcut,
+	dialog,
 } from "electron"
 import log from "electron-log"
 import serve from "electron-serve"
@@ -93,6 +94,32 @@ async function main() {
 		open()
 	}
 
+	async function openFile(filename: string) {
+		if (filename.endsWith(".webloc")) {
+			const content = await bplist.parseFile(filename)
+			const url = content[0].URL
+			if (!url.startsWith("https://www.nts.live/shows/")) {
+				evts.emit("error", "Please use a valid NTS show URL")
+				return
+			}
+			window.webContents.send("drop", url)
+		}
+	}
+
+	async function browse() {
+		const { filePaths, canceled } = await dialog.showOpenDialog({
+			message: "Select a link to an archive show",
+			properties: ["openFile"],
+			filters: [{ name: "links", extensions: ["webloc"] }],
+		})
+
+		if (canceled) {
+			return
+		}
+
+		openFile(filePaths[0])
+	}
+
 	// Initialise menubar icon
 	const icon = nativeImage.createFromPath(path.resolve(__dirname, menubar)).resize({ width: 16, height: 16 })
 	const tray = new Tray(icon)
@@ -103,6 +130,12 @@ async function main() {
 			acceleratorWorksWhenHidden: true,
 			click() {
 				toggle()
+			},
+		},
+		{
+			label: "Load Archive Show...",
+			click() {
+				browse()
 			},
 		},
 		{
@@ -138,16 +171,8 @@ async function main() {
 	})
 
 	tray.on("drop-files", async function (evt: Event, files: string[]) {
-		const [file] = files
-		if (file.endsWith(".webloc")) {
-			const content = await bplist.parseFile(file)
-			const url = content[0].URL
-			if (!url.startsWith("https://www.nts.live/shows/")) {
-				evts.emit("error", "Please use a valid NTS show URL")
-				return
-			}
-			window.webContents.send("drop", url)
-		}
+		const [filename] = files
+		openFile(filename)
 	})
 
 	evts.on("error", function (msg: string) {
