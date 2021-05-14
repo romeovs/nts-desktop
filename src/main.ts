@@ -1,6 +1,17 @@
 import path from "path"
 import EventEmitter from "events"
-import { app, shell, ipcMain, Tray, nativeImage, BrowserWindow, globalShortcut, Notification, Menu } from "electron"
+import {
+	app,
+	shell,
+	ipcMain,
+	Tray,
+	nativeImage,
+	BrowserWindow,
+	globalShortcut,
+	Notification,
+	Menu,
+	GlobalShortcut,
+} from "electron"
 import log from "electron-log"
 import serve from "electron-serve"
 import bplist from "bplist-parser"
@@ -73,6 +84,15 @@ async function main() {
 		}, 300)
 	}
 
+	function toggle() {
+		if (window.isVisible()) {
+			close()
+			return
+		}
+
+		open()
+	}
+
 	// Initialise menubar icon
 	const icon = nativeImage.createFromPath(path.resolve(__dirname, menubar)).resize({ width: 16, height: 16 })
 	const tray = new Tray(icon)
@@ -94,12 +114,7 @@ async function main() {
 	])
 
 	tray.on("click", function () {
-		if (window.isVisible()) {
-			close()
-			return
-		}
-
-		open()
+		toggle()
 	})
 
 	tray.on("right-click", function () {
@@ -149,6 +164,14 @@ async function main() {
 
 	ipcMain.on("explore", function (evt: Event, channel: number | string) {
 		shell.openExternal("https://www.nts.live/explore")
+	})
+
+	globalShortcut.register("Control+N", function () {
+		toggle()
+	})
+
+	app.on("will-quit", function () {
+		globalShortcut.unregisterAll()
 	})
 
 	global = { window, tray, icon, menu }
