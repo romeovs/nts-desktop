@@ -172,6 +172,7 @@ async function main() {
 
 	tray.on("drop-files", async function (evt: Event, files: string[]) {
 		const [filename] = files
+		app.addRecentDocument(filename)
 		openFile(filename)
 	})
 
