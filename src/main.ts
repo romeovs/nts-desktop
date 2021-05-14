@@ -98,6 +98,14 @@ async function main() {
 	const tray = new Tray(icon)
 	const menu = Menu.buildFromTemplate([
 		{
+			label: "Open",
+			accelerator: "Control+N",
+			acceleratorWorksWhenHidden: true,
+			click() {
+				toggle()
+			},
+		},
+		{
 			label: "About NTS Desktop",
 			click() {
 				shell.openExternal("https://github.com/romeovs/nts-desktop")
