@@ -1,6 +1,6 @@
 import path from "path"
 import EventEmitter from "events"
-import { app, shell, ipcMain, Tray, nativeImage, BrowserWindow, globalShortcut, Notification } from "electron"
+import { app, shell, ipcMain, Tray, nativeImage, BrowserWindow, globalShortcut, Notification, Menu } from "electron"
 import log from "electron-log"
 import serve from "electron-serve"
 import bplist from "bplist-parser"
@@ -76,6 +76,23 @@ async function main() {
 	// Initialise menubar icon
 	const icon = nativeImage.createFromPath(path.resolve(__dirname, menubar)).resize({ width: 16, height: 16 })
 	const tray = new Tray(icon)
+	const menu = Menu.buildFromTemplate([
+		{
+			label: "About NTS Desktop",
+			click() {
+				shell.openExternal("https://github.com/romeovs/nts-desktop")
+			},
+		},
+		{
+			label: "Reload NTS Desktop",
+			click() {
+				window.reload()
+			},
+		},
+		{ type: "separator" },
+		{ label: "Quit NTS Desktop", role: "quit" },
+	])
+
 	tray.on("click", function () {
 		if (window.isVisible()) {
 			close()
@@ -83,6 +100,10 @@ async function main() {
 		}
 
 		open()
+	})
+
+	tray.on("right-click", function () {
+		tray.popUpContextMenu(menu)
 	})
 
 	tray.on("drop-text", function (evt: Event, text: string) {
@@ -130,7 +151,7 @@ async function main() {
 		shell.openExternal("https://www.nts.live/explore")
 	})
 
-	global = { window, tray, icon }
+	global = { window, tray, icon, menu }
 }
 
 main()
