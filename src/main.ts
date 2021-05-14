@@ -125,6 +125,13 @@ async function main() {
 	const tray = new Tray(icon)
 	const menu = Menu.buildFromTemplate([
 		{
+			label: "About NTS Desktop",
+			click() {
+				shell.openExternal("https://github.com/romeovs/nts-desktop")
+			},
+		},
+		{ type: "separator" },
+		{
 			label: "Open",
 			accelerator: "Control+N",
 			acceleratorWorksWhenHidden: true,
@@ -136,12 +143,6 @@ async function main() {
 			label: "Load Archive Show...",
 			click() {
 				browse()
-			},
-		},
-		{
-			label: "About NTS Desktop",
-			click() {
-				shell.openExternal("https://github.com/romeovs/nts-desktop")
 			},
 		},
 		{
