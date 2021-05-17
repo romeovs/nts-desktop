@@ -223,6 +223,18 @@ function makeMenu(application: NTSApplication): Menu {
 			label: "Reload NTS Desktop",
 			click: () => application.reload(),
 		},
+		{
+			label: "Recently Listened To",
+			// @ts-expect-error
+			role: "recentdocuments",
+			submenu: [
+				{
+					label: "Clear",
+					// @ts-expect-error
+					role: "clearrecentdocuments",
+				},
+			],
+		},
 		{ type: "separator" },
 		{ label: "Quit NTS Desktop", role: "quit" },
 	])
