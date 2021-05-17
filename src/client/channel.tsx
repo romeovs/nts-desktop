@@ -47,7 +47,7 @@ export function Channel(props: Props) {
 						Live Now <span className={css.dot} />
 					</div>
 					<div>
-						{format(starts)} &mdash; {format(ends)}
+						{format(starts)} &ndash; {format(ends)}
 					</div>
 				</div>
 			</button>

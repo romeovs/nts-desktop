@@ -81,8 +81,11 @@
 }
 
 .live {
-	font-weight: 900;
+	font-weight: bold;
 	font-size: 0.7rem;
+	line-height: 1em;
+	margin-top: 0.05rem;
+	text-transform: uppercase;
 }
 
 .dot {
@@ -93,6 +96,7 @@
 	height: 0.35rem;
 	position: relative;
 	bottom: 1px;
+	margin-left: 0.1rem;
 	animation-name: flashing;
 	animation-duration: 2s;
 	animation-iteration-count: infinite;
@@ -122,6 +126,8 @@
 	font-size: 1.25em;
 	line-height: 1.3;
 	padding: 0.25rem 0.5rem;
+	font-weight: bold;
+	text-transform: uppercase;
 	box-decoration-break: clone;
 	-webkit-box-decoration-break: clone;
 }
@@ -129,7 +135,9 @@
 .location {
 	background: black;
 	display: inline-block;
-	padding: 0.25rem 0.5rem;
+	font-size: 0.8rem;
+	text-transform: uppercase;
+	padding: 0.1rem 0.3rem 0.05rem 0.3rem;
 	margin-bottom: 0.5rem;
 }
 
