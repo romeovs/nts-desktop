@@ -160,6 +160,7 @@ async function main() {
 	})
 
 	tray.on("right-click", function () {
+		close()
 		tray.popUpContextMenu(menu)
 	})
 
