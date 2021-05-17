@@ -202,7 +202,9 @@ function makeWindow(): BrowserWindow {
 }
 
 function makeTray(): Tray {
-	const icon = nativeImage.createFromPath(path.resolve(__dirname, menubar)).resize({ width: 16, height: 16 })
+	const filename = path.resolve(__dirname, menubar)
+	const icon = nativeImage.createFromPath(filename).resize({ width: 16, height: 16 })
+	icon.setTemplateImage(true)
 	return new Tray(icon)
 }
 
