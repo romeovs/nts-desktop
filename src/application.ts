@@ -170,6 +170,10 @@ export class NTSApplication {
 	openExplore() {
 		shell.openExternal("https://www.nts.live/explore")
 	}
+
+	openSchedule() {
+		shell.openExternal("https://www.nts.live/schedule")
+	}
 }
 
 function makeWindow(): BrowserWindow {
@@ -207,6 +211,10 @@ function makeMenu(application: NTSApplication): Menu {
 		{
 			label: "About NTS Desktop",
 			click: () => application.openAbout(),
+		},
+		{
+			label: "Schedule",
+			click: () => application.openSchedule(),
 		},
 		{ type: "separator" },
 		{
