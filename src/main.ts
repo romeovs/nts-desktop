@@ -177,6 +177,11 @@ async function main() {
 		openFile(filename)
 	})
 
+	app.on("open-file", async function (evt: Event, filename: string) {
+		app.addRecentDocument(filename)
+		openFile(filename)
+	})
+
 	evts.on("error", function (msg: string) {
 		const notification = new Notification({
 			body: msg,
