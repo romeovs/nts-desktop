@@ -17,3 +17,7 @@ mac:
         - universal
   publish:
     - github
+
+fileAssociations:
+  ext: webloc
+  role: Viewer
