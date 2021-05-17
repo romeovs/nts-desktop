@@ -210,7 +210,7 @@ function makeMenu(application: NTSApplication): Menu {
 		},
 		{ type: "separator" },
 		{
-			label: "Open",
+			label: "Show NTS Desktop",
 			accelerator: "Control+N",
 			acceleratorWorksWhenHidden: true,
 			click: () => application.open(),
