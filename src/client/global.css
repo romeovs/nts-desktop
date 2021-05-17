@@ -1,6 +1,12 @@
 @font-face {
 	font-family: "UniversCondensed";
-	src: local("UniversCondensed"), url(./UniversCondensed.woff) format("woff");
+	src: local("UniversCondensed"), url(./UniversCondensed.woff2) format("woff2");
+}
+
+@font-face {
+	font-family: "UniversCondensed";
+	src: local("UniversCondensed"), url(./UniversCondensed.bold.woff2) format("woff2");
+	font-weight: bold;
 }
 
 body {
@@ -14,7 +20,6 @@ body {
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 	text-shadow: rgba(0, 0, 0, 0.01) 0 0 1px;
-	letter-spacing: 1px;
 
 	user-select: none;
 	overflow: hidden;
