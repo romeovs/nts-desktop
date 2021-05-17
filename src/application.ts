@@ -220,10 +220,6 @@ function makeMenu(application: NTSApplication): Menu {
 			click: () => application.browse(),
 		},
 		{
-			label: "Reload NTS Desktop",
-			click: () => application.reload(),
-		},
-		{
 			label: "Recently Listened To",
 			// @ts-expect-error
 			role: "recentdocuments",
@@ -236,6 +232,10 @@ function makeMenu(application: NTSApplication): Menu {
 			],
 		},
 		{ type: "separator" },
+		{
+			label: "Reload NTS Desktop",
+			click: () => application.reload(),
+		},
 		{ label: "Quit NTS Desktop", role: "quit" },
 	])
 }
