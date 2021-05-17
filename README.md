@@ -25,8 +25,9 @@ An unofficial desktop app for NTS built in Electron.
 - You can refresh the app with `⌘R`
 - `ctrl + N` will open NTS Desktop
 
-<img src="./screens/play.gif" width="402" height="302" />
-<img src="./screens/archive.gif" width="402" height="302" />
+<img src="./screens/rec1.gif" width="400" />
+<img src="./screens/rec2.gif" width="400" />
+<img src="./screens/rec3.gif" width="400" />
 
 ## Installation
 
