@@ -26,7 +26,11 @@ async function write(history: History): Promise<void> {
 export async function add(entry: Entry) {
 	const history = await read()
 	history.unshift(entry)
-	write(history)
+	const deduped = history.filter(function (value, index) {
+		const idx = history.findIndex(entry => entry.url === value.url)
+		return idx === index
+	})
+	write(deduped)
 }
 
 export async function clear(): Promise<void> {
