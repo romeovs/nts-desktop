@@ -1,7 +1,7 @@
 import * as React from "react"
 import css from "./controls.module.css"
 
-import type { Show } from "./lib/show"
+import type { ShowInfo } from "../show"
 
 import { PlayButton } from "./play"
 import { Mixcloud } from "./mixcloud"
@@ -9,7 +9,7 @@ import { Mixcloud } from "./mixcloud"
 type Props = {
 	duration: number
 	position: number
-	show: Show
+	show: ShowInfo
 	playing: boolean
 	onPlay: () => void
 	onStop: () => void

@@ -5,7 +5,7 @@ export type Track = {
 	title: string
 }
 
-export type Show = {
+export type ShowInfo = {
 	name: string
 	date: Date
 	mixcloud: string
@@ -29,7 +29,7 @@ type Content = {
 	}
 }
 
-export async function show(url: string): Promise<Show> {
+export async function show(url: string): Promise<ShowInfo> {
 	const api = url.replace(/^(https?:\/\/)?(www\.)?nts\.live\//, "https://www.nts.live/api/v2/")
 	const resp = await fetch(api, { cache: "no-cache" })
 	const content = (await resp.json()) as Content

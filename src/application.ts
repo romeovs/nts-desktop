@@ -1,5 +1,4 @@
 import path from "path"
-import fetch from "isomorphic-fetch"
 import EventEmitter from "events"
 import {
 	app,
@@ -18,6 +17,7 @@ import bplist from "bplist-parser"
 import serve from "electron-serve"
 import menubar from "./logo-menu.png"
 import * as history from "./history"
+import { show } from "./show"
 
 const loadURL = serve({ directory: "client" })
 
@@ -132,12 +132,9 @@ export class NTSApplication {
 			return
 		}
 
-		const api = url.replace(/^(https?:\/\/)?(www\.)?nts\.live\//, "https://www.nts.live/api/v2/")
-		const resp = await fetch(api, { cache: "no-cache" })
-		const data = await resp.json()
+		const data = await show(url)
 		history.add({ name: data.name, url })
-
-		this.window.webContents.send("drop", url)
+		this.window.webContents.send("open-show", data)
 	}
 
 	async browse() {

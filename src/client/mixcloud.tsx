@@ -1,10 +1,10 @@
 import * as React from "react"
-import type { Show } from "./lib/show"
+import type { ShowInfo } from "../show"
 
 import css from "./mixcloud.module.css"
 
 type Props = {
-	show: Show | null
+	show: ShowInfo | null
 	playing: boolean
 	onStop: () => void
 	onPlay: () => void

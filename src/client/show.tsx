@@ -1,13 +1,13 @@
 import * as React from "react"
 import css from "./show.module.css"
 
-import type { Show } from "./lib/show"
+import type { ShowInfo } from "../show"
 import { PlayButton } from "./play"
 import { Controls } from "./controls"
 import { electron } from "./electron"
 
 type Props = {
-	show: Show | null
+	show: ShowInfo | null
 	onPlay: () => void
 	onStop: () => void
 	onSeek: (pos: number) => void

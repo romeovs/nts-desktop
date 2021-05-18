@@ -5,7 +5,7 @@ import "./global.css"
 
 import { electron } from "./electron"
 import { useLiveInfo } from "./lib/live"
-import { useShowInfo } from "./lib/show"
+import type { ShowInfo } from "../show"
 import { useKeydown } from "./lib/use-keydown"
 import { useEvent } from "./lib/use-event"
 import { useOffline } from "./lib/use-offline"
@@ -39,7 +39,7 @@ const indexToChannel: Channel[] = [1, 2, "show"]
 
 export function App() {
 	const live = useLiveInfo()
-	const show = useShowInfo()
+	const [show, setShow] = React.useState<ShowInfo | null>(null)
 
 	const [index, setIndex] = React.useState<number>(0)
 	const [playing, setPlaying] = React.useState<Channel | null>(null)
@@ -96,8 +96,8 @@ export function App() {
 	useKeydown(" ", togglePlaying, [playing, index])
 	useKeydown("Escape", close)
 
-	useEvent("drop", async function (url: string) {
-		await show.load(url)
+	useEvent("open-show", async function (show: ShowInfo) {
+		setShow(show)
 		setPlaying("show")
 		setIndex(channelToIndex.show)
 	})
@@ -128,7 +128,7 @@ export function App() {
 			setPosition(0)
 			setLooped(0)
 		},
-		[show.data?.mixcloud],
+		[show?.mixcloud],
 	)
 
 	React.useEffect(
@@ -166,7 +166,7 @@ export function App() {
 
 	return (
 		<>
-			<Splash hide={!live.loading && !show.loading} />
+			<Splash hide={!live.loading} />
 			<Slider index={index} animate={isOpen}>
 				<Slide>
 					<Channel
@@ -188,7 +188,7 @@ export function App() {
 				</Slide>
 				<Slide>
 					<Show
-						show={show.data}
+						show={show}
 						onPlay={() => setPlaying("show")}
 						onStop={stopAll}
 						onSeek={seek}
@@ -207,8 +207,8 @@ export function App() {
 			<Player src={streams[1]} playing={playing === 1} onPlay={() => setPlaying(1)} onStop={() => stop(1)} />
 			<Player src={streams[2]} playing={playing === 2} onPlay={() => setPlaying(2)} onStop={() => stop(2)} />
 			<Mixcloud
-				key={`${show.data?.mixcloud}_${looped}`}
-				show={show.data}
+				key={`${show?.mixcloud}_${looped}`}
+				show={show}
 				playing={playing === "show"}
 				onPlay={() => setPlaying("show")}
 				onStop={() => stop("show")}
