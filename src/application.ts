@@ -1,4 +1,5 @@
 import path from "path"
+import fetch from "isomorphic-fetch"
 import EventEmitter from "events"
 import {
 	app,
@@ -16,6 +17,7 @@ import {
 import bplist from "bplist-parser"
 import serve from "electron-serve"
 import menubar from "./logo-menu.png"
+import * as history from "./history"
 
 const loadURL = serve({ directory: "client" })
 
@@ -130,6 +132,12 @@ export class NTSApplication {
 			this.evts.emit("error", "Please use a valid NTS show URL")
 			return
 		}
+
+		const api = url.replace(/^(https?:\/\/)?(www\.)?nts\.live\//, "https://www.nts.live/api/v2/")
+		const resp = await fetch(api, { cache: "no-cache" })
+		const data = await resp.json()
+		history.add({ name: data.name, url })
+
 		this.window.webContents.send("drop", url)
 	}
 
