@@ -1,5 +1,5 @@
 {
-	"name": "nts-desktop-player",
+	"name": "nts-desktop",
 	"version": "0.0.10",
 	"description": "A desktop app for playing NTS Live and streams",
 	"main": "index.js",
