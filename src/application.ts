@@ -47,6 +47,7 @@ export class NTSApplication {
 
 		app.on("open-file", (evt: Event, filename: string) => this.openFile(filename))
 		app.on("will-quit", () => globalShortcut.unregisterAll())
+		app.on("activate", () => this.open())
 
 		globalShortcut.register("Control+N", () => this.toggle())
 
