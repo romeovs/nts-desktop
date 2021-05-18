@@ -10,6 +10,7 @@
 		"@snowpack/plugin-react-refresh": "^2.5.0",
 		"@snowpack/plugin-webpack": "^2.3.1",
 		"@types/classnames": "^2.3.1",
+		"@types/isomorphic-fetch": "^0.0.35",
 		"@types/react": "^17.0.4",
 		"@types/react-dom": "^17.0.3",
 		"concurrently": "^6.0.2",
@@ -27,6 +28,7 @@
 		"classnames": "^2.3.1",
 		"electron-log": "^4.3.5",
 		"electron-serve": "^1.1.0",
+		"isomorphic-fetch": "^3.0.0",
 		"react": "^17.0.2",
 		"react-dom": "^17.0.2"
 	}
