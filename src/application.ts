@@ -24,13 +24,11 @@ const loadURL = serve({ directory: "client" })
 export class NTSApplication {
 	window: BrowserWindow
 	tray: Tray
-	menu: Menu
 	evts: EventEmitter
 
 	constructor() {
 		this.window = makeWindow()
 		this.tray = makeTray()
-		this.menu = makeMenu(this)
 		this.evts = new EventEmitter()
 	}
 
@@ -110,9 +108,10 @@ export class NTSApplication {
 		this.window.reload()
 	}
 
-	openMenu() {
+	async openMenu() {
 		this.close()
-		this.tray.popUpContextMenu(this.menu)
+		const menu = await makeMenu(this)
+		this.tray.popUpContextMenu(menu)
 	}
 
 	async openFile(filename: string) {
@@ -216,7 +215,9 @@ function makeTray(): Tray {
 	return new Tray(icon)
 }
 
-function makeMenu(application: NTSApplication): Menu {
+async function makeMenu(application: NTSApplication): Promise<Menu> {
+	const h = await history.read()
+
 	return Menu.buildFromTemplate([
 		{
 			label: "About NTS Desktop",
@@ -238,14 +239,19 @@ function makeMenu(application: NTSApplication): Menu {
 			click: () => application.browse(),
 		},
 		{
-			label: "Recently Listened To",
-			// @ts-expect-error
-			role: "recentdocuments",
+			label: "Recently Listened Shows",
 			submenu: [
+				...h.map(entry => ({
+					label: entry.name,
+					click: () => void application.openURL(entry.url),
+				})),
+				{
+					type: "separator",
+				},
 				{
 					label: "Clear",
-					// @ts-expect-error
-					role: "clearrecentdocuments",
+					enabled: h.length > 0,
+					click: () => history.clear(),
 				},
 			],
 		},
