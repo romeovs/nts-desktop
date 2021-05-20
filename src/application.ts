@@ -231,7 +231,10 @@ function makeWindow(): BrowserWindow {
 
 function makeIcon(filename: string): NativeImage {
 	const filepath = path.resolve(__dirname, filename)
-	const icon = nativeImage.createFromPath(filepath).resize({ width: 16, height: 16 })
+	const original = nativeImage.createFromPath(filepath)
+	const size = original.getSize()
+	const ratio = size.width / size.height
+	const icon = original.resize({ height: 16, width: Math.round(16 * ratio * 10) / 10 })
 	icon.setTemplateImage(true)
 	return icon
 }
