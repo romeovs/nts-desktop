@@ -234,7 +234,8 @@ function makeIcon(filename: string): NativeImage {
 	const original = nativeImage.createFromPath(filepath)
 	const size = original.getSize()
 	const ratio = size.width / size.height
-	const icon = original.resize({ height: 16, width: Math.round(16 * ratio * 10) / 10 })
+	const height = 18
+	const icon = original.resize({ height, width: Math.round(height * ratio * 10) / 10 })
 	icon.setTemplateImage(true)
 	return icon
 }
