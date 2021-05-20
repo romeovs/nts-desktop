@@ -12,12 +12,16 @@ import {
 	Menu,
 	GlobalShortcut,
 	dialog,
+	NativeImage,
 } from "electron"
 import bplist from "bplist-parser"
 import serve from "electron-serve"
-import menubar from "./logo-menu.png"
 import * as history from "./history"
 import { show } from "./show"
+
+import menubar from "./logo-menu.png"
+import menubarOne from "./logo-menu-one.png"
+import menubarTwo from "./logo-menu-two.png"
 
 const loadURL = serve({ directory: "client" })
 
@@ -44,6 +48,7 @@ export class NTSApplication {
 		ipcMain.on("tracklist", (evt: Event, channel: number | string) => this.openTracklist(channel))
 		ipcMain.on("my-nts", () => this.openMyNTS())
 		ipcMain.on("explore", () => this.openExplore())
+		ipcMain.on("playing", this.handlePlaying.bind(this))
 
 		app.on("open-file", (evt: Event, filename: string) => this.openFile(filename))
 		app.on("will-quit", () => globalShortcut.unregisterAll())
@@ -78,6 +83,24 @@ export class NTSApplication {
 		if (!this.window.webContents.isDevToolsOpened()) {
 			this.close()
 		}
+	}
+
+	handlePlaying(evt: Event, channel: 1 | 2 | string | null) {
+		if (channel === 1 || channel === 2) {
+			this.setIcon(channel)
+			return
+		}
+		this.clearIcon()
+	}
+
+	setIcon(channel: 1 | 2) {
+		const icon = makeIcon(channel === 1 ? menubarOne : menubarTwo)
+		this.tray.setImage(icon)
+	}
+
+	clearIcon() {
+		const icon = makeIcon(menubar)
+		this.tray.setImage(icon)
 	}
 
 	open() {
@@ -206,10 +229,15 @@ function makeWindow(): BrowserWindow {
 	return window
 }
 
-function makeTray(): Tray {
-	const filename = path.resolve(__dirname, menubar)
-	const icon = nativeImage.createFromPath(filename).resize({ width: 16, height: 16 })
+function makeIcon(filename: string): NativeImage {
+	const filepath = path.resolve(__dirname, filename)
+	const icon = nativeImage.createFromPath(filepath).resize({ width: 16, height: 16 })
 	icon.setTemplateImage(true)
+	return icon
+}
+
+function makeTray(): Tray {
+	const icon = makeIcon(menubar)
 	return new Tray(icon)
 }
 
