@@ -43,3 +43,6 @@ build: main client
 
 package: packages
 	@electron-builder build --mac --universal
+
+src/logo-menu.png: src/logo-menu.svg
+	inkscape -w 300 -h 300 src/logo-menu.svg -o src/logo-menu.png
