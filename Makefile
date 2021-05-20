@@ -45,4 +45,12 @@ package: packages
 	@electron-builder build --mac --universal
 
 src/logo-menu.png: src/logo-menu.svg
-	inkscape -w 300 -h 300 src/logo-menu.svg -o src/logo-menu.png
+	inkscape -h 300 src/logo-menu.svg -o src/logo-menu.png
+
+src/logo-menu-one.png: src/logo-menu-one.svg
+	inkscape -h 300 src/logo-menu-one.svg -o src/logo-menu-one.png
+
+src/logo-menu-two.png: src/logo-menu-two.svg
+	inkscape -h 300 src/logo-menu-two.svg -o src/logo-menu-two.png
+
+logos: src/logo-menu.png src/logo-menu-one.png src/logo-menu-two.png
