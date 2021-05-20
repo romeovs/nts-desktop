@@ -103,6 +103,8 @@ export function App() {
 	useKeydown(" ", togglePlaying, [playing, index])
 	useKeydown("Escape", close)
 	useKeydown("t", () => electron.send("tracklist", indexToChannel[index]), [index])
+	useKeydown("1", () => setPlaying(playing === 1 ? null : 1), [playing])
+	useKeydown("2", () => setPlaying(playing === 2 ? null : 2), [playing])
 
 	useEvent("open-show", async function (show: ShowInfo) {
 		setShow(show)
