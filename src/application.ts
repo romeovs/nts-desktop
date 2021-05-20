@@ -242,7 +242,9 @@ function makeIcon(filename: string): NativeImage {
 
 function makeTray(): Tray {
 	const icon = makeIcon(menubar)
-	return new Tray(icon)
+	const tray = new Tray(icon)
+	tray.setIgnoreDoubleClickEvents(true)
+	return tray
 }
 
 async function makeMenu(application: NTSApplication): Promise<Menu> {
