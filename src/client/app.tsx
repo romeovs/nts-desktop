@@ -90,6 +90,13 @@ export function App() {
 		live.load()
 	}, [])
 
+	React.useEffect(
+		function () {
+			electron.send("playing", playing)
+		},
+		[playing],
+	)
+
 	useKeydown("ArrowRight", next)
 	useKeydown("ArrowLeft", prev)
 	useKeydown("?", () => setIsShowingHelp(x => !x))
