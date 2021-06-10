@@ -20,6 +20,7 @@ import { Slider, Slide } from "./slider"
 import { Arrow } from "./arrow"
 import { Help } from "./help"
 import { Offline } from "./offline"
+import { Volume } from "./volume"
 
 import css from "./app.module.css"
 
@@ -260,6 +261,7 @@ export function App() {
 			/>
 			<Offline hide={!isOffline} />
 			<Help hide={!isShowingHelp} onHide={() => setIsShowingHelp(false)} />
+			<Volume volume={volume} />
 		</>
 	)
 }
