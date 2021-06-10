@@ -17,6 +17,7 @@ import {
 import bplist from "bplist-parser"
 import serve from "electron-serve"
 import * as history from "./history"
+import * as preferences from "./preferences"
 import { show } from "./show"
 
 import menubar from "./logo-menu.png"
@@ -49,6 +50,7 @@ export class NTSApplication {
 		ipcMain.on("my-nts", () => this.openMyNTS())
 		ipcMain.on("explore", () => this.openExplore())
 		ipcMain.on("playing", this.handlePlaying.bind(this))
+		ipcMain.on("volume", (evt: Event, volume: number) => this.storeVolume(volume))
 
 		app.on("open-file", (evt: Event, filename: string) => this.openFile(filename))
 		app.on("will-quit", () => globalShortcut.unregisterAll())
@@ -201,6 +203,14 @@ export class NTSApplication {
 
 	openSchedule() {
 		shell.openExternal("https://www.nts.live/schedule")
+	}
+
+	async storeVolume(volume: number) {
+		const prefs = await preferences.read()
+		await preferences.write({
+			...prefs,
+			volume,
+		})
 	}
 }
 
