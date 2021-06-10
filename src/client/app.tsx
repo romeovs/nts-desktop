@@ -101,11 +101,11 @@ export function App() {
 	)
 
 	function increaseVolume() {
-		setVolume(v => clamp(0, 1, v + 0.1))
+		setVolume((v: number): number => clamp(0, 1, v + 0.1))
 	}
 
 	function decreaseVolume() {
-		setVolume(v => clamp(0, 1, v - 0.1))
+		setVolume((v: number): number => clamp(0, 1, v - 0.1))
 	}
 
 	useKeydown("ArrowRight", next)
