@@ -63,12 +63,13 @@ export class NTSApplication {
 	}
 
 	async loadClient() {
+		const prefs = await preferences.read()
 		const prod = __dirname.endsWith(".asar")
 		if (prod) {
 			await loadURL(this.window)
-			this.window.loadURL("app://-")
+			this.window.loadURL(`app://-?p=${JSON.stringify(prefs)}`)
 		} else {
-			this.window.loadURL("http://localhost:8080")
+			this.window.loadURL(`http://localhost:8080?p=${JSON.stringify(prefs)}`)
 		}
 	}
 
