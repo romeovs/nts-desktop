@@ -45,6 +45,7 @@ export function App() {
 	const [playing, setPlaying] = React.useState<Channel | null>(null)
 	const [isOpen, setIsOpen] = React.useState(document.hasFocus())
 	const [isShowingHelp, setIsShowingHelp] = React.useState(false)
+	const [volume, setVolume] = React.useState(0.8)
 
 	const [duration, setDuration] = React.useState(0)
 	const [position, setPosition] = React.useState(0)
@@ -97,6 +98,14 @@ export function App() {
 		[playing],
 	)
 
+	function increaseVolume() {
+		setVolume(v => clamp(0, 1, v + 0.1))
+	}
+
+	function decreaseVolume() {
+		setVolume(v => clamp(0, 1, v - 0.1))
+	}
+
 	useKeydown("ArrowRight", next)
 	useKeydown("ArrowLeft", prev)
 	useKeydown("?", () => setIsShowingHelp(x => !x))
@@ -105,6 +114,8 @@ export function App() {
 	useKeydown("t", () => electron.send("tracklist", indexToChannel[index]), [index])
 	useKeydown("1", () => setPlaying(playing === 1 ? null : 1), [playing])
 	useKeydown("2", () => setPlaying(playing === 2 ? null : 2), [playing])
+	useKeydown("+", increaseVolume)
+	useKeydown("-", decreaseVolume)
 
 	useEvent("open-show", async function (show: ShowInfo) {
 		setShow(show)
@@ -214,8 +225,20 @@ export function App() {
 			<button type="button" onClick={next} className={css.next}>
 				<Arrow direction="right" />
 			</button>
-			<Player src={streams[1]} playing={playing === 1} onPlay={() => setPlaying(1)} onStop={() => stop(1)} />
-			<Player src={streams[2]} playing={playing === 2} onPlay={() => setPlaying(2)} onStop={() => stop(2)} />
+			<Player
+				src={streams[1]}
+				playing={playing === 1}
+				onPlay={() => setPlaying(1)}
+				onStop={() => stop(1)}
+				volume={volume}
+			/>
+			<Player
+				src={streams[2]}
+				playing={playing === 2}
+				onPlay={() => setPlaying(2)}
+				onStop={() => stop(2)}
+				volume={volume}
+			/>
 			<Mixcloud
 				key={`${show?.mixcloud}_${looped}`}
 				show={show}
@@ -225,9 +248,14 @@ export function App() {
 				onLoad={dur => setDuration(Math.round(dur))}
 				onProgress={pos => setPosition(Math.round(pos))}
 				position={position}
+				volume={volume}
 			/>
 			<Offline hide={!isOffline} />
 			<Help hide={!isShowingHelp} onHide={() => setIsShowingHelp(false)} />
 		</>
 	)
+}
+
+function clamp(min: number, max: number, number: number): number {
+	return Math.min(max, Math.max(min, number))
 }
