@@ -185,6 +185,13 @@ export function App() {
 		[isOffline],
 	)
 
+	React.useEffect(
+		function () {
+			electron.send("volume", volume)
+		},
+		[volume],
+	)
+
 	return (
 		<>
 			<Splash hide={!live.loading} />
