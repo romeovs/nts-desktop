@@ -14,6 +14,7 @@ namespace Mixcloud {
 		getDuration(): Promise<number>
 		getPosition(): Promise<number>
 		getIsPaused(): Promise<boolean>
+		setVolume(value: number): void
 		events: {
 			progress: Event<(pos: number) => void>
 			buffering: Event
