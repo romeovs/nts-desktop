@@ -2,6 +2,7 @@ import * as React from "react"
 import classnames from "classnames"
 
 import "./global.css"
+import { preferences } from "./lib/preferences"
 
 import { electron } from "./electron"
 import { useLiveInfo } from "./lib/live"
@@ -45,7 +46,7 @@ export function App() {
 	const [playing, setPlaying] = React.useState<Channel | null>(null)
 	const [isOpen, setIsOpen] = React.useState(document.hasFocus())
 	const [isShowingHelp, setIsShowingHelp] = React.useState(false)
-	const [volume, setVolume] = React.useState(0.8)
+	const [volume, setVolume] = React.useState(preferences.volume)
 
 	const [duration, setDuration] = React.useState(0)
 	const [position, setPosition] = React.useState(0)
