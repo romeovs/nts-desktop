@@ -5,10 +5,11 @@ type Props = {
 	playing: boolean
 	onPlay: () => void
 	onStop: () => void
+	volume?: number
 }
 
 export function Player(props: Props) {
-	const { src, playing, onStop, onPlay } = props
+	const { src, playing, onStop, onPlay, volume = 1 } = props
 
 	const ref = React.useRef<HTMLAudioElement | null>(null)
 
@@ -30,6 +31,16 @@ export function Player(props: Props) {
 			ref.current?.play()
 		},
 		[playing, src],
+	)
+
+	React.useEffect(
+		function () {
+			if (!ref.current) {
+				return
+			}
+			ref.current.volume = volume
+		},
+		[volume],
 	)
 
 	return <audio src={playing ? src : ""} ref={ref} />
