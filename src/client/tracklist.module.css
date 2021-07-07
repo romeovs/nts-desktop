@@ -17,6 +17,11 @@
 	opacity: 1;
 }
 
+.disable {
+	pointer-events: none;
+	opacity: 0;
+}
+
 .tracklist svg {
 	width: 24px;
 	height: 24px;

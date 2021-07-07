@@ -195,6 +195,20 @@ export function App() {
 		[volume],
 	)
 
+	function handleShowTracklist() {
+		if (!show) {
+			return
+		}
+
+		const all = document.querySelectorAll("[data-show]")
+		for (const el of all) {
+			el.scrollTo({
+				top: 220,
+				behavior: "smooth",
+			})
+		}
+	}
+
 	return (
 		<>
 			<Splash hide={!live.loading} />
@@ -235,7 +249,7 @@ export function App() {
 			<button type="button" onClick={next} className={css.next}>
 				<Arrow direction="right" />
 			</button>
-			<Tracklist channel={indexToChannel[index]} />
+			<Tracklist channel={indexToChannel[index]} hasShow={Boolean(show)} onShowTracklist={handleShowTracklist} />
 			<Player
 				src={streams[1]}
 				playing={playing === 1}

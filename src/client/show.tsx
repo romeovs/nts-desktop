@@ -51,7 +51,7 @@ export function Show(props: Props) {
 	const { image, name, location, date, tracklist } = show
 
 	return (
-		<div className={css.show}>
+		<div className={css.show} data-show="true">
 			<div className={css.top}>
 				<img src={image} className={css.image} draggable={false} />
 				<div className={css.header}>
