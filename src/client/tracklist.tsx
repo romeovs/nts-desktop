@@ -3,11 +3,15 @@ import { electron } from "./electron"
 import css from "./tracklist.module.css"
 
 type Props = {
-	channel: 1 | 2
+	channel: 1 | 2 | "show"
 }
 
 export function Tracklist(props: Props) {
 	const { channel } = props
+
+	if (channel === "show") {
+		return null
+	}
 
 	function handleClick() {
 		electron.send("tracklist", channel)

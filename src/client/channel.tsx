@@ -3,7 +3,6 @@ import classnames from "classnames"
 import type { ChannelInfo } from "./lib/live"
 
 import { PlayButton } from "./play"
-import { Tracklist } from "./tracklist"
 import css from "./channel.module.css"
 
 type Props = {
@@ -36,7 +35,6 @@ export function Channel(props: Props) {
 	return (
 		<div className={classnames(css.channel, playing && css.playing)}>
 			<img src={image} className={css.image} draggable={false} />
-			<Tracklist channel={channel} />
 			<button type="button" className={css.header} onClick={handleClick}>
 				<div className={css.ch}>
 					{channel}

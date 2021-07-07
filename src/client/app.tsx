@@ -21,6 +21,7 @@ import { Arrow } from "./arrow"
 import { Help } from "./help"
 import { Offline } from "./offline"
 import { Volume } from "./volume"
+import { Tracklist } from "./tracklist"
 
 import css from "./app.module.css"
 
@@ -234,6 +235,7 @@ export function App() {
 			<button type="button" onClick={next} className={css.next}>
 				<Arrow direction="right" />
 			</button>
+			<Tracklist channel={indexToChannel[index]} />
 			<Player
 				src={streams[1]}
 				playing={playing === 1}
