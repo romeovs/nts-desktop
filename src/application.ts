@@ -51,6 +51,7 @@ export class NTSApplication {
 		ipcMain.on("explore", () => this.openExplore())
 		ipcMain.on("playing", this.handlePlaying.bind(this))
 		ipcMain.on("volume", (evt: Event, volume: number) => this.storeVolume(volume))
+		ipcMain.on("chat", (evt: Event, channel: number) => this.openChat(channel))
 
 		app.on("open-file", (evt: Event, filename: string) => this.openFile(filename))
 		app.on("will-quit", () => globalShortcut.unregisterAll())
@@ -200,6 +201,10 @@ export class NTSApplication {
 
 	openExplore() {
 		shell.openExternal("https://www.nts.live/explore")
+	}
+
+	openChat(channel: number) {
+		shell.openExternal(`https://www.nts.live/chat/${channel}`)
 	}
 
 	openSchedule() {
