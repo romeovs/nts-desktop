@@ -23,7 +23,12 @@ export function usePromise<A, T>(fn: (...args: A[]) => Promise<T>, initialLoadin
 			const data = await fn(...args)
 			setState({ loading: false, error: null, data })
 		} catch (error) {
-			setState({ loading: false, error, data: null })
+			if (error instanceof Error) {
+				setState({ loading: false, error, data: null })
+				return
+			}
+
+			setState({ loading: false, error: new Error("Something went wrong"), data: null })
 		}
 	}
 
