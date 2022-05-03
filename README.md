@@ -25,6 +25,8 @@ An unofficial desktop app for NTS built in Electron.
 - You can refresh the app with `⌘R`
 - `ctrl + N` will open NTS Desktop
 - Pressing `T` when the window is open will open the tracklist
+- Pressing `C` when the window is open will open the chat window for that
+	channel
 - Pressing `1` or `2` when the window is open will start playing the
 	corresponding channel
 - Pressing `-` and `+` will control the volume of the player
