@@ -1,7 +1,7 @@
-.tracklist {
+.chat {
 	position: absolute;
 	bottom: 0px;
-	right: 0px;
+	right: 32px;
 	color: white;
 	background: none;
 	border: none;
@@ -18,7 +18,7 @@
 	align-items: center;
 }
 
-.tracklist:hover {
+.chat:hover {
 	opacity: 1;
 }
 
@@ -27,7 +27,7 @@
 	opacity: 0;
 }
 
-.tracklist svg {
+.chat svg {
 	width: 24px;
 	height: 24px;
 	fill: white;

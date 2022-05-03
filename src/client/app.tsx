@@ -22,6 +22,7 @@ import { Help } from "./help"
 import { Offline } from "./offline"
 import { Volume } from "./volume"
 import { Tracklist } from "./tracklist"
+import { Chat } from "./chat"
 
 import css from "./app.module.css"
 
@@ -250,6 +251,7 @@ export function App() {
 				<Arrow direction="right" />
 			</button>
 			<Tracklist channel={indexToChannel[index]} hasShow={Boolean(show)} onShowTracklist={handleShowTracklist} />
+			<Chat channel={indexToChannel[index]} />
 			<Player
 				src={streams[1]}
 				playing={playing === 1}
