@@ -135,6 +135,7 @@
 
 .location {
 	background: black;
+	font-weight: bold;
 	display: inline-block;
 	font-size: 0.8rem;
 	text-transform: uppercase;

@@ -65,6 +65,7 @@
 .location {
 	background: black;
 	font-size: 0.8rem;
+	font-weight: bold;
 	display: inline-block;
 	text-transform: uppercase;
 	padding: 0.1rem 0.3rem 0.05rem 0.3rem;
