@@ -15,6 +15,10 @@ export function useOffline(): boolean {
 		window.addEventListener("online", on)
 		window.addEventListener("offline", off)
 
+		if (!navigator.onLine) {
+			off()
+		}
+
 		return function () {
 			window.removeEventListener("online", on)
 			window.removeEventListener("offline", off)
