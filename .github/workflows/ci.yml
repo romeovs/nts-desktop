@@ -4,6 +4,7 @@ on:
   - pull_request
 jobs:
   typecheck:
+    name: Typecheck
     runs-on: ubuntu-latest
     steps:
       - name: Check out
