@@ -30,11 +30,13 @@ export class NTSApplication {
 	window: BrowserWindow
 	tray: Tray
 	evts: EventEmitter
+	production: boolean
 
-	constructor() {
+	constructor(production: boolean) {
 		this.window = makeWindow()
 		this.tray = makeTray()
 		this.evts = new EventEmitter()
+		this.production = production
 	}
 
 	async init() {
@@ -65,8 +67,7 @@ export class NTSApplication {
 
 	async loadClient() {
 		const prefs = await preferences.read()
-		const prod = __dirname.endsWith(".asar")
-		if (prod) {
+		if (this.production) {
 			await loadURL(this.window)
 			this.window.loadURL(`app://-?p=${JSON.stringify(prefs)}`)
 		} else {
