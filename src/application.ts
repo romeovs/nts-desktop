@@ -287,7 +287,7 @@ async function makeMenu(application: NTSApplication): Promise<Menu> {
 			click: () => application.browse(),
 		},
 		{
-			label: "Recently Listened Shows",
+			label: "Recently Listened Archive Shows",
 			submenu: [
 				...h.map(entry => ({
 					label: entry.name,
