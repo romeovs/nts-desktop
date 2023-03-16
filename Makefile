@@ -19,7 +19,7 @@ build: index preload client packages
 
 app: ## Build the electron app
 app:
-	@$(bin)/electron-builder build --mac --universal
+	@$(bin)/electron-builder build --mac --universal --publish=never
 
 dev: ## Start the development server for interactive development
 dev:

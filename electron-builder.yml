@@ -15,8 +15,6 @@ mac:
     - target: dmg
       arch:
         - universal
-  publish:
-    - github
 
 fileAssociations:
   ext: webloc
