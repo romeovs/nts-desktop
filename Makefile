@@ -23,7 +23,7 @@ app:
 
 dev: ## Start the development server for interactive development
 dev:
-	@$(bin)/concurrently "make client.dev" "make start"
+	@$(bin)/concurrently "make client.dev" "sleep 3 && make start"
 
 TSC_FLAGS =
 
