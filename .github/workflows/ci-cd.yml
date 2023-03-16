@@ -52,7 +52,7 @@ jobs:
         env:
           NODE_OPTIONS: --openssl-legacy-provider
       - name: Build Electron app
-        run: make package
+        run: make app
 
   release:
     name: Release
