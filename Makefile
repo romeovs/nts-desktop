@@ -49,7 +49,7 @@ packages: dist/yarn.lock
 main: index preload
 build: main client
 
-package: packages
+app: packages
 	@electron-builder build --mac --universal
 
 src/logo-menu.png: src/logo-menu.svg

@@ -84,7 +84,7 @@ require a restart to take effect.
 To build the application run:
 
 ```
-make build package
+make build app
 ```
 
 The app will now be in `bundle/mac-universal/NTS Desktop.app`.
