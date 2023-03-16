@@ -272,7 +272,7 @@ async function makeMenu(application: NTSApplication): Promise<Menu> {
 			click: () => application.openAbout(),
 		},
 		{
-			label: "Schedule",
+			label: "Open Schedule...",
 			click: () => application.openSchedule(),
 		},
 		{ type: "separator" },
