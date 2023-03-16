@@ -21,12 +21,12 @@ start: index preload
 	@$(bin)/electron dist
 
 client.dev:
-	@$(bin)/snowpack dev
+	@$(bin)/vite
 
 client:
 	@mkdir -p dist
 	@rm -rf dist/client/*
-	@$(bin)/snowpack build
+	@$(bin)/vite build
 
 dev:
 	@$(bin)/concurrently "make client.dev" "make start"
