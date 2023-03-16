@@ -20,10 +20,26 @@ jobs:
       - name: Typecheck
         run: make typecheck
 
+  formatting:
+    name: Formatting
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out
+        uses: actions/checkout@v3
+      - name: Set up node
+        uses: actions/setup-node@v3
+        with:
+          node-version-file: .tool-versions
+      - name: Install dependencies
+        run: yarn install --immutable --prefer-offline
+      - name: Typecheck
+        run: make formatting
+
   release:
     name: Release
     needs:
       - typecheck
+      - formatting
     runs-on: macos-latest
     steps:
       - name: Check out
