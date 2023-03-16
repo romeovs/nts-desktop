@@ -7,6 +7,12 @@ typecheck:
 typecheck.watch: TSC_FLAGS = --watch
 typecheck.watch: typecheck
 
+format:
+	@$(bin)/prettier . --write
+
+formatting:
+	@$(bin)/prettier . --check
+
 index: src/main.ts
 	@mkdir -p dist
 	@env NODE_ENV=development $(bin)/esbuild --bundle --platform=node --external:electron --loader:.png=file src/main.ts --outfile=dist/index.js
