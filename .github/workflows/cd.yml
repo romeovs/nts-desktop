@@ -17,9 +17,7 @@ jobs:
         with:
           node-version-file: .tool-versions
       - name: Install dependencies
-        uses: bahmutov/npm-install@v1
-        with:
-          install-command: yarn --frozen-lockfile
+        run: yarn install --immutable --prefer-offline
       - name: Build renderer
         run: make build packages
       - name: Build Electron app
