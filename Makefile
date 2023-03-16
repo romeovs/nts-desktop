@@ -50,7 +50,7 @@ main: index preload
 build: main client
 
 app: packages
-	@electron-builder build --mac --universal
+	@$(bin)/electron-builder build --mac --universal
 
 src/logo-menu.png: src/logo-menu.svg
 	inkscape -h 300 src/logo-menu.svg -o src/logo-menu.png
