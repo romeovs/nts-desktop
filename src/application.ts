@@ -20,9 +20,9 @@ import * as history from "./history"
 import * as preferences from "./preferences"
 import { show } from "./show"
 
-import menubar from "./logo-menu.png"
-import menubarOne from "./logo-menu-one.png"
-import menubarTwo from "./logo-menu-two.png"
+import menubar from "./logos/menu.png"
+import menubarOne from "./logos/menu-one.png"
+import menubarTwo from "./logos/menu-two.png"
 
 const loadURL = serve({ directory: "client" })
 

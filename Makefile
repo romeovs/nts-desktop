@@ -52,13 +52,7 @@ build: main client
 app: packages
 	@$(bin)/electron-builder build --mac --universal
 
-src/logo-menu.png: src/logo-menu.svg
-	inkscape -h 300 src/logo-menu.svg -o src/logo-menu.png
+src/logos/%.png: src/logos/%.svg
+	@inkscape -h 300 $< -o $@
 
-src/logo-menu-one.png: src/logo-menu-one.svg
-	inkscape -h 300 src/logo-menu-one.svg -o src/logo-menu-one.png
-
-src/logo-menu-two.png: src/logo-menu-two.svg
-	inkscape -h 300 src/logo-menu-two.svg -o src/logo-menu-two.png
-
-logos: src/logo-menu.png src/logo-menu-one.png src/logo-menu-two.png
+logos: $(patsubst %.svg,%.png,$(wildcard src/logos/*.svg))
