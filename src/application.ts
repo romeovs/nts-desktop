@@ -234,7 +234,6 @@ function makeWindow(): BrowserWindow {
 			webSecurity: true,
 			nodeIntegration: false,
 			contextIsolation: true,
-			enableRemoteModule: false,
 			preload: path.resolve(__dirname, "preload.js"),
 		},
 	})
