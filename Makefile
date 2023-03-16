@@ -17,7 +17,9 @@ dist/preload.js: src/preload.js
 
 preload: dist/preload.js
 
-start: index preload
+start: index preload run
+
+run:
 	@$(bin)/electron dist
 
 client.dev:
