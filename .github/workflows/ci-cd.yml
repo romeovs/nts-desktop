@@ -21,6 +21,8 @@ jobs:
         run: tsc --noEmit
 
   release:
+    needs:
+      - typecheck
     runs-on: macos-latest
     steps:
       - name: Check out
