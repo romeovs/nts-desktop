@@ -36,6 +36,8 @@ jobs:
         run: yarn install --immutable --prefer-offline
       - name: Build renderer
         run: make build packages
+        env:
+          NODE_OPTIONS: --openssl-legacy-provider
       - name: Build Electron app
         uses: samuelmeuli/action-electron-builder@v1
         with:
