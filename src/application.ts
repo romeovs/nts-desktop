@@ -70,7 +70,7 @@ export class NTSApplication {
 			await loadURL(this.window)
 			this.window.loadURL(`app://-?p=${JSON.stringify(prefs)}`)
 		} else {
-			this.window.loadURL(`http://localhost:8080?p=${JSON.stringify(prefs)}`)
+			this.window.loadURL(`http://localhost:5173?p=${JSON.stringify(prefs)}`)
 		}
 	}
 
