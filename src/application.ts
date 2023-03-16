@@ -272,16 +272,21 @@ async function makeMenu(application: NTSApplication): Promise<Menu> {
 			click: () => application.openAbout(),
 		},
 		{
-			label: "Open Schedule...",
-			click: () => application.openSchedule(),
-		},
-		{ type: "separator" },
-		{
 			label: "Show NTS Desktop",
 			accelerator: "Control+N",
 			acceleratorWorksWhenHidden: true,
 			click: () => application.open(),
 		},
+		{ type: "separator" },
+		{
+			label: "Open Schedule...",
+			click: () => application.openSchedule(),
+		},
+		{
+			label: "Open Favourites...",
+			click: () => application.openMyNTS(),
+		},
+		{ type: "separator" },
 		{
 			label: "Load Archive Show...",
 			click: () => application.browse(),
