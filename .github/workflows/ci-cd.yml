@@ -18,7 +18,7 @@ jobs:
       - name: Install dependencies
         run: yarn install --immutable --prefer-offline
       - name: Typecheck
-        run: tsc --noEmit
+        run: make typecheck
 
   release:
     name: Release
