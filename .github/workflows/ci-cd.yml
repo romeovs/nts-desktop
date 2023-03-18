@@ -63,7 +63,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: app
-          path: bundle
+          path: bundle/NTS Desktop-*.dmg
 
   release:
     name: Release
