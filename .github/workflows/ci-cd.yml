@@ -15,6 +15,7 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version-file: .tool-versions
+          cache: yarn
       - name: Install dependencies
         run: yarn install --immutable --prefer-offline
       - name: Typecheck
@@ -30,6 +31,7 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version-file: .tool-versions
+          cache: yarn
       - name: Install dependencies
         run: yarn install --immutable --prefer-offline
       - name: Typecheck
@@ -45,6 +47,7 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version-file: .tool-versions
+          cache: yarn
       - name: Install dependencies
         run: yarn install --immutable --prefer-offline
       - name: Build renderer
