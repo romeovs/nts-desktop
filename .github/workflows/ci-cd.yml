@@ -86,5 +86,6 @@ jobs:
         with:
           files: bundle/NTS Desktop-*.dmg
           generate_release_notes: true
+          fail_on_unmatched_files: true
         env:
           GITHUB_TOKEN: ${{ secrets.github_token }}
