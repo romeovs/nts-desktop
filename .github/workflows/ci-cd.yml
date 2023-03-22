@@ -85,5 +85,6 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           files: bundle/NTS Desktop-*.dmg
+          generate_release_notes: true
         env:
           GITHUB_TOKEN: ${{ secrets.github_token }}
