@@ -65,11 +65,11 @@ client.dev:
 	@$(bin)/vite
 
 packages: # Copy package.json and amend it for Electron
-packages: dist/yarn.lock
-dist/yarn.lock: package.json
+packages: dist/pnpm-lock.json
+dist/pnpm-lock.json: package.json
 	@mkdir -p dist
 	@cat package.json | $(bin)/json -e 'this.dependencies=undefined' -e 'this.devDependencies=undefined' > dist/package.json
-	@cd dist && yarn --production
+	@cd dist && pnpm install --production
 
 logos: ## Convert all svg logos into their png counterparts
 logos: $(patsubst %.svg,%.png,$(wildcard src/logos/*.svg))
