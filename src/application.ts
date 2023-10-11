@@ -61,7 +61,7 @@ export class NTSApplication {
 
 		globalShortcut.register("Control+N", () => this.toggle())
 
-		setTimeout(() => app.dock.hide(), 500)
+		setTimeout(() => app.dock.hide(), 1500)
 		await this.loadClient()
 	}
 
