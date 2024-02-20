@@ -121,6 +121,8 @@ export function App() {
 	useKeydown("2", () => setPlaying(playing === 2 ? null : 2), [playing])
 	useKeydown("+", increaseVolume)
 	useKeydown("-", decreaseVolume)
+	useKeydown("ArrowUp", increaseVolume)
+	useKeydown("ArrowDown", decreaseVolume)
 
 	useEvent("open-show", async function (show: ShowInfo) {
 		setShow(show)
