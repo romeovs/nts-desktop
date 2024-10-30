@@ -5,13 +5,18 @@ export type Track = {
 	title: string
 }
 
+export type SourceType = "mixcloud" | "soundcloud"
+
 export type ShowInfo = {
 	name: string
 	date: Date
-	mixcloud: string
 	tracklist: Track[]
 	location: string
 	image: string
+	source: {
+		url: string
+		source: SourceType
+	}
 }
 
 type Content = {
@@ -21,6 +26,10 @@ type Content = {
 		background_large: string
 	}
 	mixcloud: string
+	audio_sources: {
+		url: string
+		source: SourceType
+	}[]
 	broadcast: string
 	embeds: {
 		tracklist: {
@@ -38,7 +47,7 @@ export async function show(url: string): Promise<ShowInfo> {
 		name,
 		location_long,
 		media: { background_large },
-		mixcloud,
+		audio_sources,
 		broadcast,
 		embeds: {
 			tracklist: { results },
@@ -51,6 +60,6 @@ export async function show(url: string): Promise<ShowInfo> {
 		image: background_large,
 		date: new Date(broadcast),
 		tracklist: results,
-		mixcloud,
+		source: audio_sources[0],
 	}
 }

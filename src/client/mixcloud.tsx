@@ -81,7 +81,7 @@ export function Mixcloud(props: Props) {
 		return null
 	}
 
-	const feed = encodeURIComponent(key(show.mixcloud))
+	const feed = encodeURIComponent(key(show.source.url))
 	return (
 		<iframe
 			ref={ref}

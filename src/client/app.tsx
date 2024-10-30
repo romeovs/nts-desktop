@@ -154,7 +154,7 @@ export function App() {
 			setPosition(0)
 			setLooped(0)
 		},
-		[show?.mixcloud],
+		[show?.source?.url],
 	)
 
 	React.useEffect(
@@ -267,17 +267,19 @@ export function App() {
 				onStop={() => stop(2)}
 				volume={volume}
 			/>
-			<Mixcloud
-				key={`${show?.mixcloud}_${looped}`}
-				show={show}
-				playing={playing === "show"}
-				onPlay={() => setPlaying("show")}
-				onStop={() => stop("show")}
-				onLoad={dur => setDuration(Math.round(dur))}
-				onProgress={pos => setPosition(Math.round(pos))}
-				position={position}
-				volume={volume}
-			/>
+			{show?.source?.source === "mixcloud" && (
+				<Mixcloud
+					key={`${show?.source?.url}_${looped}`}
+					show={show}
+					playing={playing === "show"}
+					onPlay={() => setPlaying("show")}
+					onStop={() => stop("show")}
+					onLoad={dur => setDuration(Math.round(dur))}
+					onProgress={pos => setPosition(Math.round(pos))}
+					position={position}
+					volume={volume}
+				/>
+			)}
 			<Offline hide={!isOffline} />
 			<Help hide={!isShowingHelp} onHide={() => setIsShowingHelp(false)} />
 			<Volume volume={volume} />
