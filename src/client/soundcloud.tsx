@@ -14,11 +14,20 @@ type Props = {
 	volume?: number
 }
 
+type SCWidget = {
+	getPosition(callback: (pos: number) => void): void
+	getDuration(callback: (dur: number) => void): void
+	seekTo(pos: number): void
+	play(): void
+	pause(): void
+	setVolume(volume: number): void
+}
+
 export function Soundcloud(props: Props) {
 	const { show, playing, onStop, onPlay, onProgress, onLoad, position, volume = 1 } = props
 
 	const ref = React.useRef<HTMLIFrameElement | null>(null)
-	const [widget, setWidget] = React.useState<SC.Widget | null>(null)
+	const [widget, setWidget] = React.useState<SCWidget | null>(null)
 
 	React.useEffect(
 		function () {
