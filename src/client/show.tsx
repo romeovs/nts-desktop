@@ -1,8 +1,6 @@
-import * as React from "react"
 import css from "./show.module.css"
 
 import type { ShowInfo } from "../show"
-import { PlayButton } from "./play"
 import { Controls } from "./controls"
 import { electron } from "./electron"
 
