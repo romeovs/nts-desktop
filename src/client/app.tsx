@@ -1,5 +1,4 @@
 import * as React from "react"
-import classnames from "classnames"
 
 import "./global.css"
 import { preferences } from "./lib/preferences"
@@ -15,6 +14,7 @@ import { Splash } from "./splash"
 import { Channel } from "./channel"
 import { Player } from "./player"
 import { Mixcloud } from "./mixcloud"
+import { Soundcloud } from "./soundcloud"
 import { Show } from "./show"
 import { Slider, Slide } from "./slider"
 import { Arrow } from "./arrow"
@@ -269,7 +269,20 @@ export function App() {
 			/>
 			{show?.source?.source === "mixcloud" && (
 				<Mixcloud
-					key={`${show?.source?.url}_${looped}`}
+					key={`${show?.source?.url}_${looped}_mixcloud`}
+					show={show}
+					playing={playing === "show"}
+					onPlay={() => setPlaying("show")}
+					onStop={() => stop("show")}
+					onLoad={dur => setDuration(Math.round(dur))}
+					onProgress={pos => setPosition(Math.round(pos))}
+					position={position}
+					volume={volume}
+				/>
+			)}
+			{show?.source?.source === "soundcloud" && (
+				<Soundcloud
+					key={`${show?.source?.url}_soundcloud`}
 					show={show}
 					playing={playing === "show"}
 					onPlay={() => setPlaying("show")}
