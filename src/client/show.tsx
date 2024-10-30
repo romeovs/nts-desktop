@@ -88,7 +88,7 @@ export function Show(props: Props) {
 							const duration = track.duration ?? track.duration_estimate ?? null
 							const to = from && duration ? from + duration : null
 
-							const isActive = from && to && from < position && position < to
+							const isActive = from && to && from <= position && position <= to
 
 							function goToTrack() {
 								if (from === null) {
