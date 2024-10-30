@@ -1,7 +1,9 @@
+import classnames from "classnames"
+
 import css from "./show.module.css"
 
 import type { ShowInfo } from "../show"
-import { Controls } from "./controls"
+import { Controls, formatDuration } from "./controls"
 import { electron } from "./electron"
 
 type Props = {
@@ -82,10 +84,22 @@ export function Show(props: Props) {
 								navigator.clipboard.writeText(`${artist} - ${title}`)
 							}
 
+							const from = track.offset ?? track.offset_estimate ?? null
+							const duration = track.duration ?? track.duration_estimate ?? null
+							const to = from && duration ? from + duration : null
+
+							const isActive = from && to && from < position && position < to
+
 							return (
-								<li key={index} onClick={handleClick}>
-									<div className={css.artist}>{artist}</div>
-									<div>{title}</div>
+								<li key={index} onClick={handleClick} className={classnames(isActive && css.active)}>
+									<div className={css.head}>
+										<div className={css.artist}>{artist}</div>
+										<div>{title}</div>
+									</div>
+									<div className={css.time}>
+										{isActive && <span className={css.indicator}>●&nbsp;</span>}
+										{from !== null && <span className={css.from}>{formatDuration(from)}</span>}
+									</div>
 								</li>
 							)
 						})}

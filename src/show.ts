@@ -3,6 +3,10 @@ import fetch from "isomorphic-fetch"
 export type Track = {
 	artist: string
 	title: string
+	duration: number | null
+	duration_estimate: number | null
+	offset: number | null
+	offset_estimate: number | null
 }
 
 export type SourceType = "mixcloud" | "soundcloud"

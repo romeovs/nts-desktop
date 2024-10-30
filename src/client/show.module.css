@@ -103,10 +103,13 @@
 	padding: 0.25rem 0.5rem;
 	transition: background 200ms;
 	cursor: pointer;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
 }
 
 .tracklist li:hover {
-	background: rgba(76, 76, 76, 0.35);
+	background: rgba(76, 76, 76, 0.35) !important;
 }
 
 .tracklist li:active {
@@ -116,6 +119,9 @@
 .artist {
 	text-transform: uppercase;
 	font-weight: bold;
+	flex-shrink: 1;
+	overflow: hidden;
+	text-overflow: ellipsis;
 }
 
 .notracklist {
@@ -143,4 +149,33 @@
 
 .nav button:first-child {
 	margin-right: 1rem;
+}
+
+.time {
+	display: inline-block;
+	font-weight: normal;
+	font-size: 0.7rem;
+	display: flex;
+	flex-shrink: 0;
+}
+
+.active {
+	background: rgba(76, 76, 76, 0.25);
+}
+
+@keyframes pulse {
+	0% {
+		opacity: 1;
+	}
+	50% {
+		opacity: 0;
+	}
+	100% {
+		opacity: 1;
+	}
+}
+
+.indicator {
+	color: red;
+	animation: pulse 3000ms reverse infinite;
 }
