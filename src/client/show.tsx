@@ -90,6 +90,14 @@ export function Show(props: Props) {
 
 							const isActive = from && to && from < position && position < to
 
+							function goToTrack() {
+								if (from === null) {
+									return
+								}
+
+								onSeek(from)
+							}
+
 							return (
 								<li key={index} onClick={handleClick} className={classnames(isActive && css.active)}>
 									<div className={css.head}>
@@ -98,7 +106,11 @@ export function Show(props: Props) {
 									</div>
 									<div className={css.time}>
 										{isActive && <span className={css.indicator}>●&nbsp;</span>}
-										{from !== null && <span className={css.from}>{formatDuration(from)}</span>}
+										{from !== null && (
+											<span className={css.from} onClick={goToTrack}>
+												{formatDuration(from)}
+											</span>
+										)}
 									</div>
 								</li>
 							)
