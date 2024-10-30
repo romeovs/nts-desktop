@@ -27,6 +27,7 @@ export function Soundcloud(props: Props) {
 	const { show, playing, onStop, onPlay, onProgress, onLoad, position, volume = 1 } = props
 
 	const ref = React.useRef<HTMLIFrameElement | null>(null)
+	const seekingTo = React.useRef<number | null>(null)
 	const [widget, setWidget] = React.useState<SCWidget | null>(null)
 
 	React.useEffect(
@@ -44,7 +45,18 @@ export function Soundcloud(props: Props) {
 			w.bind(Events.PAUSE, onStop)
 			w.bind(Events.FINISH, onStop)
 			w.bind(Events.PLAY_PROGRESS, function (evt: { currentPosition: number }) {
-				onProgress(evt.currentPosition / 1000)
+				const position = evt.currentPosition / 1000
+				const rounded = Math.round(position)
+
+				if (seekingTo.current === null) {
+					onProgress(rounded)
+					return
+				}
+
+				if (seekingTo.current === rounded) {
+					seekingTo.current = null
+					onProgress(rounded)
+				}
 			})
 			w.bind(Events.READY, function () {
 				w.getDuration(function (duration: number) {
@@ -67,7 +79,9 @@ export function Soundcloud(props: Props) {
 				if (Math.abs(position - curr / 1000) < 1) {
 					return
 				}
+				seekingTo.current = position
 				widget.seekTo(position * 1000)
+				onProgress(position)
 			})
 		},
 		[position, widget],
