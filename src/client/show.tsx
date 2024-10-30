@@ -131,6 +131,14 @@ function Track(props: TrackProps) {
 			</div>
 			<div className={css.time}>
 				{isActive && <span className={css.indicator}>●&nbsp;</span>}
+
+				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 600" className={css.play}>
+					<path
+						fill="white"
+						d="M506.4 309.3L128.8 519.2c-4.4 2.4-8.2 2.7-11.2 1-3.1-1.7-4.6-5.1-4.6-10.2V91.2c0-4.8 1.5-8.2 4.6-10.2 3.1-2 6.8-1.7 11.2 1l377.6 210c4.4 2.4 6.6 5.3 6.6 8.7 0 3.3-2.2 6.2-6.6 8.6z"
+					/>
+				</svg>
+
 				{from !== null && (
 					<span className={css.from} onClick={goToTrack}>
 						{formatDuration(from)}

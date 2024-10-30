@@ -152,11 +152,29 @@
 }
 
 .time {
-	display: inline-block;
+	display: inline-flex;
+	align-items: center;
+	justify-content: end;
 	font-weight: normal;
+	gap: 0.2rem;
 	font-size: 0.7rem;
 	display: flex;
 	flex-shrink: 0;
+	min-width: 38px;
+}
+
+.time .play {
+	height: 0.6rem;
+	vertical-align: center;
+	display: none;
+}
+
+.time:hover .play {
+	display: inline-block;
+}
+
+.time:hover .indicator {
+	display: none;
 }
 
 .active {
