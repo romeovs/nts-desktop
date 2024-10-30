@@ -1,8 +1,9 @@
+import { useCallback } from "react"
 import classnames from "classnames"
 
 import css from "./show.module.css"
 
-import type { ShowInfo } from "../show"
+import type { ShowInfo, Track } from "../show"
 import { Controls, formatDuration } from "./controls"
 import { electron } from "./electron"
 
@@ -77,48 +78,66 @@ export function Show(props: Props) {
 				{tracklist.length === 0 && <div className={css.notracklist}>No tracklist provided</div>}
 				{tracklist.length > 0 && (
 					<ul>
-						{tracklist.map(function (track, index) {
-							const { title, artist } = track
-							function handleClick() {
-								//
-								navigator.clipboard.writeText(`${artist} - ${title}`)
-							}
-
-							const from = track.offset ?? track.offset_estimate ?? null
-							const duration = track.duration ?? track.duration_estimate ?? null
-							const to = from && duration ? from + duration : null
-
-							const isActive = from && to && from <= position && position <= to
-
-							function goToTrack() {
-								if (from === null) {
-									return
-								}
-
-								onSeek(from)
-							}
-
-							return (
-								<li key={index} onClick={handleClick} className={classnames(isActive && css.active)}>
-									<div className={css.head}>
-										<div className={css.artist}>{artist}</div>
-										<div>{title}</div>
-									</div>
-									<div className={css.time}>
-										{isActive && <span className={css.indicator}>●&nbsp;</span>}
-										{from !== null && (
-											<span className={css.from} onClick={goToTrack}>
-												{formatDuration(from)}
-											</span>
-										)}
-									</div>
-								</li>
-							)
-						})}
+						{tracklist.map((track, index) => (
+							<Track track={track} index={index} position={position} onSeek={onSeek} />
+						))}
 					</ul>
 				)}
 			</div>
 		</div>
+	)
+}
+
+type TrackProps = {
+	track: Track
+	index: number
+	position: number
+	onSeek: (pos: number) => void
+}
+
+function Track(props: TrackProps) {
+	const { track, index, position, onSeek } = props
+	const { title, artist } = track
+
+	const from = track.offset ?? track.offset_estimate ?? null
+	const duration = track.duration ?? track.duration_estimate ?? null
+	const to = from && duration ? from + duration : null
+
+	const isActive = from && to && from <= position && position <= to
+
+	const handleClick = useCallback(
+		function () {
+			navigator.clipboard.writeText(`${artist} - ${title}`)
+		},
+		[artist, title],
+	)
+
+	const goToTrack = useCallback(
+		function () {
+			if (from === null) {
+				return
+			}
+
+			onSeek(from)
+		},
+		[onSeek, from],
+	)
+
+	return (
+		<li key={index} onClick={handleClick} className={classnames(isActive && css.active)}>
+			<div className={css.head}>
+				<div className={css.artist}>{artist}</div>
+				<div>{title}</div>
+			</div>
+			<div className={css.time}>
+				{isActive && <span className={css.indicator}>●&nbsp;</span>}
+				{from !== null && (
+					<span className={css.from} onClick={goToTrack}>
+						{formatDuration(from)}
+					</span>
+				)}
+			</div>
+		</li>
 	)
 }
 
