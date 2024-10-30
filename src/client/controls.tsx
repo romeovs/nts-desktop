@@ -4,7 +4,6 @@ import css from "./controls.module.css"
 import type { ShowInfo } from "../show"
 
 import { PlayButton } from "./play"
-import { Mixcloud } from "./mixcloud"
 
 type Props = {
 	duration: number
@@ -17,8 +16,7 @@ type Props = {
 }
 
 export function Controls(props: Props) {
-	const { show, duration, position, onPlay, onStop, playing, onSeek } = props
-	const [select, setSelect] = React.useState(0)
+	const { duration, position, onPlay, onStop, playing, onSeek } = props
 	const width = (100 * position) / duration
 	const ref = React.useRef<HTMLDivElement | null>(null)
 
