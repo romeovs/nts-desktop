@@ -4,15 +4,15 @@ import { Preferences } from "./lib/preferences"
 import css from "./login.module.css"
 
 type LoginProps = {
-	preferences: Preferences | null
+	preferences: Preferences
 	onPreferencesChange: (fn: (prefs: Preferences) => Preferences) => void
 	onClose: () => void
 }
 
 export function Login(props: LoginProps) {
 	const { onClose, onPreferencesChange, preferences } = props
-	const [email, setEmail] = useState(preferences?.email ?? "")
-	const [password, setPassword] = useState(preferences?.password ?? "")
+	const [email, setEmail] = useState(preferences.email ?? "")
+	const [password, setPassword] = useState(preferences.password ?? "")
 
 	const handleEmailChange = useCallback(function (evt: ChangeEvent<HTMLInputElement>) {
 		setEmail(evt.target.value)

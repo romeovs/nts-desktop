@@ -64,7 +64,7 @@ export function App() {
 }
 
 type NTSProps = {
-	preferences: Preferences | null
+	preferences: Preferences
 	onPreferencesChange: (fn: (prefs: Preferences) => Preferences) => void
 }
 

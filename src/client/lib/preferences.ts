@@ -15,7 +15,7 @@ function read() {
 	}
 }
 
-export function usePreferences(): [Preferences | null, (fn: (prefs: Preferences) => Preferences) => void] {
+export function usePreferences(): [Preferences, (fn: (prefs: Preferences) => Preferences) => void] {
 	const [preferences, setPreferences] = useState<Preferences>(read())
 
 	useEffect(function () {
