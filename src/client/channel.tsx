@@ -1,7 +1,7 @@
 import classnames from "classnames"
-import * as React from "react"
 import type { ChannelInfo } from "./lib/live"
 
+import type { LiveTrack } from "../firebase"
 import css from "./channel.module.css"
 import { PlayButton } from "./play"
 
@@ -72,7 +72,7 @@ export function Channel(props: Props) {
 											`${track.artists.join(", ")} - ${track.title}`,
 										)
 									}
-									key={track.startTime}
+									key={track.startTime.getTime()}
 								>
 									<div className={css.time}>
 										{track.startTime.toLocaleTimeString("en-GB").substring(0, 5)}

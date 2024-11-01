@@ -1,11 +1,15 @@
-import { initializeApp } from "firebase/app"
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth"
+import { type FirebaseApp, initializeApp } from "firebase/app"
+import { type Auth, getAuth, signInWithEmailAndPassword } from "firebase/auth"
 import { getFirestore } from "firebase/firestore"
 
-const str = import.meta.env.VITE_FIREBASE_CONFIG
+// @ts-expect-error
+const str: string = import.meta.env.VITE_FIREBASE_CONFIG
 const config = str && JSON.parse(str)
 
 export default class NTS {
+	app: FirebaseApp
+	auth: Auth
+
 	constructor() {
 		this.app = initializeApp(config)
 		this.auth = getAuth(this.app)
@@ -15,7 +19,7 @@ export default class NTS {
 		return getFirestore(this.app)
 	}
 
-	signIn(email, password) {
+	signIn(email: string, password: string) {
 		return signInWithEmailAndPassword(this.auth, email, password)
 	}
 }

@@ -1,5 +1,5 @@
-import { ChangeEvent, FormEvent, useCallback, useState } from "react"
-import { Preferences } from "./lib/preferences"
+import { type ChangeEvent, type FormEvent, useCallback, useState } from "react"
+import type { Preferences } from "./lib/preferences"
 
 import css from "./login.module.css"
 
@@ -32,7 +32,7 @@ export function Login(props: LoginProps) {
 			onPreferencesChange((prefs) => ({ ...prefs, email, password }))
 			onClose()
 		},
-		[onClose, email, password],
+		[onClose, email, password, onPreferencesChange],
 	)
 
 	return (
