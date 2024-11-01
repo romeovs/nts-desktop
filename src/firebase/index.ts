@@ -10,7 +10,9 @@ import {
 import NTS from "./mod"
 
 const LIMIT = 15
-const store = NTS.firestore()
+
+const nts = new NTS()
+const store = nts.firestore()
 
 export type LiveTrack = {
 	title: string
@@ -74,8 +76,7 @@ let promise: Promise<void> | null = null
 
 export async function login(email: string, password: string) {
 	if (!promise) {
-		NTS._app()
-		promise = NTS.signIn(email, password)
+		promise = nts.signIn(email, password)
 	}
 
 	return promise
