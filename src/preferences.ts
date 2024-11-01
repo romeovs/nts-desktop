@@ -1,4 +1,5 @@
 import path from "path"
+import { safeStorage } from "electron"
 import { promises as fs } from "fs"
 import { app } from "electron"
 
@@ -18,7 +19,8 @@ const filename = path.join(app.getPath("userData"), "preferences.json")
 
 export async function read(): Promise<Preferences> {
 	try {
-		const content = await fs.readFile(filename, "utf-8")
+		const buf = await fs.readFile(filename)
+		const content = safeStorage.decryptString(buf)
 		return JSON.parse(content)
 	} catch (err) {
 		return defaults
@@ -26,7 +28,9 @@ export async function read(): Promise<Preferences> {
 }
 
 export async function write(preferences: Preferences): Promise<void> {
-	await fs.writeFile(filename, JSON.stringify(preferences))
+	const content = JSON.stringify(preferences)
+	const buf = safeStorage.encryptString(content)
+	await fs.writeFile(filename, buf)
 }
 
 export async function clear(): Promise<void> {
