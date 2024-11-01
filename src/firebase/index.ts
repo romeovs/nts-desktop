@@ -6,7 +6,6 @@ import {
 	query,
 	where,
 } from "firebase/firestore"
-// @ts-expect-error
 import NTS from "./mod"
 
 const LIMIT = 15
