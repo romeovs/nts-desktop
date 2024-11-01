@@ -1,27 +1,27 @@
-import path from "path"
 import EventEmitter from "events"
-import {
-	app,
-	shell,
-	ipcMain,
-	Tray,
-	nativeImage,
-	BrowserWindow,
-	globalShortcut,
-	Notification,
-	Menu,
-	dialog,
-	NativeImage,
-} from "electron"
+import path from "path"
 import bplist from "bplist-parser"
+import {
+	BrowserWindow,
+	Menu,
+	NativeImage,
+	Notification,
+	Tray,
+	app,
+	dialog,
+	globalShortcut,
+	ipcMain,
+	nativeImage,
+	shell,
+} from "electron"
 import serve from "electron-serve"
 import * as history from "./history"
 import * as preferences from "./preferences"
 import { show } from "./show"
 
-import menubar from "./logos/menu.png"
 import menubarOne from "./logos/menu-one.png"
 import menubarTwo from "./logos/menu-two.png"
+import menubar from "./logos/menu.png"
 
 const loadURL = serve({ directory: "client" })
 
@@ -42,17 +42,23 @@ export class NTSApplication {
 		this.tray.on("click", () => this.toggle())
 		this.tray.on("right-click", () => this.openMenu())
 		this.tray.on("drop-text", (evt: Event, url: string) => this.openURL(url))
-		this.tray.on("drop-files", (evt: Event, files: string[]) => this.openFile(files[0]))
+		this.tray.on("drop-files", (evt: Event, files: string[]) =>
+			this.openFile(files[0]),
+		)
 
 		this.evts.on("error", (message: string) => this.showNotification(message))
 
 		ipcMain.on("close", () => this.close())
-		ipcMain.on("tracklist", (evt: Event, channel: number | string) => this.openTracklist(channel))
+		ipcMain.on("tracklist", (evt: Event, channel: number | string) =>
+			this.openTracklist(channel),
+		)
 		ipcMain.on("my-nts", () => this.openMyNTS())
 		ipcMain.on("explore", () => this.openExplore())
 		ipcMain.on("playing", this.handlePlaying.bind(this))
 		ipcMain.on("chat", (evt: Event, channel: number) => this.openChat(channel))
-		ipcMain.on("preferences", (evt: Event, prefs: preferences.Preferences) => this.storePreferences(prefs))
+		ipcMain.on("preferences", (evt: Event, prefs: preferences.Preferences) =>
+			this.storePreferences(prefs),
+		)
 
 		app.on("open-file", (evt: Event, filename: string) => this.openFile(filename))
 		app.on("will-quit", () => globalShortcut.unregisterAll())
@@ -263,7 +269,10 @@ function makeIcon(filename: string): NativeImage {
 	const size = original.getSize()
 	const ratio = size.width / size.height
 	const height = 18
-	const icon = original.resize({ height, width: Math.round(height * ratio * 10) / 10 })
+	const icon = original.resize({
+		height,
+		width: Math.round(height * ratio * 10) / 10,
+	})
 	icon.setTemplateImage(true)
 	return icon
 }
@@ -306,7 +315,7 @@ async function makeMenu(application: NTSApplication): Promise<Menu> {
 		{
 			label: "Recently Listened Archive Shows",
 			submenu: [
-				...h.map(entry => ({
+				...h.map((entry) => ({
 					label: entry.name,
 					click: () => void application.openURL(entry.url),
 				})),

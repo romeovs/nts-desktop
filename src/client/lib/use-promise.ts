@@ -10,7 +10,10 @@ export interface PromiseState<A, T> extends State<T> {
 	load: (...args: A[]) => Promise<void>
 }
 
-export function usePromise<A, T>(fn: (...args: A[]) => Promise<T>, initialLoading: boolean = true): PromiseState<A, T> {
+export function usePromise<A, T>(
+	fn: (...args: A[]) => Promise<T>,
+	initialLoading: boolean = true,
+): PromiseState<A, T> {
 	const [state, setState] = React.useState<State<T>>({
 		data: null,
 		error: null,
@@ -18,7 +21,7 @@ export function usePromise<A, T>(fn: (...args: A[]) => Promise<T>, initialLoadin
 	})
 
 	async function load(...args: A[]): Promise<void> {
-		setState(state => ({ ...state, loading: true }))
+		setState((state) => ({ ...state, loading: true }))
 		try {
 			const data = await fn(...args)
 			setState({ loading: false, error: null, data })
@@ -28,7 +31,11 @@ export function usePromise<A, T>(fn: (...args: A[]) => Promise<T>, initialLoadin
 				return
 			}
 
-			setState({ loading: false, error: new Error("Something went wrong"), data: null })
+			setState({
+				loading: false,
+				error: new Error("Something went wrong"),
+				data: null,
+			})
 		}
 	}
 

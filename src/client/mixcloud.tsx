@@ -15,7 +15,16 @@ type Props = {
 }
 
 export function Mixcloud(props: Props) {
-	const { show, playing, onStop, onPlay, onProgress, onLoad, position, volume = 1 } = props
+	const {
+		show,
+		playing,
+		onStop,
+		onPlay,
+		onProgress,
+		onLoad,
+		position,
+		volume = 1,
+	} = props
 
 	const ref = React.useRef<HTMLIFrameElement | null>(null)
 	const [widget, setWidget] = React.useState<Mixcloud.PlayerWidget | null>(null)
@@ -34,10 +43,10 @@ export function Mixcloud(props: Props) {
 					w.events.pause.on(onStop)
 					w.events.ended.on(onStop)
 					w.events.progress.on(onProgress)
-					w.getDuration().then(duration => onLoad(duration))
+					w.getDuration().then((duration) => onLoad(duration))
 					setWidget(w)
 				})
-				.catch(err => console.error(err))
+				.catch((err) => console.error(err))
 		},
 		[show],
 	)

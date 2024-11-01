@@ -1,29 +1,29 @@
 import * as React from "react"
 
 import "./global.css"
-import { usePreferences, Preferences } from "./lib/preferences"
+import { Preferences, usePreferences } from "./lib/preferences"
 
+import type { ShowInfo } from "../show"
 import { electron } from "./electron"
 import { useLiveInfo } from "./lib/live"
-import type { ShowInfo } from "../show"
-import { useKeydown } from "./lib/use-keydown"
 import { useEvent } from "./lib/use-event"
+import { useKeydown } from "./lib/use-keydown"
 import { useOffline } from "./lib/use-offline"
 
-import { Splash } from "./splash"
-import { Channel } from "./channel"
-import { Player } from "./player"
-import { Mixcloud } from "./mixcloud"
-import { Soundcloud } from "./soundcloud"
-import { Show } from "./show"
-import { Slider, Slide } from "./slider"
 import { Arrow } from "./arrow"
-import { Help } from "./help"
-import { Offline } from "./offline"
-import { Volume } from "./volume"
-import { Tracklist } from "./tracklist"
+import { Channel } from "./channel"
 import { Chat } from "./chat"
+import { Help } from "./help"
 import { Login } from "./login"
+import { Mixcloud } from "./mixcloud"
+import { Offline } from "./offline"
+import { Player } from "./player"
+import { Show } from "./show"
+import { Slide, Slider } from "./slider"
+import { Soundcloud } from "./soundcloud"
+import { Splash } from "./splash"
+import { Tracklist } from "./tracklist"
+import { Volume } from "./volume"
 
 import css from "./app.module.css"
 
@@ -59,7 +59,13 @@ export function App() {
 	}, [])
 
 	if (route === "login") {
-		return <Login onClose={handleLoginClose} preferences={preferences} onPreferencesChange={setPreferences} />
+		return (
+			<Login
+				onClose={handleLoginClose}
+				preferences={preferences}
+				onPreferencesChange={setPreferences}
+			/>
+		)
 	}
 
 	return <NTS preferences={preferences} onPreferencesChange={setPreferences} />
@@ -85,7 +91,7 @@ export function NTS(props: NTSProps) {
 	const isOffline = useOffline()
 
 	function setVolume(fn: (volume: number) => number) {
-		onPreferencesChange(prefs => ({ ...prefs, volume: fn(prefs.volume) }))
+		onPreferencesChange((prefs) => ({ ...prefs, volume: fn(prefs.volume) }))
 	}
 
 	const tracks = useLiveTracks({
@@ -96,11 +102,11 @@ export function NTS(props: NTSProps) {
 	})
 
 	function next() {
-		setIndex(idx => (idx + 1) % 3)
+		setIndex((idx) => (idx + 1) % 3)
 	}
 
 	function prev() {
-		setIndex(idx => (3 + idx - 1) % 3)
+		setIndex((idx) => (3 + idx - 1) % 3)
 	}
 
 	function togglePlaying() {
@@ -108,11 +114,11 @@ export function NTS(props: NTSProps) {
 			return
 		}
 
-		setPlaying(playing => (playing ? null : indexToChannel[index]))
+		setPlaying((playing) => (playing ? null : indexToChannel[index]))
 	}
 
 	function stop(channel: Channel) {
-		setPlaying(curr => (curr === channel ? null : curr))
+		setPlaying((curr) => (curr === channel ? null : curr))
 	}
 
 	function stopAll() {
@@ -122,7 +128,7 @@ export function NTS(props: NTSProps) {
 	function seek(pos: number) {
 		setPosition(pos)
 		if (pos < position) {
-			setLooped(x => x + 1)
+			setLooped((x) => x + 1)
 		}
 	}
 
@@ -151,7 +157,7 @@ export function NTS(props: NTSProps) {
 
 	useKeydown("ArrowRight", next)
 	useKeydown("ArrowLeft", prev)
-	useKeydown("?", () => setIsShowingHelp(x => !x))
+	useKeydown("?", () => setIsShowingHelp((x) => !x))
 	useKeydown(" ", togglePlaying, [playing, index])
 	useKeydown("Escape", close)
 	useKeydown("t", () => electron.send("tracklist", indexToChannel[index]), [index])
@@ -311,8 +317,8 @@ export function NTS(props: NTSProps) {
 					playing={playing === "show"}
 					onPlay={() => setPlaying("show")}
 					onStop={() => stop("show")}
-					onLoad={dur => setDuration(Math.round(dur))}
-					onProgress={pos => setPosition(Math.round(pos))}
+					onLoad={(dur) => setDuration(Math.round(dur))}
+					onProgress={(pos) => setPosition(Math.round(pos))}
 					position={position}
 					volume={preferences.volume}
 				/>
@@ -324,8 +330,8 @@ export function NTS(props: NTSProps) {
 					playing={playing === "show"}
 					onPlay={() => setPlaying("show")}
 					onStop={() => stop("show")}
-					onLoad={dur => setDuration(Math.round(dur))}
-					onProgress={pos => setPosition(Math.round(pos))}
+					onLoad={(dur) => setDuration(Math.round(dur))}
+					onProgress={(pos) => setPosition(Math.round(pos))}
 					position={position}
 					volume={preferences.volume}
 				/>

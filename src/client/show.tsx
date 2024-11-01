@@ -1,5 +1,5 @@
-import { useCallback } from "react"
 import classnames from "classnames"
+import { useCallback } from "react"
 
 import css from "./show.module.css"
 
@@ -75,11 +75,18 @@ export function Show(props: Props) {
 				onSeek={onSeek}
 			/>
 			<div className={css.tracklist}>
-				{tracklist.length === 0 && <div className={css.notracklist}>No tracklist provided</div>}
+				{tracklist.length === 0 && (
+					<div className={css.notracklist}>No tracklist provided</div>
+				)}
 				{tracklist.length > 0 && (
 					<ul>
 						{tracklist.map((track, index) => (
-							<Track track={track} index={index} position={position} onSeek={onSeek} />
+							<Track
+								track={track}
+								index={index}
+								position={position}
+								onSeek={onSeek}
+							/>
 						))}
 					</ul>
 				)}
@@ -124,7 +131,11 @@ function Track(props: TrackProps) {
 	)
 
 	return (
-		<li key={index} onClick={handleClick} className={classnames(isActive && css.active)}>
+		<li
+			key={index}
+			onClick={handleClick}
+			className={classnames(isActive && css.active)}
+		>
 			<div className={css.head}>
 				<div className={css.artist}>{artist}</div>
 				<div>{title}</div>
@@ -132,7 +143,11 @@ function Track(props: TrackProps) {
 			<div className={css.time}>
 				{isActive && <span className={css.indicator}>●&nbsp;</span>}
 
-				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 600" className={css.play}>
+				<svg
+					xmlns="http://www.w3.org/2000/svg"
+					viewBox="0 0 600 600"
+					className={css.play}
+				>
 					<path
 						fill="white"
 						d="M506.4 309.3L128.8 519.2c-4.4 2.4-8.2 2.7-11.2 1-3.1-1.7-4.6-5.1-4.6-10.2V91.2c0-4.8 1.5-8.2 4.6-10.2 3.1-2 6.8-1.7 11.2 1l377.6 210c4.4 2.4 6.6 5.3 6.6 8.7 0 3.3-2.2 6.2-6.6 8.6z"
@@ -150,5 +165,11 @@ function Track(props: TrackProps) {
 }
 
 function format(date: Date): string {
-	return date.toLocaleDateString("en-GB", { day: "2-digit", month: "2-digit", year: "2-digit" }).replace(/\//g, ".")
+	return date
+		.toLocaleDateString("en-GB", {
+			day: "2-digit",
+			month: "2-digit",
+			year: "2-digit",
+		})
+		.replace(/\//g, ".")
 }

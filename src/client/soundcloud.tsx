@@ -24,7 +24,16 @@ type SCWidget = {
 }
 
 export function Soundcloud(props: Props) {
-	const { show, playing, onStop, onPlay, onProgress, onLoad, position, volume = 1 } = props
+	const {
+		show,
+		playing,
+		onStop,
+		onPlay,
+		onProgress,
+		onLoad,
+		position,
+		volume = 1,
+	} = props
 
 	const ref = React.useRef<HTMLIFrameElement | null>(null)
 	const seekingTo = React.useRef<number | null>(null)
@@ -112,6 +121,11 @@ export function Soundcloud(props: Props) {
 
 	const feed = encodeURIComponent(show.source.url)
 	return (
-		<iframe ref={ref} src={`https://w.soundcloud.com/player/?url=${feed}`} allow="autoplay" className={css.frame} />
+		<iframe
+			ref={ref}
+			src={`https://w.soundcloud.com/player/?url=${feed}`}
+			allow="autoplay"
+			className={css.frame}
+		/>
 	)
 }

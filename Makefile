@@ -37,11 +37,11 @@ typecheck.watch: typecheck
 
 format: ## Format all code
 format:
-	@$(bin)/prettier . --write
+	@$(bin)/biome check . --linter-enabled=false --organize-imports-enabled=true --fix
 
 formatting: ## Check the formatting of all code
 formatting:
-	@$(bin)/prettier . --check
+	@$(bin)/biome check . --linter-enabled=false --organize-imports-enabled=true
 
 index: # Build the "server"-side js
 index: src/main.ts

@@ -1,6 +1,6 @@
+import { promises as fs } from "fs"
 import path from "path"
 import { safeStorage } from "electron"
-import { promises as fs } from "fs"
 import { app } from "electron"
 
 export type Preferences = {

@@ -1,9 +1,9 @@
-import * as React from "react"
 import classnames from "classnames"
+import * as React from "react"
 import type { ChannelInfo } from "./lib/live"
 
-import { PlayButton } from "./play"
 import css from "./channel.module.css"
+import { PlayButton } from "./play"
 
 type Props = {
 	info?: ChannelInfo
@@ -33,8 +33,8 @@ export function Channel(props: Props) {
 		}
 	}
 
-	const tracks = props.tracks.filter(track => track.stream === channel)
-	const hasTracks = tracks.some(track => track.title)
+	const tracks = props.tracks.filter((track) => track.stream === channel)
+	const hasTracks = tracks.some((track) => track.title)
 
 	return (
 		<div className={css.wrapper} data-show="true">
@@ -67,7 +67,11 @@ export function Channel(props: Props) {
 							track.title && (
 								<li
 									className={css.track}
-									onClick={() => navigator.clipboard.writeText(`${track.artists.join(", ")} - ${track.title}`)}
+									onClick={() =>
+										navigator.clipboard.writeText(
+											`${track.artists.join(", ")} - ${track.title}`,
+										)
+									}
 									key={track.startTime}
 								>
 									<div className={css.time}>

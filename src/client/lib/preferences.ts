@@ -1,7 +1,7 @@
-import { useEffect, useState, useCallback } from "react"
+import { useCallback, useEffect, useState } from "react"
 
-import { electron } from "../electron"
 import type { Preferences } from "../../preferences"
+import { electron } from "../electron"
 
 export { Preferences }
 
@@ -15,7 +15,10 @@ function read() {
 	}
 }
 
-export function usePreferences(): [Preferences, (fn: (prefs: Preferences) => Preferences) => void] {
+export function usePreferences(): [
+	Preferences,
+	(fn: (prefs: Preferences) => Preferences) => void,
+] {
 	const [preferences, setPreferences] = useState<Preferences>(read())
 
 	useEffect(function () {

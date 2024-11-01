@@ -7,7 +7,11 @@ type SliderProps = {
 	animate: boolean
 }
 
-function direction(prev: number, index: number, len: number): "prev" | "next" | null {
+function direction(
+	prev: number,
+	index: number,
+	len: number,
+): "prev" | "next" | null {
 	if (prev === len - 1 && index === 0) {
 		return "next"
 	}
@@ -48,7 +52,7 @@ export function Slider(props: SliderProps) {
 
 	React.useEffect(
 		function () {
-			setState(state => ({
+			setState((state) => ({
 				animate: true,
 				index: state.index + diff(direction(state.index, index, len)),
 				lastIndex: state.index,
@@ -56,7 +60,7 @@ export function Slider(props: SliderProps) {
 
 			const t = setTimeout(
 				() =>
-					setState(state => ({
+					setState((state) => ({
 						...state,
 						animate: false,
 						index,

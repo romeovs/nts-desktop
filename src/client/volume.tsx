@@ -1,5 +1,5 @@
-import * as React from "react"
 import classnames from "classnames"
+import * as React from "react"
 
 import css from "./volume.module.css"
 
@@ -27,5 +27,10 @@ export function Volume(props: VolumeProps) {
 		[volume],
 	)
 
-	return <div className={classnames(css.volume, show && css.show)} style={{ height: `${100 * volume}%` }} />
+	return (
+		<div
+			className={classnames(css.volume, show && css.show)}
+			style={{ height: `${100 * volume}%` }}
+		/>
+	)
 }

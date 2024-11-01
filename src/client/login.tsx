@@ -1,4 +1,4 @@
-import { useCallback, useState, ChangeEvent, FormEvent } from "react"
+import { ChangeEvent, FormEvent, useCallback, useState } from "react"
 import { Preferences } from "./lib/preferences"
 
 import css from "./login.module.css"
@@ -14,18 +14,22 @@ export function Login(props: LoginProps) {
 	const [email, setEmail] = useState(preferences.email ?? "")
 	const [password, setPassword] = useState(preferences.password ?? "")
 
-	const handleEmailChange = useCallback(function (evt: ChangeEvent<HTMLInputElement>) {
+	const handleEmailChange = useCallback(function (
+		evt: ChangeEvent<HTMLInputElement>,
+	) {
 		setEmail(evt.target.value)
 	}, [])
 
-	const handlePasswordChange = useCallback(function (evt: ChangeEvent<HTMLInputElement>) {
+	const handlePasswordChange = useCallback(function (
+		evt: ChangeEvent<HTMLInputElement>,
+	) {
 		setPassword(evt.target.value)
 	}, [])
 
 	const handleSubmit = useCallback(
 		function (evt: FormEvent<HTMLFormElement>) {
 			evt.preventDefault()
-			onPreferencesChange(prefs => ({ ...prefs, email, password }))
+			onPreferencesChange((prefs) => ({ ...prefs, email, password }))
 			onClose()
 		},
 		[onClose, email, password],

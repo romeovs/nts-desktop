@@ -1,5 +1,5 @@
-import path from "path"
 import { promises as fs } from "fs"
+import path from "path"
 import { app } from "electron"
 
 export type History = Entry[]
@@ -27,7 +27,7 @@ export async function add(entry: Entry) {
 	const history = await read()
 	history.unshift(entry)
 	const deduped = history.filter(function (value, index) {
-		const idx = history.findIndex(entry => entry.url === value.url)
+		const idx = history.findIndex((entry) => entry.url === value.url)
 		return idx === index
 	})
 	write(deduped)

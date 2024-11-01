@@ -1,6 +1,13 @@
+import {
+	collection,
+	limit,
+	onSnapshot,
+	orderBy,
+	query,
+	where,
+} from "firebase/firestore"
 // @ts-expect-error
 import NTS from "./mod"
-import { collection, query, where, orderBy, limit, onSnapshot } from "firebase/firestore"
 
 const LIMIT = 15
 const store = NTS.firestore()
