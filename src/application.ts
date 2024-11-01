@@ -10,7 +10,6 @@ import {
 	globalShortcut,
 	Notification,
 	Menu,
-	GlobalShortcut,
 	dialog,
 	NativeImage,
 } from "electron"
