@@ -1,7 +1,7 @@
 import * as React from "react"
 
 import "./global.css"
-import { usePreferences } from "./lib/preferences"
+import { usePreferences, Preferences } from "./lib/preferences"
 
 import { electron } from "./electron"
 import { useLiveInfo } from "./lib/live"
@@ -23,6 +23,7 @@ import { Offline } from "./offline"
 import { Volume } from "./volume"
 import { Tracklist } from "./tracklist"
 import { Chat } from "./chat"
+import { Login } from "./login"
 
 import css from "./app.module.css"
 
@@ -42,8 +43,34 @@ const channelToIndex: Record<Channel, number> = {
 const indexToChannel: Channel[] = [1, 2, "show"]
 
 export function App() {
-	const live = useLiveInfo()
+	const [route, setRoute] = React.useState<"app" | "login">("app")
 	const [preferences, setPreferences] = usePreferences()
+
+	React.useEffect(function () {
+		electron.on("login", function () {
+			setRoute("login")
+		})
+	}, [])
+
+	const handleLoginClose = React.useCallback(function () {
+		setRoute("app")
+	}, [])
+
+	if (route === "login") {
+		return <Login onClose={handleLoginClose} preferences={preferences} onPreferencesChange={setPreferences} />
+	}
+
+	return <NTS preferences={preferences} onPreferencesChange={setPreferences} />
+}
+
+type NTSProps = {
+	preferences: Preferences | null
+	onPreferencesChange: (fn: (prefs: Preferences) => Preferences) => void
+}
+
+export function NTS(props: NTSProps) {
+	const { preferences, onPreferencesChange } = props
+	const live = useLiveInfo()
 	const [show, setShow] = React.useState<ShowInfo | null>(null)
 
 	const [index, setIndex] = React.useState<number>(0)
@@ -56,7 +83,7 @@ export function App() {
 	const isOffline = useOffline()
 
 	function setVolume(fn: (volume: number) => number) {
-		setPreferences(prefs => ({ ...prefs, volume: fn(prefs.volume) }))
+		onPreferencesChange(prefs => ({ ...prefs, volume: fn(prefs.volume) }))
 	}
 
 	function next() {

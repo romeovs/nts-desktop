@@ -3,6 +3,8 @@ import { useEffect, useState, useCallback } from "react"
 import { electron } from "../electron"
 import type { Preferences } from "../../preferences"
 
+export { Preferences }
+
 export const preferences = read()
 
 function read() {

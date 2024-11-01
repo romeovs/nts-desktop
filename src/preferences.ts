@@ -4,10 +4,14 @@ import { app } from "electron"
 
 export type Preferences = {
 	volume: number
+	email: string | null
+	password: string | null
 }
 
 const defaults = {
 	volume: 0.8,
+	email: null,
+	password: null,
 }
 
 const filename = path.join(app.getPath("userData"), "preferences.json")

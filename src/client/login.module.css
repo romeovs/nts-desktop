@@ -1,0 +1,25 @@
+.login {
+	padding: 0 3rem;
+	outline: 1px solid red;
+	height: 100vh;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+}
+
+.login input {
+	background: white;
+	border: 2px solid white;
+	padding: 0.5rem;
+	font: inherit;
+	margin-bottom: 1rem;
+	width: 100%;
+	box-sizing: border-box;
+}
+
+.login button {
+	font: inherit;
+	color: black;
+	border: none;
+	padding: 0.5rem 1rem;
+}

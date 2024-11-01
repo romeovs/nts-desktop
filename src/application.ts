@@ -64,6 +64,11 @@ export class NTSApplication {
 		await this.loadClient()
 	}
 
+	login() {
+		this.window.webContents.send("login")
+		this.open()
+	}
+
 	async loadClient() {
 		const prefs = await preferences.read()
 		if (this.production) {
@@ -219,8 +224,7 @@ export class NTSApplication {
 		})
 	}
 
-	async storePreferences(prefs: preferences.Preferences) {
-		console.log("NEW PREFS", prefs)
+	async storePreferences(prefs: Partial<preferences.Preferences>) {
 		const old = await preferences.read()
 		await preferences.write({
 			...old,
@@ -315,6 +319,15 @@ async function makeMenu(application: NTSApplication): Promise<Menu> {
 					click: () => history.clear(),
 				},
 			],
+		},
+		{ type: "separator" },
+		{
+			label: "Log in to get live tracks...",
+			click: () => application.login(),
+		},
+		{
+			label: "Log out",
+			click: () => application.storePreferences({ email: null, password: null }),
 		},
 		{ type: "separator" },
 		{
