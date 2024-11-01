@@ -81,7 +81,8 @@ export function Show(props: Props) {
 				{tracklist.length > 0 && (
 					<ul>
 						{tracklist.map((track, index) => (
-							<Track
+							<TrackR
+								key={track.offset || track.offset_estimate}
 								track={track}
 								index={index}
 								position={position}
@@ -102,7 +103,7 @@ type TrackProps = {
 	onSeek: (pos: number) => void
 }
 
-function Track(props: TrackProps) {
+function TrackR(props: TrackProps) {
 	const { track, index, position, onSeek } = props
 	const { title, artist } = track
 
