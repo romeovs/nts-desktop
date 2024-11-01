@@ -54,6 +54,7 @@ function liveTracks(stream: 1 | 2, fn: Handler): () => void {
 		qry,
 		function (snapshot) {
 			const res: LiveTrack[] = []
+			// biome-ignore lint/complexity/noForEach: we can't use for of here
 			snapshot.forEach(function (doc) {
 				const data = doc.data()
 				res.push({
@@ -71,7 +72,7 @@ function liveTracks(stream: 1 | 2, fn: Handler): () => void {
 	)
 }
 
-let promise: Promise<void> | null = null
+let promise: Promise<any> | null = null
 
 export async function login(email: string, password: string) {
 	if (!promise) {
@@ -122,7 +123,7 @@ export function useLiveTracks(options: Options): LiveTrack[] {
 				setTracks(res ?? [])
 			})
 		},
-		[stream, loggedIn, stream],
+		[stream, loggedIn, paused],
 	)
 	return tracks
 }
