@@ -76,7 +76,7 @@ export async function login(email: string, password: string) {
 
 import { useEffect, useState } from "react"
 
-function useLogin(username: string, password: string) {
+function useLogin(username: string | null, password: string | null) {
 	const [loggedIn, setLoggedIn] = useState(false)
 	useEffect(
 		function () {
@@ -91,13 +91,21 @@ function useLogin(username: string, password: string) {
 	return loggedIn
 }
 
-export function useLiveTracks(email: string, password: string, stream: 1 | 2): LiveTrack[] {
+type Options = {
+	email: string | null
+	password: string | null
+	stream: 1 | 2 | null
+	paused: boolean
+}
+
+export function useLiveTracks(options: Options): LiveTrack[] {
+	const { email, password, stream, paused } = options
 	const loggedIn = useLogin(email, password)
 	const [tracks, setTracks] = useState<LiveTrack[]>([])
 
 	useEffect(
 		function () {
-			if (!loggedIn) {
+			if (!loggedIn || paused || !stream) {
 				return
 			}
 			return liveTracks(stream, function (err, res) {
@@ -107,7 +115,7 @@ export function useLiveTracks(email: string, password: string, stream: 1 | 2): L
 				setTracks(res ?? [])
 			})
 		},
-		[stream, loggedIn],
+		[stream, loggedIn, stream],
 	)
 	return tracks
 }
