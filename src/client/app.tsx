@@ -1,7 +1,7 @@
 import * as React from "react"
 
 import "./global.css"
-import { preferences } from "./lib/preferences"
+import { usePreferences } from "./lib/preferences"
 
 import { electron } from "./electron"
 import { useLiveInfo } from "./lib/live"
@@ -43,18 +43,21 @@ const indexToChannel: Channel[] = [1, 2, "show"]
 
 export function App() {
 	const live = useLiveInfo()
+	const [preferences, setPreferences] = usePreferences()
 	const [show, setShow] = React.useState<ShowInfo | null>(null)
 
 	const [index, setIndex] = React.useState<number>(0)
 	const [playing, setPlaying] = React.useState<Channel | null>(null)
 	const [isOpen, setIsOpen] = React.useState(document.hasFocus())
 	const [isShowingHelp, setIsShowingHelp] = React.useState(false)
-	const [volume, setVolume] = React.useState(preferences.volume)
-
 	const [duration, setDuration] = React.useState(0)
 	const [position, setPosition] = React.useState(0)
 	const [looped, setLooped] = React.useState(0)
 	const isOffline = useOffline()
+
+	function setVolume(fn: (volume: number) => number) {
+		setPreferences(prefs => ({ ...prefs, volume: fn(prefs.volume) }))
+	}
 
 	function next() {
 		setIndex(idx => (idx + 1) % 3)
@@ -192,13 +195,6 @@ export function App() {
 		[isOffline],
 	)
 
-	React.useEffect(
-		function () {
-			electron.send("volume", volume)
-		},
-		[volume],
-	)
-
 	function handleShowTracklist() {
 		if (!show) {
 			return
@@ -260,14 +256,14 @@ export function App() {
 				playing={playing === 1}
 				onPlay={() => setPlaying(1)}
 				onStop={() => stop(1)}
-				volume={volume}
+				volume={preferences.volume}
 			/>
 			<Player
 				src={streams[2]}
 				playing={playing === 2}
 				onPlay={() => setPlaying(2)}
 				onStop={() => stop(2)}
-				volume={volume}
+				volume={preferences.volume}
 			/>
 			{show?.source?.source === "mixcloud" && (
 				<Mixcloud
@@ -279,7 +275,7 @@ export function App() {
 					onLoad={dur => setDuration(Math.round(dur))}
 					onProgress={pos => setPosition(Math.round(pos))}
 					position={position}
-					volume={volume}
+					volume={preferences.volume}
 				/>
 			)}
 			{show?.source?.source === "soundcloud" && (
@@ -292,12 +288,12 @@ export function App() {
 					onLoad={dur => setDuration(Math.round(dur))}
 					onProgress={pos => setPosition(Math.round(pos))}
 					position={position}
-					volume={volume}
+					volume={preferences.volume}
 				/>
 			)}
 			<Offline hide={!isOffline} />
 			<Help hide={!isShowingHelp} onHide={() => setIsShowingHelp(false)} />
-			<Volume volume={volume} />
+			<Volume volume={preferences.volume} />
 		</>
 	)
 }

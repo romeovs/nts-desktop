@@ -51,8 +51,8 @@ export class NTSApplication {
 		ipcMain.on("my-nts", () => this.openMyNTS())
 		ipcMain.on("explore", () => this.openExplore())
 		ipcMain.on("playing", this.handlePlaying.bind(this))
-		ipcMain.on("volume", (evt: Event, volume: number) => this.storeVolume(volume))
 		ipcMain.on("chat", (evt: Event, channel: number) => this.openChat(channel))
+		ipcMain.on("preferences", (evt: Event, prefs: preferences.Preferences) => this.storePreferences(prefs))
 
 		app.on("open-file", (evt: Event, filename: string) => this.openFile(filename))
 		app.on("will-quit", () => globalShortcut.unregisterAll())
@@ -216,6 +216,15 @@ export class NTSApplication {
 		await preferences.write({
 			...prefs,
 			volume,
+		})
+	}
+
+	async storePreferences(prefs: preferences.Preferences) {
+		console.log("NEW PREFS", prefs)
+		const old = await preferences.read()
+		await preferences.write({
+			...old,
+			...prefs,
 		})
 	}
 }
