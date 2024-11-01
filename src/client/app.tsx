@@ -27,6 +27,8 @@ import { Login } from "./login"
 
 import css from "./app.module.css"
 
+import { useLiveTracks } from "../firebase"
+
 const streams = {
 	1: "https://stream-relay-geo.ntslive.net/stream?client=NTSWebApp",
 	2: "https://stream-relay-geo.ntslive.net/stream2?client=NTSWebApp",
@@ -85,6 +87,13 @@ export function NTS(props: NTSProps) {
 	function setVolume(fn: (volume: number) => number) {
 		onPreferencesChange(prefs => ({ ...prefs, volume: fn(prefs.volume) }))
 	}
+
+	const tracks = useLiveTracks({
+		email: preferences.email,
+		password: preferences.password,
+		stream: playing === 1 || playing === 2 ? playing : 1,
+		paused: !preferences,
+	})
 
 	function next() {
 		setIndex(idx => (idx + 1) % 3)
@@ -223,10 +232,6 @@ export function NTS(props: NTSProps) {
 	)
 
 	function handleShowTracklist() {
-		if (!show) {
-			return
-		}
-
 		const all = document.querySelectorAll("[data-show]")
 		for (const el of all) {
 			el.scrollTo({
@@ -247,6 +252,7 @@ export function NTS(props: NTSProps) {
 						playing={playing === 1}
 						onPlay={() => setPlaying(1)}
 						onStop={stopAll}
+						tracks={tracks}
 					/>
 				</Slide>
 				<Slide>
@@ -256,6 +262,7 @@ export function NTS(props: NTSProps) {
 						playing={playing === 2}
 						onPlay={() => setPlaying(2)}
 						onStop={stopAll}
+						tracks={tracks}
 					/>
 				</Slide>
 				<Slide>
@@ -276,7 +283,12 @@ export function NTS(props: NTSProps) {
 			<button type="button" onClick={next} className={css.next}>
 				<Arrow direction="right" />
 			</button>
-			<Tracklist channel={indexToChannel[index]} hasShow={Boolean(show)} onShowTracklist={handleShowTracklist} />
+			<Tracklist
+				channel={indexToChannel[index]}
+				hasShow={Boolean(show)}
+				onShowTracklist={handleShowTracklist}
+				hasTracks={tracks.length > 0}
+			/>
 			<Chat channel={indexToChannel[index]} />
 			<Player
 				src={streams[1]}

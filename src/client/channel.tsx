@@ -11,6 +11,7 @@ type Props = {
 	onPlay: () => void
 	onStop: () => void
 	playing: boolean
+	tracks: LiveTrack[]
 }
 
 export function Channel(props: Props) {
@@ -32,28 +33,56 @@ export function Channel(props: Props) {
 		}
 	}
 
+	const tracks = props.tracks.filter(track => track.stream === channel)
+	const hasTracks = tracks.some(track => track.title)
+
 	return (
-		<div className={classnames(css.channel, playing && css.playing)}>
-			<img src={image} className={css.image} draggable={false} />
-			<button type="button" className={css.header} onClick={handleClick}>
-				<div className={css.ch}>
-					{channel}
-					<PlayButton playing={playing} className={css.play} />
-				</div>
-				<div>
-					<div className={css.live}>
-						Live Now <span className={css.dot} />
+		<div className={css.wrapper} data-show="true">
+			<div className={classnames(css.channel, playing && css.playing)}>
+				<img src={image} className={css.image} draggable={false} />
+				<button type="button" className={css.header} onClick={handleClick}>
+					<div className={css.ch}>
+						{channel}
+						<PlayButton playing={playing} className={css.play} />
 					</div>
 					<div>
-						{format(starts)} &ndash; {format(ends)}
+						<div className={css.live}>
+							Live Now <span className={css.dot} />
+						</div>
+						<div>
+							{format(starts)} &ndash; {format(ends)}
+						</div>
 					</div>
+				</button>
+				<div className={css.footer}>
+					<div className={css.location}>{location}</div>
+					<br />
+					<span className={css.name}>{name}</span>
 				</div>
-			</button>
-			<div className={css.footer}>
-				<div className={css.location}>{location}</div>
-				<br />
-				<span className={css.name}>{name}</span>
 			</div>
+			{hasTracks && (
+				<ul className={css.tracklist}>
+					{tracks.map(
+						(track, index) =>
+							track.title && (
+								<li
+									className={css.track}
+									onClick={() => navigator.clipboard.writeText(`${track.artists.join(", ")} - ${track.title}`)}
+									key={track.startTime}
+								>
+									<div className={css.time}>
+										{track.startTime.toLocaleTimeString("en-GB").substring(0, 5)}
+										{index === 0 && <span className={css.indicator}>●</span>}
+									</div>
+									<div className={css.info}>
+										<div className={css.artists}>{track.artists.join(", ")}</div>
+										<div className={css.title}>{track.title}</div>
+									</div>
+								</li>
+							),
+					)}
+				</ul>
+			)}
 		</div>
 	)
 }

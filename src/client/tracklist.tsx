@@ -1,4 +1,3 @@
-import * as React from "react"
 import classnames from "classnames"
 import { electron } from "./electron"
 import css from "./tracklist.module.css"
@@ -6,14 +5,15 @@ import css from "./tracklist.module.css"
 type Props = {
 	channel: 1 | 2 | "show"
 	hasShow: boolean
+	hasTracks: boolean
 	onShowTracklist: () => void
 }
 
 export function Tracklist(props: Props) {
-	const { channel, hasShow, onShowTracklist } = props
+	const { channel, hasShow, hasTracks, onShowTracklist } = props
 
 	function handleClick() {
-		if (channel === "show") {
+		if (channel === "show" || (channel && hasTracks)) {
 			onShowTracklist()
 			return
 		}
