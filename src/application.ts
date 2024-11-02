@@ -1,10 +1,10 @@
-import EventEmitter from "events"
-import path from "path"
+import EventEmitter from "node:events"
+import path from "node:path"
 import bplist from "bplist-parser"
 import {
 	BrowserWindow,
 	Menu,
-	NativeImage,
+	type NativeImage,
 	Notification,
 	Tray,
 	app,
@@ -41,26 +41,26 @@ export class NTSApplication {
 	async init() {
 		this.tray.on("click", () => this.toggle())
 		this.tray.on("right-click", () => this.openMenu())
-		this.tray.on("drop-text", (evt: Event, url: string) => this.openURL(url))
-		this.tray.on("drop-files", (evt: Event, files: string[]) =>
+		this.tray.on("drop-text", (_evt: Event, url: string) => this.openURL(url))
+		this.tray.on("drop-files", (_evt: Event, files: string[]) =>
 			this.openFile(files[0]),
 		)
 
 		this.evts.on("error", (message: string) => this.showNotification(message))
 
 		ipcMain.on("close", () => this.close())
-		ipcMain.on("tracklist", (evt: Event, channel: number | string) =>
+		ipcMain.on("tracklist", (_evt: Event, channel: number | string) =>
 			this.openTracklist(channel),
 		)
 		ipcMain.on("my-nts", () => this.openMyNTS())
 		ipcMain.on("explore", () => this.openExplore())
 		ipcMain.on("playing", this.handlePlaying.bind(this))
-		ipcMain.on("chat", (evt: Event, channel: number) => this.openChat(channel))
-		ipcMain.on("preferences", (evt: Event, prefs: preferences.Preferences) =>
+		ipcMain.on("chat", (_evt: Event, channel: number) => this.openChat(channel))
+		ipcMain.on("preferences", (_evt: Event, prefs: preferences.Preferences) =>
 			this.storePreferences(prefs),
 		)
 
-		app.on("open-file", (evt: Event, filename: string) => this.openFile(filename))
+		app.on("open-file", (_evt: Event, filename: string) => this.openFile(filename))
 		app.on("will-quit", () => globalShortcut.unregisterAll())
 		app.on("activate", () => this.open())
 
@@ -100,7 +100,7 @@ export class NTSApplication {
 		}
 	}
 
-	handlePlaying(evt: Event, channel: 1 | 2 | string | null) {
+	handlePlaying(_evt: Event, channel: 1 | 2 | string | null) {
 		if (channel === 1 || channel === 2) {
 			this.setIcon(channel)
 			return
@@ -124,7 +124,7 @@ export class NTSApplication {
 		const trayPos = this.tray.getBounds()
 		const windowPos = this.window.getBounds()
 
-		const yScale = process.platform == "darwin" ? 1 : 10
+		const yScale = process.platform === "darwin" ? 1 : 10
 		const x = Math.round(trayPos.x + trayPos.width / 2 - windowPos.width / 2)
 		const y = Math.round(trayPos.y + trayPos.height * yScale)
 
