@@ -44,15 +44,15 @@ formatting:
 	@$(bin)/biome check . --linter-enabled=false --organize-imports-enabled=true
 
 index: # Build the "server"-side js
-index: src/main.ts
+index: src/app/main.ts
 	@mkdir -p dist
-	@env NODE_ENV=development $(bin)/esbuild --bundle --platform=node --external:electron --loader:.png=file src/main.ts --outfile=dist/index.js
+	@env NODE_ENV=development $(bin)/esbuild --bundle --platform=node --external:electron --loader:.png=file src/app/main.ts --outfile=dist/index.js
 
 preload: # Build the preload script
 preload: dist/preload.js
-dist/preload.js: src/preload.js
+dist/preload.js: src/app/preload.js
 	@mkdir -p dist
-	@cp src/preload.js dist/preload.js
+	@cp src/app/preload.js dist/preload.js
 
 client: # Build the client-side code
 client:
