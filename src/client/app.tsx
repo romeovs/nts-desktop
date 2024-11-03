@@ -1,15 +1,16 @@
 import * as React from "react"
 
 import "./global.css"
-import { Preferences, usePreferences } from "./lib/preferences"
+import { type Preferences, usePreferences } from "./lib/preferences"
 
-import type { ShowInfo } from "../show"
 import { electron } from "./electron"
+import { useLiveTracks } from "./lib/firebase"
 import { useLiveInfo } from "./lib/live"
 import { useEvent } from "./lib/use-event"
 import { useKeydown } from "./lib/use-keydown"
 import { useOffline } from "./lib/use-offline"
 
+import type { ShowInfo } from "../app/show"
 import { Arrow } from "./arrow"
 import { Channel } from "./channel"
 import { Chat } from "./chat"
@@ -26,8 +27,6 @@ import { Tracklist } from "./tracklist"
 import { Volume } from "./volume"
 
 import css from "./app.module.css"
-
-import { useLiveTracks } from "../firebase"
 
 const streams = {
 	1: "https://stream-relay-geo.ntslive.net/stream?client=NTSWebApp",

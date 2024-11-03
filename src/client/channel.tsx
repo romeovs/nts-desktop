@@ -1,9 +1,11 @@
 import classnames from "classnames"
+
+import type { LiveTrack } from "./lib/firebase"
 import type { ChannelInfo } from "./lib/live"
 
-import type { LiveTrack } from "../firebase"
-import css from "./channel.module.css"
 import { PlayButton } from "./play"
+
+import css from "./channel.module.css"
 
 type Props = {
 	info?: ChannelInfo
