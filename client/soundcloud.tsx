@@ -1,4 +1,4 @@
-import * as React from "react"
+import { useEffect, useRef, useState } from "react"
 import type { ShowInfo } from "~/app/show"
 
 import css from "./mixcloud.module.css"
@@ -35,11 +35,11 @@ export function Soundcloud(props: Props) {
 		volume = 1,
 	} = props
 
-	const ref = React.useRef<HTMLIFrameElement | null>(null)
-	const seekingTo = React.useRef<number | null>(null)
-	const [widget, setWidget] = React.useState<SCWidget | null>(null)
+	const ref = useRef<HTMLIFrameElement | null>(null)
+	const seekingTo = useRef<number | null>(null)
+	const [widget, setWidget] = useState<SCWidget | null>(null)
 
-	React.useEffect(
+	useEffect(
 		function () {
 			if (!ref.current || !show) {
 				return
@@ -78,7 +78,7 @@ export function Soundcloud(props: Props) {
 		[show],
 	)
 
-	React.useEffect(
+	useEffect(
 		function () {
 			if (!widget) {
 				return
@@ -96,7 +96,7 @@ export function Soundcloud(props: Props) {
 		[position, widget],
 	)
 
-	React.useEffect(
+	useEffect(
 		function () {
 			if (playing && show) {
 				widget?.play()
@@ -108,7 +108,7 @@ export function Soundcloud(props: Props) {
 		[playing, widget],
 	)
 
-	React.useEffect(
+	useEffect(
 		function () {
 			widget?.setVolume(volume * 100)
 		},

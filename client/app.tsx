@@ -1,4 +1,4 @@
-import * as React from "react"
+import { useCallback, useEffect, useState } from "react"
 
 import "./global.css"
 import { type Preferences, usePreferences } from "./lib/preferences"
@@ -44,16 +44,16 @@ const channelToIndex: Record<Channel, number> = {
 const indexToChannel: Channel[] = [1, 2, "show"]
 
 export function App() {
-	const [route, setRoute] = React.useState<"app" | "login">("app")
+	const [route, setRoute] = useState<"app" | "login">("app")
 	const [preferences, setPreferences] = usePreferences()
 
-	React.useEffect(function () {
+	useEffect(function () {
 		electron.on("login", function () {
 			setRoute("login")
 		})
 	}, [])
 
-	const handleLoginClose = React.useCallback(function () {
+	const handleLoginClose = useCallback(function () {
 		setRoute("app")
 	}, [])
 
@@ -78,15 +78,15 @@ type NTSProps = {
 export function NTS(props: NTSProps) {
 	const { preferences, onPreferencesChange } = props
 	const live = useLiveInfo()
-	const [show, setShow] = React.useState<ShowInfo | null>(null)
+	const [show, setShow] = useState<ShowInfo | null>(null)
 
-	const [index, setIndex] = React.useState<number>(0)
-	const [playing, setPlaying] = React.useState<Channel | null>(null)
-	const [isOpen, setIsOpen] = React.useState(document.hasFocus())
-	const [isShowingHelp, setIsShowingHelp] = React.useState(false)
-	const [duration, setDuration] = React.useState(0)
-	const [position, setPosition] = React.useState(0)
-	const [looped, setLooped] = React.useState(0)
+	const [index, setIndex] = useState<number>(0)
+	const [playing, setPlaying] = useState<Channel | null>(null)
+	const [isOpen, setIsOpen] = useState(document.hasFocus())
+	const [isShowingHelp, setIsShowingHelp] = useState(false)
+	const [duration, setDuration] = useState(0)
+	const [position, setPosition] = useState(0)
+	const [looped, setLooped] = useState(0)
 	const isOffline = useOffline()
 
 	function setVolume(fn: (volume: number) => number) {
@@ -135,11 +135,11 @@ export function NTS(props: NTSProps) {
 		electron.send("close")
 	}
 
-	React.useEffect(function () {
+	useEffect(function () {
 		live.load()
 	}, [])
 
-	React.useEffect(
+	useEffect(
 		function () {
 			electron.send("playing", playing)
 		},
@@ -195,7 +195,7 @@ export function NTS(props: NTSProps) {
 		[playing],
 	)
 
-	React.useEffect(
+	useEffect(
 		function () {
 			setPosition(0)
 			setLooped(0)
@@ -203,15 +203,12 @@ export function NTS(props: NTSProps) {
 		[show?.source?.url],
 	)
 
-	React.useEffect(
+	useEffect(
 		function () {
 			if (!live.data) {
 				return
 			}
 			const ends1 = live.data.channel1.now.ends
-			const ends2 = live.data.channel2.now.ends
-
-			const first = ends1 < ends2 ? ends1 : ends2
 			const left = ends1.getTime() - Date.now()
 
 			if (left < 0) {
@@ -224,7 +221,7 @@ export function NTS(props: NTSProps) {
 		[live.data?.channel1.now.ends, live.data?.channel2.now.ends],
 	)
 
-	React.useEffect(
+	useEffect(
 		function () {
 			if (isOffline) {
 				stopAll()

@@ -1,5 +1,5 @@
 import classnames from "classnames"
-import * as React from "react"
+import { useEffect, useState } from "react"
 
 import css from "./volume.module.css"
 
@@ -9,10 +9,10 @@ type VolumeProps = {
 
 export function Volume(props: VolumeProps) {
 	const { volume = 1 } = props
-	const [show, setShow] = React.useState(false)
-	const [init, setInit] = React.useState(false)
+	const [show, setShow] = useState(false)
+	const [init, setInit] = useState(false)
 
-	React.useEffect(
+	useEffect(
 		function () {
 			setInit(true)
 

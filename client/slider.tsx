@@ -1,4 +1,4 @@
-import * as React from "react"
+import { Children, useEffect, useState } from "react"
 import css from "./slider.module.css"
 
 type SliderProps = {
@@ -43,14 +43,14 @@ const time = 400
 
 export function Slider(props: SliderProps) {
 	const { index, children, animate } = props
-	const len = React.Children.count(children)
-	const [state, setState] = React.useState({
+	const len = Children.count(children)
+	const [state, setState] = useState({
 		animate,
 		index,
 		lastIndex: index,
 	})
 
-	React.useEffect(
+	useEffect(
 		function () {
 			setState((state) => ({
 				animate: true,

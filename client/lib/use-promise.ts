@@ -1,4 +1,4 @@
-import * as React from "react"
+import { useState } from "react"
 
 interface State<T> {
 	data: T | null
@@ -12,9 +12,9 @@ export interface PromiseState<A, T> extends State<T> {
 
 export function usePromise<A, T>(
 	fn: (...args: A[]) => Promise<T>,
-	initialLoading: boolean = true,
+	initialLoading = true,
 ): PromiseState<A, T> {
-	const [state, setState] = React.useState<State<T>>({
+	const [state, setState] = useState<State<T>>({
 		data: null,
 		error: null,
 		loading: initialLoading,

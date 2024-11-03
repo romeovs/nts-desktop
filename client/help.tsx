@@ -1,6 +1,4 @@
 import classnames from "classnames"
-import * as React from "react"
-import { Logo } from "./logo"
 
 import css from "./help.module.css"
 

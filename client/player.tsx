@@ -1,4 +1,4 @@
-import * as React from "react"
+import { useEffect, useRef } from "react"
 
 type Props = {
 	src: string
@@ -11,16 +11,19 @@ type Props = {
 export function Player(props: Props) {
 	const { src, playing, onStop, onPlay, volume = 1 } = props
 
-	const ref = React.useRef<HTMLAudioElement | null>(null)
+	const ref = useRef<HTMLAudioElement | null>(null)
 
-	React.useEffect(function () {
-		ref.current?.addEventListener("play", onPlay)
-		ref.current?.addEventListener("pause", onStop)
-		ref.current?.addEventListener("stop", onStop)
-		ref.current?.load()
-	}, [])
+	useEffect(
+		function () {
+			ref.current?.addEventListener("play", onPlay)
+			ref.current?.addEventListener("pause", onStop)
+			ref.current?.addEventListener("stop", onStop)
+			ref.current?.load()
+		},
+		[onPlay, onStop],
+	)
 
-	React.useEffect(
+	useEffect(
 		function () {
 			if (!playing) {
 				ref.current?.pause()
@@ -30,10 +33,10 @@ export function Player(props: Props) {
 			ref.current?.load()
 			ref.current?.play()
 		},
-		[playing, src],
+		[playing],
 	)
 
-	React.useEffect(
+	useEffect(
 		function () {
 			if (!ref.current) {
 				return

@@ -1,7 +1,7 @@
-import * as React from "react"
+import { useEffect } from "react"
 
 export function useKeydown(key: string, handler: () => void, deps: any[] = []) {
-	React.useEffect(function () {
+	useEffect(function () {
 		function handle(evt: KeyboardEvent) {
 			if (evt.key !== key) {
 				return

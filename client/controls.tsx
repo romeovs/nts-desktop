@@ -1,4 +1,4 @@
-import * as React from "react"
+import { type MouseEvent, useRef } from "react"
 import css from "./controls.module.css"
 
 import type { ShowInfo } from "~/app/show"
@@ -18,7 +18,7 @@ type Props = {
 export function Controls(props: Props) {
 	const { duration, position, onPlay, onStop, playing, onSeek } = props
 	const width = (100 * position) / duration
-	const ref = React.useRef<HTMLDivElement | null>(null)
+	const ref = useRef<HTMLDivElement | null>(null)
 
 	function handlePlayClick() {
 		if (playing) {
@@ -28,7 +28,7 @@ export function Controls(props: Props) {
 		}
 	}
 
-	function handleClick(evt: React.MouseEvent<HTMLDivElement>) {
+	function handleClick(evt: MouseEvent<HTMLDivElement>) {
 		if (!ref.current) {
 			return
 		}

@@ -1,4 +1,4 @@
-import * as React from "react"
+import { useEffect, useRef, useState } from "react"
 import type { ShowInfo } from "~/app/show"
 
 import css from "./mixcloud.module.css"
@@ -26,10 +26,10 @@ export function Mixcloud(props: Props) {
 		volume = 1,
 	} = props
 
-	const ref = React.useRef<HTMLIFrameElement | null>(null)
-	const [widget, setWidget] = React.useState<Mixcloud.PlayerWidget | null>(null)
+	const ref = useRef<HTMLIFrameElement | null>(null)
+	const [widget, setWidget] = useState<Mixcloud.PlayerWidget | null>(null)
 
-	React.useEffect(
+	useEffect(
 		function () {
 			if (!ref.current || !show) {
 				return
@@ -51,7 +51,7 @@ export function Mixcloud(props: Props) {
 		[show],
 	)
 
-	React.useEffect(
+	useEffect(
 		function () {
 			if (!widget) {
 				return
@@ -67,7 +67,7 @@ export function Mixcloud(props: Props) {
 		[position, widget],
 	)
 
-	React.useEffect(
+	useEffect(
 		function () {
 			if (playing && show) {
 				widget?.play()
@@ -79,7 +79,7 @@ export function Mixcloud(props: Props) {
 		[playing, widget],
 	)
 
-	React.useEffect(
+	useEffect(
 		function () {
 			widget?.setVolume(volume)
 		},

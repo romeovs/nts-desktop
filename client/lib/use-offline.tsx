@@ -1,9 +1,9 @@
-import * as React from "react"
+import { useEffect, useState } from "react"
 
 export function useOffline(): boolean {
-	const [offline, setOffline] = React.useState(false)
+	const [offline, setOffline] = useState(false)
 
-	React.useEffect(function () {
+	useEffect(function () {
 		function on() {
 			setOffline(false)
 		}
