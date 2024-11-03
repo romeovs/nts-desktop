@@ -6,7 +6,7 @@ directories:
   output: bundle
 
 mac:
-  icon: src/icon.icns
+  icon: app/icon.icns
   category: public.app-category.music
   target:
     - target: dir
