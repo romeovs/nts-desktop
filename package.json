@@ -10,6 +10,7 @@
 		"@biomejs/biome": "^1.9.4",
 		"@types/classnames": "^2.3.4",
 		"@types/isomorphic-fetch": "^0.0.35",
+		"@types/node": "^22.8.7",
 		"@types/react": "^17.0.83",
 		"@types/react-dom": "^17.0.25",
 		"@vitejs/plugin-react": "^3.1.0",

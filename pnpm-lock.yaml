@@ -40,6 +40,9 @@ devDependencies:
   '@types/isomorphic-fetch':
     specifier: ^0.0.35
     version: 0.0.35
+  '@types/node':
+    specifier: ^22.8.7
+    version: 22.8.7
   '@types/react':
     specifier: ^17.0.83
     version: 17.0.83
@@ -72,7 +75,7 @@ devDependencies:
     version: 3.4.0(typescript@4.9.5)
   vite:
     specifier: ^4.5.5
-    version: 4.5.5
+    version: 4.5.5(@types/node@22.8.7)
 
 packages:
 
@@ -1332,7 +1335,7 @@ packages:
     engines: {node: ^8.13.0 || >=10.10.0}
     dependencies:
       '@grpc/proto-loader': 0.7.13
-      '@types/node': 22.8.4
+      '@types/node': 22.8.7
     dev: false
 
   /@grpc/proto-loader@0.7.13:
@@ -1610,7 +1613,7 @@ packages:
     dependencies:
       '@types/http-cache-semantics': 4.0.4
       '@types/keyv': 3.1.4
-      '@types/node': 22.8.4
+      '@types/node': 22.8.7
       '@types/responselike': 1.0.3
     dev: true
 
@@ -1630,7 +1633,7 @@ packages:
   /@types/fs-extra@9.0.13:
     resolution: {integrity: sha512-nEnwB++1u5lVDM2UI4c1+5R+FYaKfaAzS4OococimjVm3nQw3TuzH5UNsocrcTBbhnerblyHj4A49qXbIiZdpA==}
     dependencies:
-      '@types/node': 22.8.4
+      '@types/node': 22.8.7
     dev: true
 
   /@types/http-cache-semantics@4.0.4:
@@ -1648,7 +1651,7 @@ packages:
   /@types/keyv@3.1.4:
     resolution: {integrity: sha512-BQ5aZNSCpj7D6K2ksrRCTmKRLEpnPvWDiLPfoGyhZ++8YtiK9d/3DBKPJgry359X/P1PfruyYwvnvwFjuEiEIg==}
     dependencies:
-      '@types/node': 22.8.4
+      '@types/node': 22.8.7
     dev: true
 
   /@types/ms@0.7.34:
@@ -1661,8 +1664,8 @@ packages:
       undici-types: 6.19.8
     dev: true
 
-  /@types/node@22.8.4:
-    resolution: {integrity: sha512-SpNNxkftTJOPk0oN+y2bIqurEXHTA2AOZ3EJDDKeJ5VzkvvORSvmQXGQarcOzWV1ac7DCaPBEdMDxBsM+d8jWw==}
+  /@types/node@22.8.7:
+    resolution: {integrity: sha512-LidcG+2UeYIWcMuMUpBKOnryBWG/rnmOHQR5apjn8myTQcx3rinFRn7DcIFhMnS0PPFSC6OafdIKEad0lj6U0Q==}
     dependencies:
       undici-types: 6.19.8
 
@@ -1670,7 +1673,7 @@ packages:
     resolution: {integrity: sha512-E6OCaRmAe4WDmWNsL/9RMqdkkzDCY1etutkflWk4c+AcjDU07Pcz1fQwTX0TQz+Pxqn9i4L1TU3UFpjnrcDgxA==}
     requiresBuild: true
     dependencies:
-      '@types/node': 22.8.4
+      '@types/node': 22.8.7
       xmlbuilder: 15.1.1
     dev: true
     optional: true
@@ -1696,7 +1699,7 @@ packages:
   /@types/responselike@1.0.3:
     resolution: {integrity: sha512-H/+L+UkTV33uf49PH5pCAUBVPNj2nDBXTN+qS1dOwyyg24l3CcicicCA7ca+HMvJBZcFgl5r8e+RR6elsb4Lyw==}
     dependencies:
-      '@types/node': 22.8.4
+      '@types/node': 22.8.7
     dev: true
 
   /@types/scheduler@0.16.8:
@@ -1713,7 +1716,7 @@ packages:
     resolution: {integrity: sha512-oJoftv0LSuaDZE3Le4DbKX+KS9G36NzOeSap90UIK0yMA/NhKJhqlSGtNDORNRaIbQfzjXDrQa0ytJ6mNRGz/Q==}
     requiresBuild: true
     dependencies:
-      '@types/node': 22.8.4
+      '@types/node': 22.8.7
     dev: true
     optional: true
 
@@ -1728,7 +1731,7 @@ packages:
       '@babel/plugin-transform-react-jsx-source': 7.25.9(@babel/core@7.26.0)
       magic-string: 0.27.0
       react-refresh: 0.14.2
-      vite: 4.5.5
+      vite: 4.5.5(@types/node@22.8.7)
     transitivePeerDependencies:
       - supports-color
     dev: true
@@ -3724,7 +3727,7 @@ packages:
       '@protobufjs/path': 1.1.2
       '@protobufjs/pool': 1.1.0
       '@protobufjs/utf8': 1.1.0
-      '@types/node': 22.8.4
+      '@types/node': 22.8.7
       long: 5.2.3
     dev: false
 
@@ -4322,7 +4325,7 @@ packages:
     dev: true
     optional: true
 
-  /vite@4.5.5:
+  /vite@4.5.5(@types/node@22.8.7):
     resolution: {integrity: sha512-ifW3Lb2sMdX+WU91s3R0FyQlAyLxOzCSCP37ujw0+r5POeHPwe6udWVIElKQq8gk3t7b8rkmvqC6IHBpCff4GQ==}
     engines: {node: ^14.18.0 || >=16.0.0}
     hasBin: true
@@ -4350,6 +4353,7 @@ packages:
       terser:
         optional: true
     dependencies:
+      '@types/node': 22.8.7
       esbuild: 0.18.20
       postcss: 8.4.47
       rollup: 3.29.5
