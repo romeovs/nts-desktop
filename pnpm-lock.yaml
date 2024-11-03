@@ -68,11 +68,11 @@ devDependencies:
     specifier: ^11.0.0
     version: 11.0.0
   typescript:
-    specifier: ^4.9.5
-    version: 4.9.5
+    specifier: ^5.6.3
+    version: 5.6.3
   typescript-plugin-css-modules:
     specifier: ^3.4.0
-    version: 3.4.0(typescript@4.9.5)
+    version: 3.4.0(typescript@5.6.3)
   vite:
     specifier: ^4.5.5
     version: 4.5.5(@types/node@22.8.7)
@@ -4234,7 +4234,7 @@ packages:
     dev: true
     optional: true
 
-  /typescript-plugin-css-modules@3.4.0(typescript@4.9.5):
+  /typescript-plugin-css-modules@3.4.0(typescript@5.6.3):
     resolution: {integrity: sha512-2MdjfSg4MGex1csCWRUwKD+MpgnvcvLLr9bSAMemU/QYGqBsXdez0cc06H/fFhLtRoKJjXg6PSTur3Gy1Umhpw==}
     peerDependencies:
       typescript: '>=3.0.0'
@@ -4252,16 +4252,10 @@ packages:
       sass: 1.80.5
       stylus: 0.54.8
       tsconfig-paths: 3.15.0
-      typescript: 4.9.5
+      typescript: 5.6.3
     transitivePeerDependencies:
       - supports-color
       - ts-node
-    dev: true
-
-  /typescript@4.9.5:
-    resolution: {integrity: sha512-1FXk9E2Hm+QzZQ7z+McJiHL4NW1F2EzMu9Nq9i3zAaGqibafqYwCVU6WyWAuyQRRzOlxou8xZSyXLEN8oKj24g==}
-    engines: {node: '>=4.2.0'}
-    hasBin: true
     dev: true
 
   /typescript@5.6.3:
