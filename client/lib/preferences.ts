@@ -1,9 +1,9 @@
 import { useCallback, useEffect, useState } from "react"
 
-import type { Preferences } from "../../preferences"
+import type { Preferences } from "~/app/preferences"
 import { electron } from "../electron"
 
-export { Preferences }
+export type { Preferences }
 
 export const preferences = read()
 

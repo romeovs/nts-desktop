@@ -3,7 +3,7 @@ import { useCallback } from "react"
 
 import css from "./show.module.css"
 
-import type { ShowInfo, Track } from "../show"
+import type { ShowInfo, Track } from "~/app/show"
 import { Controls, formatDuration } from "./controls"
 import { electron } from "./electron"
 

@@ -1,5 +1,5 @@
 import * as React from "react"
-import type { ShowInfo } from "../show"
+import type { ShowInfo } from "~/app/show"
 
 import css from "./mixcloud.module.css"
 

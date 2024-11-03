@@ -1,7 +1,7 @@
 import * as React from "react"
 import css from "./controls.module.css"
 
-import type { ShowInfo } from "../show"
+import type { ShowInfo } from "~/app/show"
 
 import { PlayButton } from "./play"
 
