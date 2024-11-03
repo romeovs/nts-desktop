@@ -1,7 +1,6 @@
 {
 	"include": ["client", "app", "types"],
 	"compilerOptions": {
-		"plugins": [{ "name": "typescript-plugin-css-modules" }],
 		"module": "esnext",
 		"target": "esnext",
 		"moduleResolution": "node",
@@ -9,12 +8,15 @@
 		"jsxFactory": "h",
 		"jsxFragmentFactory": "Fragment",
 		"baseUrl": "./",
-		"paths": {},
 		"noEmit": true,
 		"strict": true,
 		"skipLibCheck": true,
 		"forceConsistentCasingInFileNames": true,
 		"resolveJsonModule": true,
-		"allowSyntheticDefaultImports": true
+		"allowSyntheticDefaultImports": true,
+		"paths": {
+			"~/*": ["./*"]
+		},
+		"plugins": [{ "name": "typescript-plugin-css-modules" }]
 	}
 }
