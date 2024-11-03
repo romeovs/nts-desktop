@@ -44,15 +44,15 @@ formatting:
 	@$(bin)/biome check . --linter-enabled=false --organize-imports-enabled=true
 
 index: # Build the "server"-side js
-index: src/app/main.ts
+index: app/main.ts
 	@mkdir -p dist
-	@env NODE_ENV=development $(bin)/esbuild --bundle --platform=node --external:electron --loader:.png=file src/app/main.ts --outfile=dist/index.js
+	@env NODE_ENV=development $(bin)/esbuild --bundle --platform=node --external:electron --loader:.png=file app/main.ts --outfile=dist/index.js
 
 preload: # Build the preload script
 preload: dist/preload.js
-dist/preload.js: src/app/preload.js
+dist/preload.js: app/preload.js
 	@mkdir -p dist
-	@cp src/app/preload.js dist/preload.js
+	@cp app/preload.js dist/preload.js
 
 client: # Build the client-side code
 client:
@@ -72,7 +72,7 @@ dist/pnpm-lock.json: package.json
 	@cd dist && pnpm install --production
 
 logos: ## Convert all svg logos into their png counterparts
-logos: $(patsubst %.svg,%.png,$(wildcard src/logos/*.svg))
+logos: $(patsubst %.svg,%.png,$(wildcard logos/*.svg))
 
-src/logos/%.png: src/logos/%.svg
+logos/%.png: logos/%.svg
 	@inkscape -h 300 $< -o $@

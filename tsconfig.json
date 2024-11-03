@@ -1,5 +1,5 @@
 {
-	"include": ["src", "types"],
+	"include": ["client", "app", "types"],
 	"compilerOptions": {
 		"plugins": [{ "name": "typescript-plugin-css-modules" }],
 		"module": "esnext",
