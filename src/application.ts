@@ -242,8 +242,8 @@ export class NTSApplication {
 function makeWindow(): BrowserWindow {
 	// Initialise window
 	const window = new BrowserWindow({
-		width: 320,
-		height: 240,
+		width: 360,
+		height: 270,
 		show: false,
 		frame: false,
 		resizable: false,
