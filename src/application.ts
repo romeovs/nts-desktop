@@ -222,14 +222,6 @@ export class NTSApplication {
 		shell.openExternal("https://www.nts.live/schedule")
 	}
 
-	async storeVolume(volume: number) {
-		const prefs = await preferences.read()
-		await preferences.write({
-			...prefs,
-			volume,
-		})
-	}
-
 	async storePreferences(prefs: Partial<preferences.Preferences>) {
 		const old = await preferences.read()
 		await preferences.write({
