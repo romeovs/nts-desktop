@@ -51,13 +51,8 @@ export function App(props: AppProps) {
 	const [route, setRoute] = useState<"app" | "login">("app")
 	const [preferences, setPreferences] = usePreferences(props.preferences)
 
-	useEvent(
-		"login",
-		function () {
-			setRoute("login")
-		},
-		[setRoute],
-	)
+	useEvent("login", () => setRoute("login"), [setRoute])
+	useEvent("close", () => setRoute("app"), [setRoute])
 
 	const handleLoginClose = useCallback(function () {
 		setRoute("app")
