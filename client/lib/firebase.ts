@@ -11,6 +11,8 @@ import {
 } from "firebase/firestore"
 import { useEffect, useState } from "react"
 
+import { type Stream, pathnameToStream, streamToPathname } from "./stream"
+
 const LIMIT = 15
 
 // @ts-expect-error
@@ -23,29 +25,9 @@ const store = getFirestore(app)
 
 export type LiveTrack = {
 	title: string
-	stream: 1 | 2 | null
+	stream: Stream | null
 	artists: string[]
 	startTime: Date
-}
-
-function streamToPathname(stream: 1 | 2): string {
-	if (stream === 1) {
-		return "/stream"
-	}
-	if (stream === 2) {
-		return "/stream2"
-	}
-	return "unknown"
-}
-
-function pathnameToStream(pathname: string): 1 | 2 | null {
-	if (pathname === "/stream") {
-		return 1
-	}
-	if (pathname === "/stream2") {
-		return 2
-	}
-	return null
 }
 
 type Handler = (err: Error | null, res: LiveTrack[] | null) => void
@@ -112,7 +94,7 @@ function useLogin(username: string | null, password: string | null) {
 type Options = {
 	email: string | null
 	password: string | null
-	stream: 1 | 2 | null
+	stream: Stream | null
 	paused: boolean
 }
 
