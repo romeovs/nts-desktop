@@ -37,8 +37,17 @@ export function Login(props: LoginProps) {
 
 	return (
 		<form onSubmit={handleSubmit} className={css.login}>
-			<input type="email" value={email} onChange={handleEmailChange} />
-			<input type="password" value={password} onChange={handlePasswordChange} />
+			<label htmlFor="email">Email</label>
+			<input id="email" type="email" value={email} onChange={handleEmailChange} />
+
+			<label htmlFor="password">Password</label>
+			<input
+				id="password"
+				type="password"
+				value={password}
+				onChange={handlePasswordChange}
+			/>
+
 			<button type="submit">Log in</button>
 		</form>
 	)
