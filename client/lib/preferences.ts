@@ -1,11 +1,10 @@
-import { useCallback, useEffect, useState } from "react"
+import { useCallback, useState } from "react"
 
 import type { Preferences } from "~/app/preferences"
-import { electron } from "../electron"
+import { electron } from "~/client/electron"
+import { useEvent } from "~/client/lib/use-event"
 
 export type { Preferences }
-
-export const preferences = read()
 
 function read() {
 	try {
@@ -21,13 +20,13 @@ export function usePreferences(): [
 ] {
 	const [preferences, setPreferences] = useState<Preferences>(read())
 
-	useEffect(function () {
-		function handler(_evt: Event, prefs: Preferences) {
+	useEvent(
+		"preferences",
+		(prefs: Preferences) => {
 			setPreferences(prefs)
-		}
-		electron.on("preferences", handler)
-		return () => electron.removeListener("preferences", handler)
-	}, [])
+		},
+		[],
+	)
 
 	const setter = useCallback(
 		function (fn: (prefs: Preferences) => Preferences) {

@@ -1,11 +1,11 @@
 import { useCallback, useEffect, useState } from "react"
 
 import "./global.css"
-import { type Preferences, usePreferences } from "./lib/preferences"
 
 import { electron } from "./electron"
 import { useLiveTracks } from "./lib/firebase"
 import { useLiveInfo } from "./lib/live"
+import { type Preferences, usePreferences } from "./lib/preferences"
 import { useEvent } from "./lib/use-event"
 import { useKeydown } from "./lib/use-keydown"
 import { useOffline } from "./lib/use-offline"
@@ -47,11 +47,13 @@ export function App() {
 	const [route, setRoute] = useState<"app" | "login">("app")
 	const [preferences, setPreferences] = usePreferences()
 
-	useEffect(function () {
-		electron.on("login", function () {
+	useEvent(
+		"login",
+		function () {
 			setRoute("login")
-		})
-	}, [])
+		},
+		[setRoute],
+	)
 
 	const handleLoginClose = useCallback(function () {
 		setRoute("app")
