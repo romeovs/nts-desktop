@@ -6,6 +6,7 @@ import css from "./show.module.css"
 import type { ShowInfo, Track } from "~/app/show"
 import { Controls, formatDuration } from "./controls"
 import { electron } from "./electron"
+import { Indicator } from "./indicator"
 
 type Props = {
 	show: ShowInfo | null
@@ -142,7 +143,7 @@ function TrackR(props: TrackProps) {
 				<div>{title}</div>
 			</div>
 			<div className={css.time}>
-				{isActive && <span className={css.indicator}>●&nbsp;</span>}
+				{isActive && <Indicator className={css.indicator} />}
 
 				<svg
 					xmlns="http://www.w3.org/2000/svg"

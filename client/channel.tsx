@@ -3,6 +3,7 @@ import classnames from "classnames"
 import type { LiveTrack } from "./lib/firebase"
 import type { ChannelInfo } from "./lib/live"
 
+import { Indicator } from "./indicator"
 import { PlayButton } from "./play"
 
 import css from "./channel.module.css"
@@ -49,7 +50,7 @@ export function Channel(props: Props) {
 					</div>
 					<div>
 						<div className={css.live}>
-							Live Now <span className={css.dot} />
+							Live Now <Indicator />
 						</div>
 						<div>
 							{format(starts)} &ndash; {format(ends)}
@@ -78,7 +79,7 @@ export function Channel(props: Props) {
 								>
 									<div className={css.time}>
 										{track.startTime.toLocaleTimeString("en-GB").substring(0, 5)}
-										{index === 0 && <span className={css.indicator}>●</span>}
+										{index === 0 && <Indicator />}
 									</div>
 									<div className={css.info}>
 										<div className={css.artists}>{track.artists.join(", ")}</div>

@@ -94,20 +94,6 @@
 	text-transform: uppercase;
 }
 
-.dot {
-	background: #e81717;
-	display: inline-block;
-	border-radius: 100%;
-	width: 0.35rem;
-	height: 0.35rem;
-	position: relative;
-	bottom: 1px;
-	margin-left: 0.1rem;
-	animation-name: flashing;
-	animation-duration: 2s;
-	animation-iteration-count: infinite;
-}
-
 @keyframes flashing {
 	0% {
 		opacity: 0;
@@ -188,22 +174,4 @@
 .artists {
 	font-weight: bold;
 	text-transform: uppercase;
-}
-
-.indicator {
-	color: red;
-	animation: pulse 3000ms reverse infinite;
-	padding: 0.2rem;
-}
-
-@keyframes pulse {
-	0% {
-		opacity: 1;
-	}
-	50% {
-		opacity: 0;
-	}
-	100% {
-		opacity: 1;
-	}
 }

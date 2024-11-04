@@ -180,20 +180,3 @@
 .active {
 	background: rgba(76, 76, 76, 0.25);
 }
-
-@keyframes pulse {
-	0% {
-		opacity: 1;
-	}
-	50% {
-		opacity: 0;
-	}
-	100% {
-		opacity: 1;
-	}
-}
-
-.indicator {
-	color: red;
-	animation: pulse 3000ms reverse infinite;
-}
