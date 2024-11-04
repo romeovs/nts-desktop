@@ -54,6 +54,8 @@ export class NTSApplication {
 
 		this.evts.on("error", (message: string) => this.showNotification(message))
 
+		ipcMain.on("init", this.syncPreferences.bind(this))
+
 		ipcMain.on("close", () => this.close())
 		ipcMain.on("tracklist", (_evt: IpcMainEvent, channel: number | string) =>
 			this.openTracklist(channel),
@@ -87,12 +89,11 @@ export class NTSApplication {
 	}
 
 	async loadClient() {
-		const prefs = await preferences.read()
 		if (this.production) {
 			await loadURL(this.window)
-			this.window.loadURL(`app://-?p=${JSON.stringify(prefs)}`)
+			this.window.loadURL("app://-")
 		} else {
-			this.window.loadURL(`http://localhost:5173?p=${JSON.stringify(prefs)}`)
+			this.window.loadURL("http://localhost:5173")
 		}
 	}
 
@@ -144,6 +145,13 @@ export class NTSApplication {
 		this.window.focus()
 
 		setTimeout(() => this.window.once("blur", () => this.handleBlur()), 300)
+	}
+
+	async syncPreferences() {
+		const prefs = await preferences.read()
+		this.window.webContents.send("preferences", prefs)
+		this.window.webContents.send("preferences", prefs)
+		this.window.webContents.send("preferences", prefs)
 	}
 
 	toggle() {

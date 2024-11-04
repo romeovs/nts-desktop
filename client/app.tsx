@@ -43,9 +43,13 @@ const channelToIndex: Record<Channel, number> = {
 
 const indexToChannel: Channel[] = [1, 2, "show"]
 
-export function App() {
+type AppProps = {
+	preferences: Preferences
+}
+
+export function App(props: AppProps) {
 	const [route, setRoute] = useState<"app" | "login">("app")
-	const [preferences, setPreferences] = usePreferences()
+	const [preferences, setPreferences] = usePreferences(props.preferences)
 
 	useEvent(
 		"login",

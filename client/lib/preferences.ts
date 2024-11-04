@@ -6,19 +6,10 @@ import { useEvent } from "~/client/lib/use-event"
 
 export type { Preferences }
 
-function read() {
-	try {
-		return JSON.parse(decodeURIComponent(location.search.substring(3)))
-	} catch (err) {
-		return { volume: 0.8 }
-	}
-}
-
-export function usePreferences(): [
-	Preferences,
-	(fn: (prefs: Preferences) => Preferences) => void,
-] {
-	const [preferences, setPreferences] = useState<Preferences>(read())
+export function usePreferences(
+	initial: Preferences,
+): [Preferences, (fn: (prefs: Preferences) => Preferences) => void] {
+	const [preferences, setPreferences] = useState<Preferences>(initial)
 
 	useEvent(
 		"preferences",
