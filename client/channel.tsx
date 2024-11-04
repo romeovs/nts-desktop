@@ -5,6 +5,7 @@ import type { ChannelInfo } from "./lib/live"
 
 import { Indicator } from "./indicator"
 import { PlayButton } from "./play"
+import { Tracklist } from "./tracklist/index"
 
 import css from "./channel.module.css"
 
@@ -53,7 +54,7 @@ export function Channel(props: Props) {
 							Live Now <Indicator />
 						</div>
 						<div>
-							{format(starts)} &ndash; {format(ends)}
+							{formatTime(starts)} &ndash; {formatTime(ends)}
 						</div>
 					</div>
 				</button>
@@ -64,36 +65,29 @@ export function Channel(props: Props) {
 				</div>
 			</div>
 			{hasTracks && (
-				<ul className={css.tracklist}>
-					{tracks.map(
-						(track, index) =>
-							track.title && (
-								<li
-									className={css.track}
-									onClick={() =>
-										navigator.clipboard.writeText(
-											`${track.artists.join(", ")} - ${track.title}`,
-										)
-									}
-									key={track.startTime.getTime()}
-								>
-									<div className={css.time}>
-										{track.startTime.toLocaleTimeString("en-GB").substring(0, 5)}
-										{index === 0 && <Indicator />}
-									</div>
-									<div className={css.info}>
-										<div className={css.artists}>{track.artists.join(", ")}</div>
-										<div className={css.title}>{track.title}</div>
-									</div>
-								</li>
-							),
-					)}
-				</ul>
+				<Tracklist
+					position={Date.now()}
+					formatPosition={formatTime}
+					tracklist={tracks
+						.map(function (track, index, arr) {
+							const prev = arr[index - 1]
+							return {
+								title: track.title,
+								artist: track.artists.join(", "),
+								start: track.startTime.getTime(),
+								end: prev ? prev.startTime.getTime() + 100 : null,
+							}
+						})
+						.filter((track) => track.title !== "")}
+				/>
 			)}
 		</div>
 	)
 }
 
-function format(date: Date): string {
-	return date.toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit" })
+function formatTime(date: Date | number): string {
+	return new Date(date).toLocaleTimeString("en-GB", {
+		hour: "2-digit",
+		minute: "2-digit",
+	})
 }

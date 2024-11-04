@@ -1,0 +1,58 @@
+.tracklist {
+	list-style: none;
+	margin: 0;
+	padding: 0.5rem 0;
+}
+
+.track {
+	padding: 0.25rem 0.5rem;
+	transition: background 200ms;
+	cursor: pointer;
+	display: flex;
+	justify-content: space-between;
+	align-items: start;
+
+	&.active {
+		background: rgba(76, 76, 76, 0.25);
+	}
+
+	&:hover {
+		background: rgba(76, 76, 76, 0.35) !important;
+	}
+
+	&:active {
+		/* background: rgba(76, 76, 76, 0.45); */
+		background: red;
+	}
+}
+
+.info {
+	width: 100%;
+}
+
+.artist {
+	text-transform: uppercase;
+	font-weight: bold;
+	flex-shrink: 1;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.time {
+	flex-grow: 0;
+	font-size: 0.75rem;
+	width: 38px;
+	flex-shrink: 0;
+	position: relative;
+}
+
+.from {
+	cursor: pointer;
+	padding: 0.1rem 0.2rem;
+	margin: 0 -0.2rem;
+
+	.seekable &:hover {
+		background: white;
+		color: black;
+	}
+}

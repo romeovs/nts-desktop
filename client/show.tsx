@@ -1,12 +1,9 @@
-import classnames from "classnames"
-import { useCallback } from "react"
-
 import css from "./show.module.css"
 
-import type { ShowInfo, Track } from "~/app/show"
+import type { ShowInfo } from "~/app/show"
 import { Controls, formatDuration } from "./controls"
 import { electron } from "./electron"
-import { Indicator } from "./indicator"
+import { Tracklist } from "./tracklist/index"
 
 type Props = {
 	show: ShowInfo | null
@@ -57,7 +54,7 @@ export function Show(props: Props) {
 			<div className={css.top}>
 				<img src={image} className={css.image} draggable={false} />
 				<div className={css.header}>
-					<div className={css.date}>{format(date)}</div>
+					<div className={css.date}>{formatDate(date)}</div>
 				</div>
 				<div className={css.footer}>
 					<div className={css.location}>{location}</div>
@@ -75,98 +72,31 @@ export function Show(props: Props) {
 				onStop={onStop}
 				onSeek={onSeek}
 			/>
-			<div className={css.tracklist}>
-				{tracklist.length === 0 && (
-					<div className={css.notracklist}>No tracklist provided</div>
-				)}
-				{tracklist.length > 0 && (
-					<ul>
-						{tracklist.map((track, index) => (
-							<TrackR
-								key={track.offset || track.offset_estimate}
-								track={track}
-								index={index}
-								position={position}
-								onSeek={onSeek}
-							/>
-						))}
-					</ul>
-				)}
-			</div>
+			{tracklist.length === 0 && (
+				<div className={css.notracklist}>No tracklist provided</div>
+			)}
+			<Tracklist
+				position={position}
+				onSeek={onSeek}
+				formatPosition={formatDuration}
+				tracklist={tracklist.map(function (track) {
+					const start = track.offset ?? track.offset_estimate ?? null
+					const duration = track.duration ?? track.duration_estimate ?? null
+					const end = start && duration ? start + duration : null
+
+					return {
+						title: track.title,
+						artist: track.artist,
+						start,
+						end,
+					}
+				})}
+			/>
 		</div>
 	)
 }
 
-type TrackProps = {
-	track: Track
-	index: number
-	position: number
-	onSeek: (pos: number) => void
-}
-
-function TrackR(props: TrackProps) {
-	const { track, index, position, onSeek } = props
-	const { title, artist } = track
-
-	const from = track.offset ?? track.offset_estimate ?? null
-	const duration = track.duration ?? track.duration_estimate ?? null
-	const to = from && duration ? from + duration : null
-
-	const isActive = from && to && from <= position && position < to
-
-	const handleClick = useCallback(
-		function () {
-			navigator.clipboard.writeText(`${artist} - ${title}`)
-		},
-		[artist, title],
-	)
-
-	const goToTrack = useCallback(
-		function () {
-			if (from === null) {
-				return
-			}
-
-			onSeek(from)
-		},
-		[onSeek, from],
-	)
-
-	return (
-		<li
-			key={index}
-			onClick={handleClick}
-			className={classnames(isActive && css.active)}
-		>
-			<div className={css.head}>
-				<div className={css.artist}>{artist}</div>
-				<div>{title}</div>
-			</div>
-			<div className={css.time}>
-				{isActive && <Indicator className={css.indicator} />}
-
-				<svg
-					xmlns="http://www.w3.org/2000/svg"
-					viewBox="0 0 600 600"
-					className={css.play}
-				>
-					<path
-						fill="white"
-						d="M506.4 309.3L128.8 519.2c-4.4 2.4-8.2 2.7-11.2 1-3.1-1.7-4.6-5.1-4.6-10.2V91.2c0-4.8 1.5-8.2 4.6-10.2 3.1-2 6.8-1.7 11.2 1l377.6 210c4.4 2.4 6.6 5.3 6.6 8.7 0 3.3-2.2 6.2-6.6 8.6z"
-					/>
-				</svg>
-
-				{from !== null && (
-					<span className={css.from} onClick={goToTrack}>
-						{formatDuration(from)}
-					</span>
-				)}
-			</div>
-		</li>
-	)
-}
-
-function format(date: Date): string {
+function formatDate(date: Date): string {
 	return date
 		.toLocaleDateString("en-GB", {
 			day: "2-digit",
