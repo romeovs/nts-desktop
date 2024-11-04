@@ -1,4 +1,4 @@
-import { PromiseState, usePromise } from "./use-promise"
+import { type PromiseState, usePromise } from "./use-promise"
 
 export type ChannelInfo = {
 	now: ShowInfo
