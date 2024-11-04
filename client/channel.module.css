@@ -152,23 +152,26 @@
 	display: flex;
 	justify-content: space-between;
 	align-items: top;
-}
 
-.track:hover {
-	background: rgba(76, 76, 76, 0.35) !important;
-}
+	&:hover {
+		background: rgba(76, 76, 76, 0.35) !important;
+	}
 
-.track:active {
-	background: rgba(76, 76, 76, 0.45);
+	&:active {
+		background: rgba(76, 76, 76, 0.45);
+	}
 }
 
 .time {
 	flex-grow: 0;
 	font-size: 0.75rem;
-	width: 42px;
+	width: 38px;
+	flex-shrink: 0;
 }
+
 .info {
-	flex-grow: 1;
+	width: 100%;
+	flex-grow: 0;
 }
 
 .artists {
