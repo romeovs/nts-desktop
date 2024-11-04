@@ -1,16 +1,15 @@
 import { type ChangeEvent, type FormEvent, useCallback, useState } from "react"
-import type { Preferences } from "./lib/preferences"
+import { usePreferences } from "./lib/preferences"
 
 import css from "./login.module.css"
 
 type LoginProps = {
-	preferences: Preferences
-	onPreferencesChange: (fn: (prefs: Preferences) => Preferences) => void
 	onClose: () => void
 }
 
 export function Login(props: LoginProps) {
-	const { onClose, onPreferencesChange, preferences } = props
+	const { preferences, updatePreferences } = usePreferences()
+	const { onClose } = props
 	const [email, setEmail] = useState(preferences.email ?? "")
 	const [password, setPassword] = useState(preferences.password ?? "")
 
@@ -29,10 +28,10 @@ export function Login(props: LoginProps) {
 	const handleSubmit = useCallback(
 		function (evt: FormEvent<HTMLFormElement>) {
 			evt.preventDefault()
-			onPreferencesChange((prefs) => ({ ...prefs, email, password }))
+			updatePreferences((prefs) => ({ ...prefs, email, password }))
 			onClose()
 		},
-		[onClose, email, password, onPreferencesChange],
+		[onClose, email, password, updatePreferences],
 	)
 
 	return (

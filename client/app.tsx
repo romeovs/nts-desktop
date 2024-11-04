@@ -5,7 +5,7 @@ import "./global.css"
 import { electron } from "./electron"
 import { useLiveTracks } from "./lib/firebase"
 import { useLiveInfo } from "./lib/live"
-import { type Preferences, usePreferences } from "./lib/preferences"
+import { usePreferences } from "./lib/preferences"
 import { useEvent } from "./lib/use-event"
 import { useKeydown } from "./lib/use-keydown"
 import { useOffline } from "./lib/use-offline"
@@ -43,13 +43,8 @@ const channelToIndex: Record<Channel, number> = {
 
 const indexToChannel: Channel[] = [1, 2, "show"]
 
-type AppProps = {
-	preferences: Preferences
-}
-
-export function App(props: AppProps) {
+export function App() {
 	const [route, setRoute] = useState<"app" | "login">("app")
-	const [preferences, setPreferences] = usePreferences(props.preferences)
 
 	useEvent("login", () => setRoute("login"), [setRoute])
 	useEvent("close", () => setRoute("app"), [setRoute])
@@ -59,27 +54,16 @@ export function App(props: AppProps) {
 	}, [])
 
 	if (route === "login") {
-		return (
-			<Login
-				onClose={handleLoginClose}
-				preferences={preferences}
-				onPreferencesChange={setPreferences}
-			/>
-		)
+		return <Login onClose={handleLoginClose} />
 	}
 
-	return <NTS preferences={preferences} onPreferencesChange={setPreferences} />
+	return <NTS />
 }
 
-type NTSProps = {
-	preferences: Preferences
-	onPreferencesChange: (fn: (prefs: Preferences) => Preferences) => void
-}
-
-export function NTS(props: NTSProps) {
-	const { preferences, onPreferencesChange } = props
+export function NTS() {
 	const live = useLiveInfo()
 	const [show, setShow] = useState<ShowInfo | null>(null)
+	const { preferences, updatePreferences } = usePreferences()
 
 	const [index, setIndex] = useState<number>(0)
 	const [playing, setPlaying] = useState<Channel | null>(null)
@@ -91,7 +75,7 @@ export function NTS(props: NTSProps) {
 	const isOffline = useOffline()
 
 	function setVolume(fn: (volume: number) => number) {
-		onPreferencesChange((prefs) => ({ ...prefs, volume: fn(prefs.volume) }))
+		updatePreferences((prefs) => ({ ...prefs, volume: fn(prefs.volume) }))
 	}
 
 	const tracks = useLiveTracks({
