@@ -234,7 +234,15 @@ export class NTSApplication {
 	}
 
 	openChat(channel: number) {
-		shell.openExternal(`https://www.nts.live/chat/${channel}`)
+		if (channel === 1) {
+			shell.openExternal(
+				"https://discord.com/channels/909834111592591421/933364043459227708",
+			)
+		} else {
+			shell.openExternal(
+				"https://discord.com/channels/909834111592591421/935528991501209600",
+			)
+		}
 	}
 
 	openSchedule() {
