@@ -174,6 +174,8 @@ export function NTS(props: NTSProps) {
 		setShow(show)
 		setPlaying("show")
 		setIndex(channelToIndex.show)
+		setPosition(0)
+		setLooped(0)
 	})
 
 	useEvent("open", async function () {
@@ -195,14 +197,6 @@ export function NTS(props: NTSProps) {
 			setIndex(idx)
 		},
 		[playing],
-	)
-
-	useEffect(
-		function () {
-			setPosition(0)
-			setLooped(0)
-		},
-		[show?.source?.url],
 	)
 
 	useEffect(
