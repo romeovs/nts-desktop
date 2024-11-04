@@ -1,17 +1,25 @@
+import { initializeApp } from "firebase/app"
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth"
 import {
 	collection,
+	getFirestore,
 	limit,
 	onSnapshot,
 	orderBy,
 	query,
 	where,
 } from "firebase/firestore"
-import NTS from "./mod"
+import { useEffect, useState } from "react"
 
 const LIMIT = 15
 
-const nts = new NTS()
-const store = nts.firestore()
+// @ts-expect-error
+const str: string = import.meta.env.VITE_FIREBASE_CONFIG
+const config = str && JSON.parse(str)
+
+const app = initializeApp(config)
+const auth = getAuth(app)
+const store = getFirestore(app)
 
 export type LiveTrack = {
 	title: string
@@ -41,6 +49,10 @@ function pathnameToStream(pathname: string): 1 | 2 | null {
 }
 
 type Handler = (err: Error | null, res: LiveTrack[] | null) => void
+
+function signIn(email: string, password: string) {
+	return signInWithEmailAndPassword(auth, email, password)
+}
 
 function liveTracks(stream: 1 | 2, fn: Handler): () => void {
 	const qry = query(
@@ -76,13 +88,11 @@ let promise: Promise<any> | null = null
 
 export async function login(email: string, password: string) {
 	if (!promise) {
-		promise = nts.signIn(email, password)
+		promise = signIn(email, password)
 	}
 
 	return promise
 }
-
-import { useEffect, useState } from "react"
 
 function useLogin(username: string | null, password: string | null) {
 	const [loggedIn, setLoggedIn] = useState(false)
