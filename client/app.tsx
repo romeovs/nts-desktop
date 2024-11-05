@@ -6,13 +6,14 @@ import { electron } from "./electron"
 import { useLiveTracks } from "./lib/firebase"
 import { useLiveInfo } from "./lib/live"
 import { usePreferences } from "./lib/preferences"
+import { type Stream, streams } from "./lib/stream"
 import { useEvent } from "./lib/use-event"
 import { useKeydown } from "./lib/use-keydown"
 import { useOffline } from "./lib/use-offline"
 
 import type { ShowInfo } from "../app/show"
 import { Arrow } from "./arrow"
-import { Channel } from "./channel"
+import { Channel as ChannelCard } from "./channel"
 import { Chat } from "./chat"
 import { Help } from "./help"
 import { Login } from "./login"
@@ -28,12 +29,7 @@ import { Volume } from "./volume"
 
 import css from "./app.module.css"
 
-const streams = {
-	1: "https://stream-relay-geo.ntslive.net/stream?client=NTSWebApp",
-	2: "https://stream-relay-geo.ntslive.net/stream2?client=NTSWebApp",
-}
-
-type Channel = 1 | 2 | "show"
+type Channel = Stream | "show"
 
 const channelToIndex: Record<Channel, number> = {
 	1: 0,
@@ -227,7 +223,7 @@ export function NTS() {
 			<Splash hide={!live.loading} />
 			<Slider index={index} animate={isOpen}>
 				<Slide>
-					<Channel
+					<ChannelCard
 						info={live.data?.channel1}
 						channel={1}
 						playing={playing === 1}
@@ -237,7 +233,7 @@ export function NTS() {
 					/>
 				</Slide>
 				<Slide>
-					<Channel
+					<ChannelCard
 						info={live.data?.channel2}
 						channel={2}
 						playing={playing === 2}

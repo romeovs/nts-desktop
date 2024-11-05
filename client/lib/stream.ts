@@ -19,3 +19,8 @@ export function pathnameToStream(pathname: string): 1 | 2 | null {
 	}
 	return null
 }
+
+export const streams = {
+	1: "https://stream-relay-geo.ntslive.net/stream?client=NTSWebApp",
+	2: "https://stream-relay-geo.ntslive.net/stream2?client=NTSWebApp",
+}
