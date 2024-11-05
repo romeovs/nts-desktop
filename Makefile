@@ -55,6 +55,7 @@ dist/preload.js: app/preload.js
 	@mkdir -p dist
 	@cp app/preload.js dist/preload.js
 
+.PHONY: client
 client: # Build the client-side code
 client:
 	@mkdir -p dist
