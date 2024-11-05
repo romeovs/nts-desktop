@@ -1,4 +1,4 @@
-import { type ChangeEvent, type FormEvent, useCallback, useState } from "react"
+import { useCallback } from "react"
 import { usePreferences } from "./lib/preferences"
 
 import css from "./login.module.css"
@@ -10,41 +10,41 @@ type LoginProps = {
 export function Login(props: LoginProps) {
 	const { preferences, updatePreferences } = usePreferences()
 	const { onClose } = props
-	const [email, setEmail] = useState(preferences.email ?? "")
-	const [password, setPassword] = useState(preferences.password ?? "")
-
-	const handleEmailChange = useCallback(function (
-		evt: ChangeEvent<HTMLInputElement>,
-	) {
-		setEmail(evt.target.value)
-	}, [])
-
-	const handlePasswordChange = useCallback(function (
-		evt: ChangeEvent<HTMLInputElement>,
-	) {
-		setPassword(evt.target.value)
-	}, [])
 
 	const handleSubmit = useCallback(
-		function (evt: FormEvent<HTMLFormElement>) {
-			evt.preventDefault()
+		async function (data: FormData) {
+			const email = data.get("email")?.toString() ?? null
+			const password = data.get("password")?.toString() ?? null
+
+			if (!email || !password) {
+				return
+			}
+
 			updatePreferences((prefs) => ({ ...prefs, email, password }))
 			onClose()
 		},
-		[onClose, email, password, updatePreferences],
+		[onClose, updatePreferences],
 	)
 
 	return (
-		<form onSubmit={handleSubmit} className={css.login}>
+		// @ts-expect-error: form action type is not a string
+		<form className={css.login} action={handleSubmit}>
 			<label htmlFor="email">Email</label>
-			<input id="email" type="email" value={email} onChange={handleEmailChange} />
+			<input
+				id="email"
+				name="email"
+				type="email"
+				required
+				defaultValue={preferences.email ?? ""}
+			/>
 
 			<label htmlFor="password">Password</label>
 			<input
 				id="password"
 				type="password"
-				value={password}
-				onChange={handlePasswordChange}
+				name="password"
+				required
+				defaultValue={preferences.password ?? ""}
 			/>
 
 			<button type="submit">Log in</button>
