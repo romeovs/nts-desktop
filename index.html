@@ -2,6 +2,32 @@
 <html lang="en">
 	<head>
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta http-equiv="Content-Security-Policy" content="
+			script-src
+				'self'
+				https://widget.mixcloud.com
+				https://w.soundcloud.com
+			;
+			connect-src
+				'self'
+				https://identitytoolkit.googleapis.com
+				https://firestore.googleapis.com
+				https://securetoken.googleapis.com
+				https://www.nts.live
+			;
+			media-src
+				'self'
+				https://stream-relay-geo.ntslive.net
+			;
+			style-src
+				'self'
+				'unsafe-inline'
+			;
+			img-src
+				'self'
+				https://media2.ntslive.co.uk
+			;
+		" />
 		<title>NTS</title>
 		<style>
 			body {
