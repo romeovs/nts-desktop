@@ -66,14 +66,15 @@ function liveTracks(stream: 1 | 2, fn: Handler): () => void {
 	)
 }
 
-let promise: Promise<any> | null = null
+const promises: { [creds: string]: Promise<any> } = {}
 
 export async function login(email: string, password: string) {
-	if (!promise) {
-		promise = signIn(email, password)
+	const key = `${email}:${password}`
+	if (!promises[key]) {
+		promises[key] = signIn(email, password)
 	}
 
-	return promise
+	return promises[key]
 }
 
 function useLogin(username: string | null, password: string | null) {

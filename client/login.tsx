@@ -1,4 +1,6 @@
 import { useCallback } from "react"
+
+import { login } from "./lib/firebase"
 import { usePreferences } from "./lib/preferences"
 
 import css from "./login.module.css"
@@ -20,8 +22,15 @@ export function Login(props: LoginProps) {
 				return
 			}
 
-			updatePreferences((prefs) => ({ ...prefs, email, password }))
-			onClose()
+			try {
+				const ok = await login(email, password)
+				console.log("OK", email, ok)
+
+				updatePreferences((prefs) => ({ ...prefs, email, password }))
+				onClose()
+			} catch (err) {
+				//
+			}
 		},
 		[onClose, updatePreferences],
 	)
