@@ -47,7 +47,7 @@ formatting:
 index: # Build the "server"-side js
 index: app/main.ts
 	@mkdir -p dist
-	@env NODE_ENV=development $(bin)/esbuild --bundle --platform=node --external:electron --loader:.png=file app/main.ts --outfile=dist/index.js
+	@env NODE_ENV=development $(bin)/esbuild --bundle --format=cjs --platform=node --external:electron --loader:.png=file app/main.ts --outfile=dist/index.cjs
 
 preload: # Build the preload script
 preload: dist/preload.js

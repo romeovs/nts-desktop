@@ -3,7 +3,7 @@
 	"version": "0.0.15",
 	"description": "A desktop app for playing NTS Live and streams",
 	"type": "module",
-	"main": "index.js",
+	"main": "index.cjs",
 	"author": "Romeo Van Snick <romeo@romeovansnick.be>",
 	"license": "MIT",
 	"repository": "https://github.com/romeovs/nts-desktop",
