@@ -231,7 +231,7 @@ export function NTS() {
 
 	return (
 		<>
-			<Splash hide={!live.loading} />
+			<Splash hide={Boolean(!live.loading || live.data)} />
 			<Slider index={index} animate={isOpen}>
 				<Slide>
 					<ChannelCard
