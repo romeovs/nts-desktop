@@ -17,6 +17,7 @@ run:
 build: ## Build all the JavaScript, without bundling the Electron app
 build: index preload client packages
 
+.PHONY: app
 app: ## Build the electron app
 app:
 	@$(bin)/electron-builder build --mac --universal --publish=never
