@@ -1,5 +1,7 @@
 import classnames from "classnames"
+import { useCallback } from "react"
 import { electron } from "./electron"
+
 import css from "./tracklist.module.css"
 
 type Props = {
@@ -12,14 +14,17 @@ type Props = {
 export function Tracklist(props: Props) {
 	const { channel, hasShow, hasTracks, onShowTracklist } = props
 
-	function handleClick() {
-		if (channel === "show" || (channel && hasTracks)) {
-			onShowTracklist()
-			return
-		}
+	const handleClick = useCallback(
+		function () {
+			if (channel === "show" || (channel && hasTracks)) {
+				onShowTracklist()
+				return
+			}
 
-		electron.send("tracklist", channel)
-	}
+			electron.send("tracklist", channel)
+		},
+		[channel, hasTracks, onShowTracklist],
+	)
 
 	return (
 		<button

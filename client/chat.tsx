@@ -1,6 +1,9 @@
 import classnames from "classnames"
-import css from "./chat.module.css"
+import { useCallback } from "react"
+
 import { electron } from "./electron"
+
+import css from "./chat.module.css"
 
 type Props = {
 	channel: 1 | 2 | "show"
@@ -9,13 +12,16 @@ type Props = {
 export function Chat(props: Props) {
 	const { channel } = props
 
-	function handleClick() {
-		if (channel === "show") {
-			return
-		}
+	const handleClick = useCallback(
+		function () {
+			if (channel === "show") {
+				return
+			}
 
-		electron.send("chat", channel)
-	}
+			electron.send("chat", channel)
+		},
+		[channel],
+	)
 
 	return (
 		<button

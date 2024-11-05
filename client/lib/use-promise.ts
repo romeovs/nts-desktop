@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useCallback, useState } from "react"
 
 interface State<T> {
 	data: T | null
@@ -20,24 +20,27 @@ export function usePromise<A, T>(
 		loading: initialLoading,
 	})
 
-	async function load(...args: A[]): Promise<void> {
-		setState((state) => ({ ...state, loading: true }))
-		try {
-			const data = await fn(...args)
-			setState({ loading: false, error: null, data })
-		} catch (error) {
-			if (error instanceof Error) {
-				setState({ loading: false, error, data: null })
-				return
-			}
+	const load = useCallback(
+		async function (...args: A[]): Promise<void> {
+			setState((state) => ({ ...state, loading: true }))
+			try {
+				const data = await fn(...args)
+				setState({ loading: false, error: null, data })
+			} catch (error) {
+				if (error instanceof Error) {
+					setState({ loading: false, error, data: null })
+					return
+				}
 
-			setState({
-				loading: false,
-				error: new Error("Something went wrong"),
-				data: null,
-			})
-		}
-	}
+				setState({
+					loading: false,
+					error: new Error("Something went wrong"),
+					data: null,
+				})
+			}
+		},
+		[fn],
+	)
 
 	return {
 		...state,

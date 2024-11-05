@@ -1,5 +1,5 @@
 .volume {
-	mouse-events: none;
+	pointer-events: none;
 
 	position: fixed;
 	bottom: 0;

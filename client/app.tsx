@@ -70,9 +70,12 @@ export function NTS() {
 	const [looped, setLooped] = useState(0)
 	const isOffline = useOffline()
 
-	function setVolume(fn: (volume: number) => number) {
-		updatePreferences((prefs) => ({ ...prefs, volume: fn(prefs.volume) }))
-	}
+	const setVolume = useCallback(
+		function (fn: (volume: number) => number) {
+			updatePreferences((prefs) => ({ ...prefs, volume: fn(prefs.volume) }))
+		},
+		[updatePreferences],
+	)
 
 	const tracks = useLiveTracks({
 		email: preferences.email,
@@ -81,43 +84,45 @@ export function NTS() {
 		paused: !preferences,
 	})
 
-	function next() {
+	const next = useCallback(function () {
 		setIndex((idx) => (idx + 1) % 3)
-	}
+	}, [])
 
-	function prev() {
+	const prev = useCallback(function () {
 		setIndex((idx) => (3 + idx - 1) % 3)
-	}
+	}, [])
 
-	function togglePlaying() {
-		if (isOffline) {
-			return
-		}
+	const togglePlaying = useCallback(
+		function () {
+			if (isOffline) {
+				return
+			}
 
-		setPlaying((playing) => (playing ? null : indexToChannel[index]))
-	}
+			setPlaying((playing) => (playing ? null : indexToChannel[index]))
+		},
+		[index, isOffline],
+	)
 
-	function stop(channel: Channel) {
+	const stop = useCallback(function (channel: Channel) {
 		setPlaying((curr) => (curr === channel ? null : curr))
-	}
+	}, [])
 
-	function stopAll() {
+	const stopAll = useCallback(function () {
 		setPlaying(null)
-	}
+	}, [])
 
-	function seek(pos: number) {
-		setPosition(pos)
-		if (pos < position) {
-			setLooped((x) => x + 1)
-		}
-	}
+	const seek = useCallback(
+		function (pos: number) {
+			setPosition(pos)
+			if (pos < position) {
+				setLooped((x) => x + 1)
+			}
+		},
+		[position],
+	)
 
-	function close() {
+	const close = useCallback(function () {
 		electron.send("close")
-	}
-
-	useEffect(function () {
-		live.load()
 	}, [])
 
 	useEffect(
@@ -127,13 +132,19 @@ export function NTS() {
 		[playing],
 	)
 
-	function increaseVolume() {
-		setVolume((v: number): number => clamp(0, 1, v + 0.1))
-	}
+	const increaseVolume = useCallback(
+		function () {
+			setVolume((v: number): number => clamp(0, 1, v + 0.1))
+		},
+		[setVolume],
+	)
 
-	function decreaseVolume() {
-		setVolume((v: number): number => clamp(0, 1, v - 0.1))
-	}
+	const decreaseVolume = useCallback(
+		function () {
+			setVolume((v: number): number => clamp(0, 1, v - 0.1))
+		},
+		[setVolume],
+	)
 
 	useKeydown("ArrowRight", next)
 	useKeydown("ArrowLeft", prev)
@@ -193,7 +204,7 @@ export function NTS() {
 			const t = setTimeout(live.load, left + 500)
 			return () => clearTimeout(t)
 		},
-		[live.data?.channel1.now.ends, live.data?.channel2.now.ends],
+		[live.data, live.load],
 	)
 
 	useEffect(
@@ -205,10 +216,10 @@ export function NTS() {
 
 			live.load()
 		},
-		[isOffline],
+		[isOffline, stopAll, live.load],
 	)
 
-	function handleShowTracklist() {
+	const handleShowTracklist = useCallback(function () {
 		const all = document.querySelectorAll("[data-show]")
 		for (const el of all) {
 			el.scrollTo({
@@ -216,7 +227,7 @@ export function NTS() {
 				behavior: "smooth",
 			})
 		}
-	}
+	}, [])
 
 	return (
 		<>

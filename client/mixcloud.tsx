@@ -48,7 +48,7 @@ export function Mixcloud(props: Props) {
 				})
 				.catch((err) => console.error(err))
 		},
-		[show],
+		[show, onLoad, onPlay, onStop, onProgress],
 	)
 
 	useEffect(
@@ -76,7 +76,7 @@ export function Mixcloud(props: Props) {
 
 			widget?.pause()
 		},
-		[playing, widget],
+		[playing, widget, show],
 	)
 
 	useEffect(

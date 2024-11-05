@@ -70,7 +70,7 @@ export function Slider(props: SliderProps) {
 
 			return () => clearTimeout(t)
 		},
-		[index],
+		[index, len],
 	)
 
 	const style = {

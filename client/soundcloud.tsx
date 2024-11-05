@@ -93,7 +93,7 @@ export function Soundcloud(props: Props) {
 				onProgress(position)
 			})
 		},
-		[position, widget],
+		[position, widget, onProgress],
 	)
 
 	useEffect(
@@ -105,7 +105,7 @@ export function Soundcloud(props: Props) {
 
 			widget?.pause()
 		},
-		[playing, widget],
+		[playing, widget, show],
 	)
 
 	useEffect(

@@ -14,17 +14,20 @@ export function Volume(props: VolumeProps) {
 
 	useEffect(
 		function () {
+			const _ = volume
+
 			setInit(true)
 
 			if (!init) {
 				return
 			}
+
 			setShow(true)
 
-			const t = setTimeout(() => setShow(false), 500)
+			const t = setTimeout(() => setShow(false), 750)
 			return () => clearTimeout(t)
 		},
-		[volume],
+		[volume, init],
 	)
 
 	return (
