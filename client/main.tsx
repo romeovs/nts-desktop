@@ -1,4 +1,4 @@
-import DOM from "react-dom"
+import { createRoot } from "react-dom/client"
 
 import { App } from "~/client/app"
 import { electron } from "~/client/electron"
@@ -14,7 +14,7 @@ function render(_: Event, preferences: Preferences) {
 		</PreferencesProvider>
 	)
 
-	DOM.render(app, root)
+	createRoot(root).render(app)
 }
 
 electron.addListener("preferences", render)
