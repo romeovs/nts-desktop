@@ -271,6 +271,7 @@ function makeWindow(): BrowserWindow {
 			webSecurity: true,
 			nodeIntegration: false,
 			contextIsolation: true,
+			sandbox: true,
 			preload: path.resolve(__dirname, "preload.js"),
 		},
 	})
