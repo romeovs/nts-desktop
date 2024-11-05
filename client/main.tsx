@@ -4,9 +4,7 @@ import { App } from "~/client/app"
 import { electron } from "~/client/electron"
 import { type Preferences, PreferencesProvider } from "~/client/lib/preferences"
 
-function render(_: Event, preferences: Preferences) {
-	electron.removeAllListeners("preferences")
-
+electron.once("preferences", function render(_: Event, preferences: Preferences) {
 	const root = document.getElementById("root")
 	const app = (
 		<PreferencesProvider preferences={preferences}>
@@ -15,7 +13,5 @@ function render(_: Event, preferences: Preferences) {
 	)
 
 	createRoot(root).render(app)
-}
-
-electron.addListener("preferences", render)
+})
 electron.send("init")
