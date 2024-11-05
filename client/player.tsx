@@ -13,12 +13,20 @@ export function Player(props: Props) {
 
 	const ref = useRef<HTMLAudioElement | null>(null)
 
+	useEffect(function () {
+		const readyState = ref.current?.readyState ?? 0
+		if (readyState >= 3) {
+			return
+		}
+
+		ref.current?.load()
+	}, [])
+
 	useEffect(
 		function () {
 			ref.current?.addEventListener("play", onPlay)
 			ref.current?.addEventListener("pause", onStop)
 			ref.current?.addEventListener("stop", onStop)
-			ref.current?.load()
 		},
 		[onPlay, onStop],
 	)
@@ -30,7 +38,6 @@ export function Player(props: Props) {
 				return
 			}
 
-			ref.current?.load()
 			ref.current?.play()
 		},
 		[playing],
@@ -46,5 +53,5 @@ export function Player(props: Props) {
 		[volume],
 	)
 
-	return <audio src={playing ? src : ""} ref={ref} />
+	return <audio src={src} ref={ref} />
 }
