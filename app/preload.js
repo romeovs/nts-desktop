@@ -1,11 +1,16 @@
 const { contextBridge, ipcRenderer } = require("electron")
 
 contextBridge.exposeInMainWorld("electron", {
-	on: function (...args) {
-		return ipcRenderer.on(...args)
+	once: function (...args) {
+		return ipcRenderer.once(...args)
 	},
-	removeListener: function (...args) {
-		return ipcRenderer.removeListener(...args)
+	addListener: function (name, callback) {
+		function handler(...args) {
+			callback(...args)
+		}
+
+		ipcRenderer.addListener(name, handler)
+		return () => ipcRenderer.removeListener(name, handler)
 	},
 	removeAllListeners: function (...args) {
 		return ipcRenderer.removeAllListeners(...args)

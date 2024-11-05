@@ -12,8 +12,6 @@ export function useEvent<A>(
 			handler(...args)
 		}
 
-		electron.on(name, handle)
-		// TODO: we should be able to use removeEventListener here, but it does not seem to work.
-		return () => electron.removeListener(name, handle)
+		return electron.addListener(name, handle)
 	}, deps)
 }

@@ -1,6 +1,10 @@
+// defined in app/preload.js
 interface Electron {
-	on(name: string, callback: (evt: Event, ...args: any[]) => void): void
-	removeListener(name: string, callback: (evt: Event, ...args: any[]) => void): void
+	once(name: string, callback: (evt: Event, ...args: any[]) => void): void
+	addListener(
+		name: string,
+		callback: (evt: Event, ...args: any[]) => void,
+	): () => void
 	removeAllListeners(name: string): void
 	send(name: string, ...args: any[]): void
 }

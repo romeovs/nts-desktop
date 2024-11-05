@@ -17,5 +17,5 @@ function render(_: Event, preferences: Preferences) {
 	DOM.render(app, root)
 }
 
-electron.on("preferences", render)
+electron.addListener("preferences", render)
 electron.send("init")
