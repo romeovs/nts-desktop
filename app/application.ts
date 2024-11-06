@@ -1,5 +1,4 @@
 import EventEmitter from "node:events"
-import os from "node:os"
 import path from "node:path"
 import bplist from "bplist-parser"
 import {
