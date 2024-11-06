@@ -11,7 +11,7 @@ import {
 } from "firebase/firestore"
 import { useEffect, useState } from "react"
 
-import { type Stream, pathnameToStream, streamToPathname } from "./stream"
+import { type Stream, pathnameToStream, streamToPathname } from "~/lib/stream"
 
 const LIMIT = 15
 

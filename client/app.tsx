@@ -2,11 +2,12 @@ import { useCallback, useEffect, useState } from "react"
 
 import "./global.css"
 
+import { type Stream, streams } from "~/lib/stream"
+
 import { electron } from "./electron"
 import { useLiveTracks } from "./lib/firebase"
 import { useLiveInfo } from "./lib/live"
 import { usePreferences } from "./lib/preferences"
-import { type Stream, streams } from "./lib/stream"
 import { useEvent } from "./lib/use-event"
 import { useKeydown } from "./lib/use-keydown"
 import { useOffline } from "./lib/use-offline"
