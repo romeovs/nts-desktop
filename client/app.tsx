@@ -82,8 +82,6 @@ export function NTS() {
 	const tracks2 = useLiveTracks(2)
 	const currentTracks = playing === 1 ? tracks1 : tracks2
 
-	console.log("HERE", tracks1, tracks2)
-
 	const next = useCallback(function () {
 		setIndex((idx) => (idx + 1) % 3)
 	}, [])
