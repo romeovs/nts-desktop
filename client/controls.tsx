@@ -17,7 +17,7 @@ type Props = {
 
 export function Controls(props: Props) {
 	const { duration, position, onPlay, onStop, playing, onSeek } = props
-	const width = (100 * position) / duration
+	const width = duration === 0 ? 0 : (100 * position) / duration
 	const ref = useRef<HTMLDivElement | null>(null)
 
 	function handlePlayClick() {
