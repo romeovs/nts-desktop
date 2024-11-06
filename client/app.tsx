@@ -227,6 +227,25 @@ export function NTS() {
 		}
 	}, [])
 
+	const handleShowPlay = useCallback(function () {
+		setPlaying("show")
+	}, [])
+
+	const handleShowStop = useCallback(
+		function () {
+			stop("show")
+		},
+		[stop],
+	)
+
+	const handleShowLoad = useCallback(function (dur: number) {
+		setDuration(Math.round(dur))
+	}, [])
+
+	const handleShowProgress = useCallback(function (pos: number) {
+		setPosition(Math.round(pos))
+	}, [])
+
 	return (
 		<>
 			<Splash hide={Boolean(!live.loading || live.data)} />
@@ -295,10 +314,10 @@ export function NTS() {
 					key={`${show?.source?.url}_${looped}_mixcloud`}
 					show={show}
 					playing={playing === "show"}
-					onPlay={() => setPlaying("show")}
-					onStop={() => stop("show")}
-					onLoad={(dur) => setDuration(Math.round(dur))}
-					onProgress={(pos) => setPosition(Math.round(pos))}
+					onPlay={handleShowPlay}
+					onStop={handleShowStop}
+					onLoad={handleShowLoad}
+					onProgress={handleShowProgress}
 					position={position}
 					volume={preferences.volume}
 				/>
@@ -308,10 +327,10 @@ export function NTS() {
 					key={`${show?.source?.url}_soundcloud`}
 					show={show}
 					playing={playing === "show"}
-					onPlay={() => setPlaying("show")}
-					onStop={() => stop("show")}
-					onLoad={(dur) => setDuration(Math.round(dur))}
-					onProgress={(pos) => setPosition(Math.round(pos))}
+					onPlay={handleShowPlay}
+					onStop={handleShowStop}
+					onLoad={handleShowLoad}
+					onProgress={handleShowProgress}
 					position={position}
 					volume={preferences.volume}
 				/>
