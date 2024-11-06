@@ -5,8 +5,8 @@ import "./global.css"
 import { type Stream, streams } from "~/lib/stream"
 
 import { electron } from "./electron"
-import { useLiveTracks } from "./lib/firebase"
 import { useLiveInfo } from "./lib/live"
+import { useLiveTracks } from "./lib/live-tracks"
 import { usePreferences } from "./lib/preferences"
 import { useEvent } from "./lib/use-event"
 import { useKeydown } from "./lib/use-keydown"
@@ -78,12 +78,11 @@ export function NTS() {
 		[updatePreferences],
 	)
 
-	const tracks = useLiveTracks({
-		email: preferences.email,
-		password: preferences.password,
-		stream: playing === 1 || playing === 2 ? playing : 1,
-		paused: !preferences,
-	})
+	const tracks1 = useLiveTracks(1)
+	const tracks2 = useLiveTracks(2)
+	const currentTracks = playing === 1 ? tracks1 : tracks2
+
+	console.log("HERE", tracks1, tracks2)
 
 	const next = useCallback(function () {
 		setIndex((idx) => (idx + 1) % 3)
@@ -241,7 +240,7 @@ export function NTS() {
 						playing={playing === 1}
 						onPlay={() => setPlaying(1)}
 						onStop={stopAll}
-						tracks={tracks}
+						tracks={tracks1}
 					/>
 				</Slide>
 				<Slide>
@@ -251,7 +250,7 @@ export function NTS() {
 						playing={playing === 2}
 						onPlay={() => setPlaying(2)}
 						onStop={stopAll}
-						tracks={tracks}
+						tracks={tracks2}
 					/>
 				</Slide>
 				<Slide>
@@ -276,7 +275,7 @@ export function NTS() {
 				channel={indexToChannel[index]}
 				hasShow={Boolean(show)}
 				onShowTracklist={handleShowTracklist}
-				hasTracks={tracks.length > 0}
+				hasTracks={currentTracks.length > 0}
 			/>
 			<Chat channel={indexToChannel[index]} />
 			<Player

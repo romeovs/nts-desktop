@@ -1,6 +1,6 @@
 import classnames from "classnames"
 
-import type { LiveTrack } from "./lib/firebase"
+import type { LiveTrack } from "~/app/live-tracks"
 import type { ChannelInfo } from "./lib/live"
 
 import { Indicator } from "./indicator"

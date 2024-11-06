@@ -7,6 +7,7 @@ interface Electron {
 	): () => void
 	removeAllListeners(name: string): void
 	send(name: string, ...args: any[]): void
+	invoke(name: string, ...args: any[]): Promise<any>
 }
 
 // @ts-expect-error

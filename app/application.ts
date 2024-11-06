@@ -17,6 +17,7 @@ import {
 } from "electron"
 import serve from "electron-serve"
 import * as history from "./history"
+import { NTSLiveTracks } from "./live-tracks"
 import * as preferences from "./preferences"
 import { show } from "./show"
 
@@ -31,12 +32,14 @@ export class NTSApplication {
 	tray: Tray
 	evts: EventEmitter
 	production: boolean
+	liveTracks: NTSLiveTracks
 
 	constructor(production: boolean) {
 		this.window = makeWindow()
 		this.tray = makeTray()
 		this.evts = new EventEmitter()
 		this.production = production
+		this.liveTracks = new NTSLiveTracks(ipcMain, this.window.webContents)
 	}
 
 	async init() {
@@ -79,6 +82,7 @@ export class NTSApplication {
 		globalShortcut.register("Control+N", () => this.toggle())
 
 		setTimeout(() => app.dock.hide(), 1500)
+		await this.liveTracks.init()
 		await this.loadClient()
 	}
 
@@ -142,6 +146,7 @@ export class NTSApplication {
 		this.window.setPosition(x, y + 8, false)
 		this.window.show()
 		this.window.focus()
+		this.liveTracks.sync()
 
 		setTimeout(() => this.window.once("blur", () => this.handleBlur()), 300)
 	}
@@ -355,7 +360,7 @@ async function makeMenu(application: NTSApplication): Promise<Menu> {
 		},
 		{
 			label: "Log out",
-			click: () => application.storePreferences({ email: null, password: null }),
+			click: () => application.liveTracks.logout(),
 		},
 		{ type: "separator" },
 		{
