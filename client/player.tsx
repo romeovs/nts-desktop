@@ -13,15 +13,6 @@ export function Player(props: Props) {
 
 	const ref = useRef<HTMLAudioElement | null>(null)
 
-	useEffect(function () {
-		const readyState = ref.current?.readyState ?? 0
-		if (readyState >= 3) {
-			return
-		}
-
-		ref.current?.load()
-	}, [])
-
 	useEffect(
 		function () {
 			ref.current?.addEventListener("play", onPlay)
@@ -33,11 +24,16 @@ export function Player(props: Props) {
 
 	useEffect(
 		function () {
+			if (!ref.current) {
+				return
+			}
+
 			if (!playing) {
 				ref.current?.pause()
 				return
 			}
 
+			ref.current.load()
 			ref.current?.play()
 		},
 		[playing],
