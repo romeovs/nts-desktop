@@ -23,7 +23,7 @@ import * as credentials from "./credentials"
 const LIMIT = 15
 
 // @ts-expect-error
-const config: FirebaseOptions = VITE_FIREBASE_CONFIG
+const config: FirebaseOptions = FIREBASE_CONFIG
 
 const app = initializeApp(config)
 const auth = getAuth(app)

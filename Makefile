@@ -53,7 +53,7 @@ lint:
 index: # Build the "server"-side js
 index: app/main.ts
 	@mkdir -p dist
-	@env NODE_ENV=development $(bin)/esbuild --bundle --format=cjs --platform=node --external:electron --loader:.png=file app/main.ts --outfile=dist/index.cjs --define:VITE_FIREBASE_CONFIG='$(shell dotenv -p VITE_FIREBASE_CONFIG)'
+	@env NODE_ENV=development $(bin)/esbuild --bundle --format=cjs --platform=node --external:electron --loader:.png=file app/main.ts --outfile=dist/index.cjs --define:FIREBASE_CONFIG='$(shell dotenv -p FIREBASE_CONFIG)'
 
 preload: # Build the preload script
 preload: dist/preload.js
