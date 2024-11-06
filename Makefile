@@ -2,7 +2,7 @@ bin = ./node_modules/.bin
 
 help: ## Show this help.
 	@echo 'NTS Desktop'
-	@echo 'Please one of these make rules:'
+	@echo 'Please use one of these make rules:'
 	@echo
 	@grep '##' $(MAKEFILE_LIST) | grep -v 'grep' | awk -F ': ##' '{ printf("%18s  %s\n", $$1, $$2) }'
 	@echo
