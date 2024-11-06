@@ -1,9 +1,8 @@
-import type { IpcMain, IpcMainInvokeEvent, WebContents } from "electron"
+import { type IpcMainInvokeEvent, type WebContents, ipcMain } from "electron"
 import { type FirebaseOptions, initializeApp } from "firebase/app"
 import {
 	type UserCredential,
 	getAuth,
-	reauthenticateWithCredential,
 	signInWithEmailAndPassword,
 } from "firebase/auth"
 import {
@@ -69,7 +68,6 @@ function liveTracks(stream: 1 | 2, fn: Handler): () => void {
 }
 
 export class NTSLiveTracks {
-	ipcMain: IpcMain
 	webContents: WebContents
 
 	promises: { [creds: string]: Promise<UserCredential> } = {}
@@ -81,8 +79,7 @@ export class NTSLiveTracks {
 
 	creds: any | null
 
-	constructor(ipcMain: IpcMain, webContents: WebContents) {
-		this.ipcMain = ipcMain
+	constructor(webContents: WebContents) {
 		this.webContents = webContents
 		this.unsubscribe = null
 		this.previous = {
@@ -90,7 +87,7 @@ export class NTSLiveTracks {
 			stream2: [],
 		}
 
-		this.ipcMain.handle("login-credentials", this._handleLogin.bind(this))
+		ipcMain.handle("login-credentials", this._handleLogin.bind(this))
 	}
 
 	async init() {

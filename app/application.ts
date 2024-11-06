@@ -16,6 +16,7 @@ import {
 	shell,
 } from "electron"
 import serve from "electron-serve"
+
 import * as history from "./history"
 import { NTSLiveTracks } from "./live-tracks"
 import * as preferences from "./preferences"
@@ -39,7 +40,7 @@ export class NTSApplication {
 		this.tray = makeTray()
 		this.evts = new EventEmitter()
 		this.production = production
-		this.liveTracks = new NTSLiveTracks(ipcMain, this.window.webContents)
+		this.liveTracks = new NTSLiveTracks(this.window.webContents)
 	}
 
 	async init() {
