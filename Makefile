@@ -1,5 +1,16 @@
 bin = ./node_modules/.bin
 
+ifneq (CI,1)
+SILENT += >/dev/null
+endif
+
+# Logging
+
+__blue = $$(tput setaf 4)
+__normal = $$(tput sgr0)
+title = $(shell pwd | xargs basename)
+log = printf "$(__blue)$(title): $(__normal) %s\\n"
+
 help: ## Show this help.
 	@echo 'NTS Desktop'
 	@echo 'Please use one of these make rules:'
@@ -30,6 +41,7 @@ TSC_FLAGS =
 
 typecheck: ## Check for type errors
 typecheck:
+	@$(log) "Typechecking..."
 	@$(bin)/tsc --noEmit $(TSC_FLAGS)
 
 typecheck.watch: ## Check for type errors and recheck when a file changes
@@ -43,12 +55,14 @@ format:
 
 formatting: ## Check the formatting of all code
 formatting:
-	@$(bin)/biome check . --linter-enabled=false --organize-imports-enabled=true
+	@$(log) "Checking format..."
+	@$(bin)/biome check . --linter-enabled=false --organize-imports-enabled=true $(SILENT)
 
 
 lint: ## Check lint
 lint:
-	@$(bin)/biome lint .
+	@$(log) "Linting..."
+	@$(bin)/biome lint . $(SILENT)
 
 index: # Build the "server"-side js
 index: app/main.ts
