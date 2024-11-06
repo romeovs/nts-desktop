@@ -101,3 +101,18 @@ MAKEFLAGS += -j4
 endif
 
 check: lint formatting typecheck
+
+
+# Git hooks
+.PHONY: run-always
+
+.git/hooks/%: run-always
+	@echo "Creating $* hook"
+	@echo "make -j4 git.$*" > ".git/hooks/$*"
+	@chmod a+x ".git/hooks/$*"
+
+.PHONY: hooks
+hooks: .git/hooks/pre-commit .git/hooks/pre-push
+
+git.pre-push: check
+git.pre-commit: check
