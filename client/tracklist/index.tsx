@@ -29,7 +29,7 @@ export function Tracklist(props: TracklistProps) {
 		<ul className={css.tracklist}>
 			{tracklist.map((track, index) => (
 				<TrackItem
-					key={track.start}
+					key={`${track.start}_${index}`}
 					track={track}
 					index={index}
 					position={position}
@@ -56,7 +56,8 @@ function TrackItem(props: TrackProps) {
 	const from = track.start
 	const to = track.end ?? null
 
-	const isActive = !to || Boolean(from && to && from <= position && position < to)
+	const isActive =
+		from && (!to || Boolean(from && to && from <= position && position < to))
 
 	const handleClick = useCallback(
 		function () {
@@ -88,6 +89,9 @@ function TrackItem(props: TrackProps) {
 			<div className={css.time} onClick={handleSeek}>
 				{typeof from === "number" && (
 					<span className={css.from}>{formatPosition(from)}</span>
+				)}
+				{typeof from !== "number" && (
+					<span className={classnames(css.from, css.unknown)}>--:--</span>
 				)}
 
 				{isActive && <Indicator className={css.indicator} />}

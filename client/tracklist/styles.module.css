@@ -51,6 +51,11 @@
 	padding: 0.1rem 0.2rem;
 	margin: 0 -0.2rem;
 
+	&.unknown {
+		pointer-events: none;
+		opacity: 0.3;
+	}
+
 	.seekable &:hover {
 		background: white;
 		color: black;
