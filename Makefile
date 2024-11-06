@@ -82,5 +82,8 @@ dist/pnpm-lock.json: package.json
 logos: ## Convert all svg logos into their png counterparts
 logos: $(patsubst %.svg,%.png,$(wildcard logos/*.svg))
 
-logos/%.png: logos/%.svg
-	@inkscape -h 300 $< -o $@
+ifneq ("",$(filter check git.%,$(MAKECMDGOALS)))
+MAKEFLAGS += -j4
+endif
+
+check: lint formatting typecheck
