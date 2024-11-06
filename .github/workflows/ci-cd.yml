@@ -50,8 +50,31 @@ jobs:
           cache: pnpm
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
-      - name: Typecheck
+      - name: Formatting
         run: make formatting
+
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out
+        uses: actions/checkout@v4
+      - name: Read .tool-versions
+        id: versions
+        uses: marocchino/tool-versions-action@v1
+      - uses: pnpm/action-setup@v4
+        name: Install pnpm
+        with:
+          version: ${{ steps.versions.outputs.pnpm }}
+      - name: Set up node
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ steps.versions.outputs.nodejs }}
+          cache: pnpm
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+      - name: Lint
+        run: make lint
 
   build:
     name: Build
@@ -133,6 +156,7 @@ jobs:
     needs:
       - typecheck
       - formatting
+      - lint
       - bundle
     runs-on: macos-latest
     if: startsWith(github.ref, 'refs/tags/')
