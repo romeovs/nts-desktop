@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useRef } from "react"
 import type { ShowInfo } from "~/app/show"
 
 import css from "./mixcloud.module.css"
@@ -36,12 +36,16 @@ export function Soundcloud(props: Props) {
 	} = props
 
 	const ref = useRef<HTMLIFrameElement | null>(null)
+	const widget = useRef<SCWidget | null>(null)
 	const seekingTo = useRef<number | null>(null)
-	const [widget, setWidget] = useState<SCWidget | null>(null)
 
 	useEffect(
 		function () {
 			if (!ref.current || !show) {
+				return
+			}
+
+			if (widget.current) {
 				return
 			}
 
@@ -71,48 +75,72 @@ export function Soundcloud(props: Props) {
 				w.getDuration(function (duration: number) {
 					onLoad(duration / 1000)
 				})
-				setWidget(w)
+
+				w.play()
+				widget.current = w
 			})
-			w.setVolume(volume * 100)
+
+			return function () {
+				w.unbind(Events.PLAY)
+				w.unbind(Events.PAUSE)
+				w.unbind(Events.FINISH)
+				w.unbind(Events.PLAY_PROGRESS)
+				w.unbind(Events.READY)
+			}
 		},
-		[show],
+		[show, onStop, onLoad, onPlay, onProgress],
 	)
 
 	useEffect(
 		function () {
-			if (!widget) {
+			if (!widget.current) {
 				return
 			}
 
-			widget.getPosition(function (curr: number) {
+			let ok = true
+			widget.current?.getPosition(function (curr: number) {
 				if (Math.abs(position - curr / 1000) < 1) {
 					return
 				}
+				if (!ok) {
+					return
+				}
 				seekingTo.current = position
-				widget.seekTo(position * 1000)
+				widget.current?.seekTo(position * 1000)
 				onProgress(position)
 			})
+
+			return function () {
+				ok = false
+			}
 		},
-		[position, widget, onProgress],
+		[position, onProgress],
 	)
 
 	useEffect(
 		function () {
-			if (playing && show) {
-				widget?.play()
+			if (!widget.current) {
 				return
 			}
 
-			widget?.pause()
+			if (playing && show) {
+				widget.current.play()
+				return
+			}
+
+			widget.current.pause()
 		},
-		[playing, widget, show],
+		[playing, show],
 	)
 
 	useEffect(
 		function () {
-			widget?.setVolume(volume * 100)
+			if (!widget.current) {
+				return
+			}
+			widget.current.setVolume(volume * 100)
 		},
-		[volume, widget],
+		[volume],
 	)
 
 	if (!show) {
