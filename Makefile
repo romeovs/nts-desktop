@@ -40,9 +40,15 @@ format: ## Format all code
 format:
 	@$(bin)/biome check . --linter-enabled=false --organize-imports-enabled=true --fix
 
+
 formatting: ## Check the formatting of all code
 formatting:
 	@$(bin)/biome check . --linter-enabled=false --organize-imports-enabled=true
+
+
+lint: ## Check lint
+lint:
+	@$(bin)/biome lint .
 
 index: # Build the "server"-side js
 index: app/main.ts
