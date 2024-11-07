@@ -1,0 +1,36 @@
+.toasts {
+	z-index: 1000;
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	padding: 4px;
+	display: flex;
+	flex-direction: column;
+	gap: 3px;
+}
+
+.toast {
+	background: #222;
+	color: #eee;
+	padding: 0.3rem 0.5rem;
+	border-radius: 6px;
+	font-size: 0.85rem;
+	box-shadow: 0 5px 12px rgba(0, 0, 0, 0.5);
+
+	transition: opacity 500ms;
+}
+
+.enter {
+	opacity: 0;
+}
+.enterActive {
+	opacity: 1;
+}
+
+.exit {
+	opacity: 1;
+}
+.exitActive {
+	opacity: 0;
+}

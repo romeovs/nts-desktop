@@ -19,6 +19,7 @@ import { Chat } from "./chat"
 import { Help } from "./help"
 import { Login } from "./login"
 import { Mixcloud } from "./mixcloud"
+import { Notifications } from "./notifications"
 import { Offline } from "./offline"
 import { Player } from "./player"
 import { Show } from "./show"
@@ -370,6 +371,7 @@ export function NTS() {
 			<Offline hide={!isOffline} />
 			<Help hide={!isShowingHelp} onHide={() => setIsShowingHelp(false)} />
 			<Volume volume={preferences.volume} />
+			<Notifications />
 		</>
 	)
 }
