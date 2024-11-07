@@ -37,7 +37,7 @@ export function Soundcloud(props: Props) {
 
 	const ref = useRef<HTMLIFrameElement | null>(null)
 	const widget = useRef<SCWidget | null>(null)
-	const seekingTo = useRef<number | null>(null)
+	const seeking = useRef<boolean>(false)
 
 	useEffect(
 		function () {
@@ -61,15 +61,11 @@ export function Soundcloud(props: Props) {
 				const position = evt.currentPosition / 1000
 				const rounded = Math.round(position)
 
-				if (seekingTo.current === null) {
-					onProgress(rounded)
-					return
+				if (seeking.current) {
+					seeking.current = false
 				}
 
-				if (seekingTo.current === rounded) {
-					seekingTo.current = null
-					onProgress(rounded)
-				}
+				onProgress(rounded)
 			})
 			w.bind(Events.READY, function () {
 				w.getDuration(function (duration: number) {
@@ -97,24 +93,21 @@ export function Soundcloud(props: Props) {
 				return
 			}
 
-			let ok = true
 			widget.current?.getPosition(function (curr: number) {
+				if (seeking.current) {
+					// already seeking, skip
+					return
+				}
 				if (Math.abs(position - curr / 1000) < 1) {
+					// to close to current position, skip
 					return
 				}
-				if (!ok) {
-					return
-				}
-				seekingTo.current = position
+				seeking.current = true
 				widget.current?.seekTo(position * 1000)
-				onProgress(position)
+				seeking.current = false
 			})
-
-			return function () {
-				ok = false
-			}
 		},
-		[position, onProgress],
+		[position],
 	)
 
 	useEffect(
