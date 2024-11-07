@@ -28,6 +28,7 @@
 .time {
 	font-size: 0.75rem;
 	margin-left: 1rem;
+	white-space: nowrap;
 }
 
 .play {

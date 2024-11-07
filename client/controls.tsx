@@ -41,6 +41,8 @@ export function Controls(props: Props) {
 		onSeek(pos)
 	}
 
+	const isEmpty = duration === 0 && position === 0
+
 	return (
 		<div className={css.controls}>
 			<button onClick={handlePlayClick} type="button" className={css.play}>
@@ -49,9 +51,12 @@ export function Controls(props: Props) {
 			<div className={css.bar} onClick={handleClick} ref={ref}>
 				<div className={css.pos} style={{ width: `${width}%` }} />
 			</div>
-			<div className={css.time}>
-				{formatDuration(position)}/{formatDuration(duration)}
-			</div>
+			{isEmpty && <div className={css.time}>--:--/--:--</div>}
+			{!isEmpty && (
+				<div className={css.time}>
+					{formatDuration(position)}/{formatDuration(duration)}
+				</div>
+			)}
 		</div>
 	)
 }
