@@ -18,11 +18,14 @@ help: ## Show this help.
 	@grep '##' $(MAKEFILE_LIST) | grep -v 'grep' | awk -F ': ##' '{ printf("%18s  %s\n", $$1, $$2) }'
 	@echo
 
+bundle: build app
+
 start: ## Start the app, making sure it is build to the latest version
 start: index preload run
 
 run: ## Run the application (not recommended, use start instead)
 run:
+	@$(log) "Running app"
 	@$(bin)/electron dist
 
 build: ## Build all the JavaScript, without bundling the Electron app
@@ -31,10 +34,12 @@ build: index preload client packages
 .PHONY: app
 app: ## Build the electron app
 app:
+	@$(log) "Bundling app..."
 	@$(bin)/electron-builder build --mac --universal --publish=never
 
 dev: ## Start the development server for interactive development
 dev:
+	@$(log) "Starting dev server..."
 	@$(bin)/concurrently "make client.dev" "sleep 3 && make start"
 
 TSC_FLAGS =
@@ -66,18 +71,21 @@ lint:
 
 index: # Build the "server"-side js
 index: app/main.ts
+	@$(log) "Building app js..."
 	@mkdir -p dist
 	@env NODE_ENV=development $(bin)/esbuild --bundle --format=cjs --platform=node --external:electron --loader:.png=file app/main.ts --outfile=dist/index.cjs --define:FIREBASE_CONFIG='$(shell $(bin)/dotenv -p FIREBASE_CONFIG)'
 
 preload: # Build the preload script
 preload: dist/preload.js
 dist/preload.js: app/preload.js
+	@$(log) "Copying preload.js..."
 	@mkdir -p dist
 	@cp app/preload.js dist/preload.js
 
 .PHONY: client
 client: # Build the client-side code
 client:
+	@$(log) "Building client..."
 	@mkdir -p dist
 	@rm -rf dist/client/*
 	@$(bin)/vite build
@@ -89,6 +97,7 @@ client.dev:
 packages: # Copy package.json and amend it for Electron
 packages: dist/pnpm-lock.json
 dist/pnpm-lock.json: package.json
+	@$(log) "Copying package.json..."
 	@mkdir -p dist
 	@cat package.json | $(bin)/json -e 'this.dependencies=undefined' -e 'this.devDependencies=undefined' > dist/package.json
 	@cd dist && pnpm install --production
