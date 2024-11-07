@@ -39,6 +39,7 @@ export function Notifications() {
 	useEffect(function () {
 		function handler(evt: CustomEvent<Notification>) {
 			const notification = evt.detail
+			console.log("HERE", notification)
 			setNotifications((notifications) => [...notifications, notification])
 		}
 

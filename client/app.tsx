@@ -52,10 +52,20 @@ export function App() {
 	}, [])
 
 	if (route === "login") {
-		return <Login onClose={handleLoginClose} />
+		return (
+			<>
+				<Login onClose={handleLoginClose} />
+				<Notifications />
+			</>
+		)
 	}
 
-	return <NTS />
+	return (
+		<>
+			<NTS />
+			<Notifications />
+		</>
+	)
 }
 
 export function NTS() {
@@ -371,7 +381,6 @@ export function NTS() {
 			<Offline hide={!isOffline} />
 			<Help hide={!isShowingHelp} onHide={() => setIsShowingHelp(false)} />
 			<Volume volume={preferences.volume} />
-			<Notifications />
 		</>
 	)
 }

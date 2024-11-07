@@ -1,8 +1,9 @@
-import { useCallback } from "react"
+import { type FormEvent, useCallback } from "react"
 
 import { electron } from "./electron"
 
 import css from "./login.module.css"
+import { notify } from "./notifications"
 
 type LoginProps = {
 	onClose: () => void
@@ -12,7 +13,9 @@ export function Login(props: LoginProps) {
 	const { onClose } = props
 
 	const handleSubmit = useCallback(
-		async function (data: FormData) {
+		async function (evt: FormEvent<HTMLFormElement>) {
+			evt.preventDefault()
+			const data = new FormData(evt.target as HTMLFormElement)
 			const email = data.get("email")?.toString() ?? null
 			const password = data.get("password")?.toString() ?? null
 
@@ -24,16 +27,14 @@ export function Login(props: LoginProps) {
 				await electron.invoke("login-credentials", { email, password })
 				onClose()
 			} catch (err) {
-				// TODO: show error
-				console.log("HERE", err)
+				notify({ message: "invalid credentials", ttl: 4000, type: "error" })
 			}
 		},
 		[onClose],
 	)
 
 	return (
-		// @ts-expect-error: form action type is not a string
-		<form className={css.login} action={handleSubmit}>
+		<form className={css.login} onSubmit={handleSubmit}>
 			<label htmlFor="email">Email</label>
 			<input id="email" name="email" type="email" required />
 
