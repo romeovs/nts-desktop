@@ -130,6 +130,38 @@ export function NTS() {
 		[playing],
 	)
 
+	useEffect(
+		function () {
+			if (!playing) {
+				document.title = "NTS"
+				navigator.mediaSession.metadata = null
+			}
+
+			if (playing === 1) {
+				if (live.data) {
+					document.title = `NTS 1 - ${live.data?.channel1.now.name}`
+				} else {
+					document.title = "NTS 1"
+				}
+			}
+			if (playing === 2) {
+				if (live.data) {
+					document.title = `NTS 2 - ${live.data?.channel2.now.name}`
+				} else {
+					document.title = "NTS 2"
+				}
+			}
+			if (playing === "show") {
+				if (show) {
+					document.title = `NTS - ${show.name}`
+				} else {
+					document.title = "NTS"
+				}
+			}
+		},
+		[playing, show, live],
+	)
+
 	const increaseVolume = useCallback(
 		function () {
 			setVolume((v: number): number => clamp(0, 1, v + 0.1))
