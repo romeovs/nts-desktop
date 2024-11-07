@@ -1,5 +1,6 @@
 import classnames from "classnames"
 import { useCallback } from "react"
+import { notify } from "~/client/notifications"
 
 import { Indicator } from "~/client/indicator"
 
@@ -62,6 +63,7 @@ function TrackItem(props: TrackProps) {
 	const handleClick = useCallback(
 		function () {
 			navigator.clipboard.writeText(`${artist} - ${title}`)
+			notify({ message: "copied to clipboard!", ttl: 2000 })
 		},
 		[artist, title],
 	)
