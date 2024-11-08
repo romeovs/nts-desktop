@@ -1,31 +1,42 @@
 .login {
-	padding: 0 3rem;
+	padding: 3rem 4rem;
 	outline: 1px solid red;
 	height: 100vh;
+	box-sizing: border-box;
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
-}
 
-.login input {
-	background: white;
-	border: 2px solid white;
-	padding: 0.5rem;
-	font: inherit;
-	margin-bottom: 1rem;
-	width: 100%;
-	box-sizing: border-box;
-	border-radius: 0;
-
-	&:focus {
-		outline: 1px solid black;
-		outline-offset: -2px;
+	input {
+		background: white;
+		border: none;
+		box-sizing: border-box;
+		padding: 0.5rem;
+		height: 2.5rem;
+		font: inherit;
+		width: 100%;
+		border-radius: 0;
+		margin-bottom: 1rem;
+		outline: none;
 	}
-}
 
-.login button {
-	font: inherit;
-	color: black;
-	border: none;
-	padding: 0.5rem 1rem;
+	label {
+		font-size: 0.85rem;
+		font-weight: bold;
+		text-transform: uppercase;
+	}
+
+	button {
+		font: inherit;
+		color: black;
+		border: none;
+		padding: 0.5rem 1rem;
+		box-sizing: border-box;
+		padding: 0.5rem;
+		height: 2.5rem;
+
+		font-size: 0.85rem;
+		font-weight: bold;
+		text-transform: uppercase;
+	}
 }

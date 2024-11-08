@@ -35,11 +35,15 @@ export function Login(props: LoginProps) {
 
 	return (
 		<form className={css.login} onSubmit={handleSubmit}>
-			<label htmlFor="email">Email</label>
-			<input id="email" name="email" type="email" required />
+			<input id="email" name="email" type="email" required placeholder="Email" />
 
-			<label htmlFor="password">Password</label>
-			<input id="password" type="password" name="password" required />
+			<input
+				id="password"
+				type="password"
+				name="password"
+				required
+				placeholder="Password"
+			/>
 
 			<button type="submit">Log in</button>
 		</form>
