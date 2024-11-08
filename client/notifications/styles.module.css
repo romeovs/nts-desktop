@@ -11,21 +11,51 @@
 }
 
 .toast {
-	background: #222;
-	color: #eee;
-	padding: 0.3rem 0.5rem;
-	border-radius: 6px;
-	font-size: 0.85rem;
-	box-shadow: 0 5px 12px rgba(0, 0, 0, 0.5);
+	transition: opacity 500ms, height 500ms;
 
-	transition: opacity 500ms;
+	height: 0;
+
+	.inner {
+		background: #222;
+		color: #eee;
+		padding: 0.3rem 0.5rem;
+		border-radius: 6px;
+		font-size: 0.85rem;
+		box-shadow: 0 5px 12px rgba(0, 0, 0, 0.5);
+		height: 1.5rem;
+		line-height: 1.5rem;
+
+		transition: transform 300ms, opacity 500ms;
+		will-change: height;
+	}
+
+	&.error {
+		.inner {
+			background: #440000;
+			color: #ffdddd;
+		}
+	}
 }
 
 .enter {
 	opacity: 0;
+	height: 0;
+
+	.inner {
+		transform: scale(0.8);
+		opacity: 0;
+	}
 }
-.enterActive {
+
+.enterActive,
+.enterDone {
 	opacity: 1;
+	height: 2.1rem;
+
+	.inner {
+		transform: scale(1);
+		opacity: 1;
+	}
 }
 
 .exit {

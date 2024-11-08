@@ -1,3 +1,4 @@
+import classnames from "classnames"
 import { createRef, useEffect, useState } from "react"
 import { CSSTransition, TransitionGroup } from "react-transition-group"
 
@@ -39,8 +40,9 @@ export function Notifications() {
 	useEffect(function () {
 		function handler(evt: CustomEvent<Notification>) {
 			const notification = evt.detail
-			console.log("HERE", notification)
-			setNotifications((notifications) => [...notifications, notification])
+			setNotifications((notifications) =>
+				[...notifications, notification].sort((a, b) => b.created - a.created),
+			)
 		}
 
 		// @ts-expect-error
@@ -56,15 +58,13 @@ export function Notifications() {
 			)
 			const next = Math.min(...ends)
 			const diff = Math.max(0, next - Date.now())
-			const t = setTimeout(
-				() =>
-					setNotifications((notifications) =>
-						notifications.filter(
-							(notification) => notification.created + notification.ttl > Date.now(),
-						),
+			const t = setTimeout(function () {
+				setNotifications((notifications) =>
+					notifications.filter(
+						(notification) => notification.created + notification.ttl > Date.now(),
 					),
-				diff,
-			)
+				)
+			}, diff)
 
 			return () => clearTimeout(t)
 		},
@@ -98,8 +98,11 @@ export function Notifications() {
 function Toast(props: { notification: Notification }) {
 	const { notification } = props
 	return (
-		<div className={css.toast} ref={notification.nodeRef}>
-			{notification.message}
+		<div
+			className={classnames(css.toast, css[notification.type])}
+			ref={notification.nodeRef}
+		>
+			<div className={css.inner}>{notification.message}</div>
 		</div>
 	)
 }
