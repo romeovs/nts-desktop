@@ -1,3 +1,4 @@
+import classnames from "classnames"
 import { type FormEvent, useCallback } from "react"
 
 import { electron } from "./electron"
@@ -6,11 +7,12 @@ import css from "./login.module.css"
 import { notify } from "./notifications"
 
 type LoginProps = {
+	show: boolean
 	onClose: () => void
 }
 
 export function Login(props: LoginProps) {
-	const { onClose } = props
+	const { show, onClose } = props
 
 	const handleSubmit = useCallback(
 		async function (evt: FormEvent<HTMLFormElement>) {
@@ -34,7 +36,13 @@ export function Login(props: LoginProps) {
 	)
 
 	return (
-		<form className={css.login} onSubmit={handleSubmit}>
+		<form
+			className={classnames(css.login, show && css.show)}
+			onSubmit={handleSubmit}
+		>
+			<button type="button" onClick={onClose}>
+				Back
+			</button>
 			<input id="email" name="email" type="email" required placeholder="Email" />
 
 			<input

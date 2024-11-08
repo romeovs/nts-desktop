@@ -6,6 +6,21 @@
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	z-index: 10000;
+	background: black;
+	opacity: 0;
+	transition: opacity 500ms;
+	pointer-events: none;
+
+	&.show {
+		pointer-events: auto;
+		opacity: 1;
+	}
 
 	input {
 		background: white;
@@ -38,5 +53,16 @@
 		font-size: 0.85rem;
 		font-weight: bold;
 		text-transform: uppercase;
+	}
+
+	button[type="button"] {
+		background: none;
+		text-align: left;
+		color: white;
+		position: fixed;
+		top: 0.3rem;
+		left: 0.3rem;
+		display: inline-flex;
+		cursor: pointer;
 	}
 }
