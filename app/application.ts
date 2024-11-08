@@ -17,6 +17,7 @@ import {
 } from "electron"
 import serve from "electron-serve"
 
+import * as credentials from "./credentials"
 import * as history from "./history"
 import { NTSLiveTracks } from "./live-tracks"
 import * as preferences from "./preferences"
@@ -311,6 +312,7 @@ function makeTray(): Tray {
 
 async function makeMenu(application: NTSApplication): Promise<Menu> {
 	const h = await history.read()
+	const hasCredentials = await credentials.has()
 
 	return Menu.buildFromTemplate([
 		{
@@ -355,14 +357,15 @@ async function makeMenu(application: NTSApplication): Promise<Menu> {
 			],
 		},
 		{ type: "separator" },
-		{
-			label: "Log in to get live tracks...",
-			click: () => application.login(),
-		},
-		{
-			label: "Log out",
-			click: () => application.liveTracks.logout(),
-		},
+		!hasCredentials
+			? {
+					label: "Log in to get live tracks...",
+					click: () => application.login(),
+				}
+			: {
+					label: "Log out",
+					click: () => application.liveTracks.logout(),
+				},
 		{ type: "separator" },
 		{
 			label: "Reload NTS Desktop",

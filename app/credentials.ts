@@ -32,3 +32,8 @@ export async function write(credentials: Credentials): Promise<void> {
 export async function clear(): Promise<void> {
 	await fs.unlink(filename)
 }
+
+export async function has() {
+	const creds = await read()
+	return creds !== null
+}
