@@ -1,5 +1,5 @@
 import classnames from "classnames"
-import { useCallback } from "react"
+import { type MouseEvent, useCallback } from "react"
 import { notify } from "~/client/notifications"
 
 import { Indicator } from "~/client/indicator"
@@ -69,7 +69,8 @@ function TrackItem(props: TrackProps) {
 	)
 
 	const handleSeek = useCallback(
-		function () {
+		function (evt: MouseEvent<HTMLDivElement>) {
+			evt.stopPropagation()
 			if (typeof from !== "number" || !onSeek) {
 				return
 			}
