@@ -211,7 +211,6 @@ export function NTS() {
 	})
 
 	useEvent("open", async function () {
-		await live.load()
 		setIsOpen(true)
 	})
 
@@ -292,7 +291,7 @@ export function NTS() {
 
 	return (
 		<>
-			<Splash hide={Boolean(!live.loading || live.data)} />
+			<Splash hide={!live.loading} />
 			<Slider index={index} animate={isOpen}>
 				<Slide>
 					<ChannelCard
