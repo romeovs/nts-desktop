@@ -42,6 +42,15 @@ const channelToIndex: Record<Channel, number> = {
 const indexToChannel: Channel[] = [1, 2, "show"]
 
 export function App() {
+	return (
+		<>
+			<Router />
+			<Notifications />
+		</>
+	)
+}
+
+function Router() {
 	const [route, setRoute] = useState<"app" | "login">("app")
 
 	useEvent("login", () => setRoute("login"), [setRoute])
@@ -52,20 +61,12 @@ export function App() {
 	}, [])
 
 	if (route === "login") {
-		return (
-			<>
-				<Login onClose={handleLoginClose} />
-				<Notifications />
-			</>
-		)
+		return <Login onClose={handleLoginClose} />
 	}
 
-	return (
-		<>
-			<NTS />
-			<Notifications />
-		</>
-	)
+	if (route === "app") {
+		return <NTS />
+	}
 }
 
 export function NTS() {
