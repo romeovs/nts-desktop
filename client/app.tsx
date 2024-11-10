@@ -12,6 +12,8 @@ import { useEvent } from "./lib/use-event"
 import { useKeydown } from "./lib/use-keydown"
 import { useOffline } from "./lib/use-offline"
 
+import { useMetadata } from "./metadata"
+
 import type { ShowInfo } from "../app/show"
 import { Arrow } from "./arrow"
 import { Channel as ChannelCard } from "./channel"
@@ -73,6 +75,7 @@ export function NTS() {
 	const [position, setPosition] = useState(0)
 	const [looped, setLooped] = useState(0)
 	const isOffline = useOffline()
+	useMetadata(playing, show, live)
 
 	const setVolume = useCallback(
 		function (fn: (volume: number) => number) {
@@ -131,38 +134,6 @@ export function NTS() {
 			electron.send("playing", playing)
 		},
 		[playing],
-	)
-
-	useEffect(
-		function () {
-			if (!playing) {
-				document.title = "NTS"
-				navigator.mediaSession.metadata = null
-			}
-
-			if (playing === 1) {
-				if (live.data) {
-					document.title = `NTS 1 - ${live.data?.channel1.now.name}`
-				} else {
-					document.title = "NTS 1"
-				}
-			}
-			if (playing === 2) {
-				if (live.data) {
-					document.title = `NTS 2 - ${live.data?.channel2.now.name}`
-				} else {
-					document.title = "NTS 2"
-				}
-			}
-			if (playing === "show") {
-				if (show) {
-					document.title = `NTS - ${show.name}`
-				} else {
-					document.title = "NTS"
-				}
-			}
-		},
-		[playing, show, live],
 	)
 
 	const increaseVolume = useCallback(
