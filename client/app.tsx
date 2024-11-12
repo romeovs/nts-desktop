@@ -63,7 +63,6 @@ export function App() {
 }
 
 export function NTS() {
-	const live = useLiveInfo()
 	const [show, setShow] = useState<ShowInfo | null>(null)
 	const { preferences, updatePreferences } = usePreferences()
 
@@ -75,6 +74,7 @@ export function NTS() {
 	const [position, setPosition] = useState(0)
 	const [looped, setLooped] = useState(0)
 	const isOffline = useOffline()
+	const live = useLiveInfo({ skip: isOffline })
 	useMetadata(playing, show, live)
 
 	const setVolume = useCallback(
@@ -194,32 +194,11 @@ export function NTS() {
 
 	useEffect(
 		function () {
-			if (!live.data) {
-				return
-			}
-			const ends1 = live.data.channel1.now.ends
-			const left = ends1.getTime() - Date.now()
-
-			if (left < 0) {
-				return
-			}
-
-			const t = setTimeout(live.load, left + 500)
-			return () => clearTimeout(t)
-		},
-		[live.data, live.load],
-	)
-
-	useEffect(
-		function () {
 			if (isOffline) {
 				stopAll()
-				return
 			}
-
-			live.load()
 		},
-		[isOffline, stopAll, live.load],
+		[isOffline, stopAll],
 	)
 
 	const handleShowTracklist = useCallback(function () {

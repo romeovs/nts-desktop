@@ -1,4 +1,4 @@
-import { type PromiseState, usePromise } from "./use-promise"
+import { useCallback, useEffect, useRef, useState } from "react"
 
 export type ChannelInfo = {
 	now: ShowInfo
@@ -17,9 +17,22 @@ export type Info = {
 	channel1: ChannelInfo
 	channel2: ChannelInfo
 }
+export type InfoState = {
+	loading: boolean
+	data: Info | null
+	error: Error | null
+}
 
-export async function live(): Promise<Info> {
-	const resp = await fetch("https://www.nts.live/api/v2/live", { cache: "no-cache" })
+type LiveOptions = {
+	signal?: AbortSignal
+}
+
+export async function live(options: LiveOptions): Promise<Info> {
+	const resp = await fetch("https://www.nts.live/api/v2/live", {
+		cache: "no-cache",
+		signal: options.signal,
+	})
+
 	const content = await resp.json()
 
 	return {
@@ -70,6 +83,72 @@ function simplify(data: ShowData): ShowInfo {
 	}
 }
 
-export function useLiveInfo(): PromiseState<never, Info> {
-	return usePromise(live)
+type Options = {
+	skip?: boolean
+}
+
+export function useLiveInfo(options: Options): InfoState {
+	const [state, setState] = useState<InfoState>({
+		loading: true,
+		data: null,
+		error: null,
+	})
+	const abort = useRef<AbortController | null>(null)
+
+	const load = useCallback(async function () {
+		abort.current?.abort()
+		abort.current = new AbortController()
+
+		setState((state) => ({ ...state, loading: true, error: null }))
+
+		const data = await live({ signal: abort.current.signal })
+		if (abort.current.signal.aborted) {
+			throw new Error("aborted")
+		}
+
+		setState({ loading: false, data, error: null })
+	}, [])
+
+	useEffect(
+		function () {
+			if (options.skip) {
+				return
+			}
+
+			load()
+		},
+		[load, options.skip],
+	)
+
+	useEffect(
+		function () {
+			if (options.skip) {
+				return
+			}
+			const now = Date.now()
+			const ch1 =
+				(state.data?.channel1.now.ends.getTime() ?? Number.POSITIVE_INFINITY) - now
+			const ch2 =
+				(state.data?.channel2.now.ends.getTime() ?? Number.POSITIVE_INFINITY) - now
+			const soonest = Math.min(ch1, ch2)
+			if (!Number.isFinite(soonest)) {
+				return
+			}
+
+			if (soonest < 0) {
+				load()
+				return
+			}
+
+			const t = setTimeout(load, soonest)
+			return () => clearTimeout(t)
+		},
+		[load, state.data, options.skip],
+	)
+
+	return {
+		loading: state.loading,
+		data: state.data,
+		error: state.error,
+	}
 }

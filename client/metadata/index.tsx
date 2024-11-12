@@ -1,8 +1,7 @@
 import { useEffect } from "react"
 
 import type { ShowInfo } from "~/app/show"
-import type { Info } from "~/client/lib/live"
-import type { PromiseState } from "~/client/lib/use-promise"
+import type { InfoState } from "~/client/lib/live"
 import type { Stream } from "~/lib/stream"
 
 const artwork = [
@@ -15,7 +14,7 @@ const artwork = [
 export function useMetadata(
 	playing: Stream | "show" | null,
 	show: ShowInfo | null,
-	live: PromiseState<never, Info>,
+	live: InfoState,
 ) {
 	useEffect(
 		function () {
