@@ -273,7 +273,9 @@ function makeWindow(): BrowserWindow {
 		frame: false,
 		resizable: false,
 		alwaysOnTop: true,
+		paintWhenInitiallyHidden: true,
 		webPreferences: {
+			backgroundThrottling: false,
 			webSecurity: true,
 			nodeIntegration: false,
 			contextIsolation: true,
