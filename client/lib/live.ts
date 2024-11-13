@@ -136,14 +136,16 @@ export function useLiveInfo(options: Options): InfoState {
 			}
 
 			if (soonest < 0) {
-				load()
+				if (!state.data && !state.loading) {
+					load()
+				}
 				return
 			}
 
 			const t = setTimeout(load, soonest)
 			return () => clearTimeout(t)
 		},
-		[load, state.data, options.skip],
+		[load, state.data, state.loading, options.skip],
 	)
 
 	return {
