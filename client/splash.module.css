@@ -6,7 +6,7 @@
 	bottom: 0;
 	z-index: 100;
 	background: black;
-	transition: opacity 800ms;
+	transition: opacity 400ms;
 	transition-delay: 200ms;
 	opacity: 1;
 }
