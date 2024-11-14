@@ -1,8 +1,9 @@
 import { useCallback, useEffect, useRef, useState } from "react"
+import { useEvent } from "./use-event"
 
 export type ChannelInfo = {
 	now: ShowInfo
-	next: ShowInfo
+	next: ShowInfo | null
 }
 
 export type ShowInfo = {
@@ -120,6 +121,32 @@ export function useLiveInfo(options: Options): InfoState {
 		[load, options.skip],
 	)
 
+	const next = useCallback(
+		function () {
+			setState(function (state) {
+				if (!state.data || !state.data.channel1.next || !state.data.channel2.next) {
+					return state
+				}
+
+				return {
+					...state,
+					data: {
+						channel1: {
+							now: state.data.channel1.next,
+							next: null,
+						},
+						channel2: {
+							now: state.data.channel2.next,
+							next: null,
+						},
+					},
+				}
+			})
+			load()
+		},
+		[load],
+	)
+
 	useEffect(
 		function () {
 			if (options.skip) {
@@ -137,16 +164,20 @@ export function useLiveInfo(options: Options): InfoState {
 
 			if (soonest < 0) {
 				if (!state.data && !state.loading) {
-					load()
+					next()
 				}
 				return
 			}
 
-			const t = setTimeout(load, soonest)
+			const t = setTimeout(next, soonest + 1)
 			return () => clearTimeout(t)
 		},
-		[load, state.data, state.loading, options.skip],
+		[next, state.data, state.loading, options.skip],
 	)
+
+	useEvent("open", async function () {
+		load()
+	})
 
 	return {
 		loading: state.loading,
