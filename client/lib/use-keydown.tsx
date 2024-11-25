@@ -8,6 +8,10 @@ export function useKeydown(key: string, handler: () => void, deps: any[] = []) {
 				return
 			}
 
+			if (evt.target !== document.body) {
+				return
+			}
+
 			evt.preventDefault()
 			handler()
 		}
