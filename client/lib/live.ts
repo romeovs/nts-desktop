@@ -37,14 +37,29 @@ export async function live(options: LiveOptions): Promise<Info> {
 	const content = await resp.json()
 
 	return {
-		channel1: {
+		channel1: result({
 			now: simplify(content.results[0].now),
 			next: simplify(content.results[0].next),
-		},
-		channel2: {
+		}),
+		channel2: result({
 			now: simplify(content.results[1].now),
 			next: simplify(content.results[1].next),
-		},
+		}),
+	}
+}
+
+function result(info: ChannelInfo): ChannelInfo {
+	if (info.now.ends.getTime() > Date.now()) {
+		return info
+	}
+
+	if (!info.next) {
+		return info
+	}
+
+	return {
+		now: info.next,
+		next: null,
 	}
 }
 
