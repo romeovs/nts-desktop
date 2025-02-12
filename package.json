@@ -20,7 +20,7 @@
 		"dotenv-cli": "^7.4.2",
 		"electron": "^33.0.2",
 		"electron-builder": "^24.13.3",
-		"esbuild": "^0.24.0",
+		"esbuild": "^0.25.0",
 		"json": "^11.0.0",
 		"postcss-nested": "^7.0.2",
 		"postcss-preset-env": "^10.0.9",
