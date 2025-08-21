@@ -109,6 +109,7 @@ export class NTSApplication {
 	close() {
 		this.window.webContents.send("close")
 		setTimeout(() => this.window.hide(), 10)
+		this.liveTracks.unsubscribe?.()
 	}
 
 	handleBlur() {
@@ -148,6 +149,7 @@ export class NTSApplication {
 		this.window.setPosition(x, y + 8, false)
 		this.window.show()
 		this.window.focus()
+		this.liveTracks.subscribe()
 		this.liveTracks.sync()
 
 		setTimeout(() => this.window.once("blur", () => this.handleBlur()), 300)
@@ -170,6 +172,7 @@ export class NTSApplication {
 
 	reload() {
 		this.window.reload()
+		this.liveTracks.subscribe()
 	}
 
 	async openMenu() {

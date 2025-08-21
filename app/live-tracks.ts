@@ -6,7 +6,10 @@ import {
 	signInWithEmailAndPassword,
 } from "firebase/auth"
 import {
+	type DocumentData,
+	type QuerySnapshot,
 	collection,
+	getDocs,
 	getFirestore,
 	limit,
 	onSnapshot,
@@ -37,7 +40,7 @@ export type LiveTrack = {
 
 type Handler = (err: Error | null, res: LiveTrack[] | null) => void
 
-function liveTracks(stream: 1 | 2, fn: Handler): () => void {
+async function liveTracks(stream: 1 | 2, fn: Handler): Promise<() => void> {
 	const qry = query(
 		collection(store, "live_tracks"),
 		where("stream_pathname", "==", streamToPathname(stream)),
@@ -45,26 +48,26 @@ function liveTracks(stream: 1 | 2, fn: Handler): () => void {
 		limit(LIMIT),
 	)
 
-	return onSnapshot(
-		qry,
-		function (snapshot) {
-			const res: LiveTrack[] = []
-			// biome-ignore lint/complexity/noForEach: we can't use for of here
-			snapshot.forEach(function (doc) {
-				const data = doc.data()
-				res.push({
-					title: data.song_title,
-					artists: data.artist_names,
-					stream: pathnameToStream(data.stream_pathname),
-					startTime: data.start_time.toDate(),
-				})
+	function handleSnapshot(snapshot: QuerySnapshot<DocumentData, DocumentData>) {
+		const res: LiveTrack[] = []
+		// biome-ignore lint/complexity/noForEach: we can't use for of here
+		snapshot.forEach(function (doc) {
+			const data = doc.data()
+			res.push({
+				title: data.song_title,
+				artists: data.artist_names,
+				stream: pathnameToStream(data.stream_pathname),
+				startTime: data.start_time.toDate(),
 			})
-			fn(null, res)
-		},
-		function (err) {
-			fn(err, null)
-		},
-	)
+		})
+		fn(null, res)
+	}
+
+	function handleError(err: Error) {
+		fn(err, null)
+	}
+
+	return onSnapshot(qry, handleSnapshot, handleError)
 }
 
 export class NTSLiveTracks {
@@ -97,7 +100,6 @@ export class NTSLiveTracks {
 		}
 
 		await this._auth()
-		this.subscribe()
 	}
 
 	async logout() {
@@ -107,7 +109,7 @@ export class NTSLiveTracks {
 	}
 
 	async subscribe() {
-		const strm1 = liveTracks(1, (err, res) => {
+		const strm1 = await liveTracks(1, (err, res) => {
 			if (err) {
 				console.warn(err)
 				return
@@ -120,7 +122,7 @@ export class NTSLiveTracks {
 			this.previous.stream1 = res
 		})
 
-		const strm2 = liveTracks(2, (err, res) => {
+		const strm2 = await liveTracks(2, (err, res) => {
 			if (err) {
 				console.warn(err)
 				return
@@ -140,7 +142,7 @@ export class NTSLiveTracks {
 		}
 	}
 
-	sync() {
+	async sync() {
 		this.webContents.send("live-tracks-1", this.previous.stream1)
 		this.webContents.send("live-tracks-2", this.previous.stream2)
 	}
