@@ -184,7 +184,7 @@ export function useLiveInfo(options: Options): InfoState {
 				return
 			}
 
-			const t = setTimeout(next, soonest + 1)
+			const t = setTimeout(next, soonest + 500)
 			return () => clearTimeout(t)
 		},
 		[next, state.data, state.loading, options.skip],
