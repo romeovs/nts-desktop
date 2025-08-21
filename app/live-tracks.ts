@@ -9,7 +9,6 @@ import {
 	type DocumentData,
 	type QuerySnapshot,
 	collection,
-	getDocs,
 	getFirestore,
 	limit,
 	onSnapshot,
