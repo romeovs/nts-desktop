@@ -7,6 +7,7 @@ import { Indicator } from "./indicator"
 import { PlayButton } from "./play"
 import { Tracklist } from "./tracklist/index"
 
+import { useEffect, useRef } from "react"
 import css from "./channel.module.css"
 
 type Props = {
@@ -38,8 +39,32 @@ export function Channel(props: Props) {
 	const tracks = props.tracks.filter((track) => track.stream === channel)
 	const hasTracks = tracks.some((track) => track.title)
 
+	const ref = useRef<HTMLDivElement>(null)
+	useEffect(() => {
+		const el = ref.current
+		if (!el) {
+			return
+		}
+
+		function handler() {
+			// copy scroll position to other slides
+			const els = Array.from(
+				document.querySelectorAll(`[data-channel='${channel}']`),
+			)
+			for (const other of els) {
+				if (other === el) {
+					continue
+				}
+
+				other.scrollTop = el?.scrollTop ?? 0
+			}
+		}
+		el.addEventListener("scroll", handler)
+		return () => el.removeEventListener("scroll", handler)
+	}, [channel])
+
 	return (
-		<div className={css.wrapper} data-show="true">
+		<div className={css.wrapper} data-show="true" data-channel={channel} ref={ref}>
 			<div className={classnames(css.channel, playing && css.playing)}>
 				<img src={image} className={css.image} draggable={false} />
 				<button type="button" className={css.header} onClick={handleClick}>
