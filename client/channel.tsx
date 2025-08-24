@@ -22,11 +22,7 @@ type Props = {
 export function Channel(props: Props) {
 	const { info, channel, onPlay, onStop, playing } = props
 
-	if (!info) {
-		return null
-	}
-
-	const { name, image, starts, ends, location } = info.now
+	const { name, image, starts, ends, location } = info?.now ?? {}
 
 	function handleClick() {
 		if (playing) {
@@ -62,6 +58,10 @@ export function Channel(props: Props) {
 		el.addEventListener("scroll", handler)
 		return () => el.removeEventListener("scroll", handler)
 	}, [channel])
+
+	if (!info) {
+		return null
+	}
 
 	return (
 		<div className={css.wrapper} data-show="true" data-channel={channel} ref={ref}>
@@ -108,7 +108,11 @@ export function Channel(props: Props) {
 	)
 }
 
-function formatTime(date: Date | number): string {
+function formatTime(date: Date | number | undefined): string {
+	if (!date) {
+		return ""
+	}
+
 	return new Date(date).toLocaleTimeString("en-GB", {
 		hour: "2-digit",
 		minute: "2-digit",
