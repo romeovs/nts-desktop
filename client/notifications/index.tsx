@@ -53,6 +53,10 @@ export function Notifications() {
 
 	useEffect(
 		function () {
+			if (notifications.length === 0) {
+				return
+			}
+
 			const ends = notifications.map(
 				(notification) => notification.created + notification.ttl,
 			)
