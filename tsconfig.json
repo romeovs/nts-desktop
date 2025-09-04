@@ -5,8 +5,6 @@
 		"target": "esnext",
 		"moduleResolution": "node",
 		"jsx": "preserve",
-		"jsxFactory": "h",
-		"jsxFragmentFactory": "Fragment",
 		"baseUrl": "./",
 		"noEmit": true,
 		"strict": true,
