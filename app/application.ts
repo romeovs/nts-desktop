@@ -19,7 +19,6 @@ import serve from "electron-serve"
 
 import * as credentials from "./credentials"
 import * as history from "./history"
-import { NTSLiveTracks } from "./live-tracks"
 import * as preferences from "./preferences"
 import { show } from "./show"
 
@@ -34,14 +33,12 @@ export class NTSApplication {
 	tray: Tray
 	evts: EventEmitter
 	production: boolean
-	liveTracks: NTSLiveTracks
 
 	constructor(production: boolean) {
 		this.window = makeWindow()
 		this.tray = makeTray()
 		this.evts = new EventEmitter()
 		this.production = production
-		this.liveTracks = new NTSLiveTracks(this.window.webContents)
 	}
 
 	async init() {
@@ -89,7 +86,6 @@ export class NTSApplication {
 		globalShortcut.register("Control+N", () => this.toggle())
 
 		setTimeout(() => app.dock.hide(), 1500)
-		await this.liveTracks.init()
 		await this.loadClient()
 	}
 
@@ -114,7 +110,6 @@ export class NTSApplication {
 	close() {
 		this.window.webContents.send("close")
 		setTimeout(() => this.window.hide(), 10)
-		this.liveTracks.unsubscribe?.()
 	}
 
 	handleBlur() {
@@ -154,8 +149,6 @@ export class NTSApplication {
 		this.window.setPosition(x, y + 8, false)
 		this.window.show()
 		this.window.focus()
-		this.liveTracks.subscribe()
-		this.liveTracks.sync()
 
 		setTimeout(() => this.window.once("blur", () => this.handleBlur()), 300)
 	}
@@ -178,7 +171,7 @@ export class NTSApplication {
 	}
 
 	async logout() {
-		await this.liveTracks.logout()
+		await credentials.clear()
 		this.window.webContents.send("logout")
 	}
 
@@ -192,7 +185,6 @@ export class NTSApplication {
 
 	reload() {
 		this.window.reload()
-		this.liveTracks.subscribe()
 	}
 
 	async openMenu() {
