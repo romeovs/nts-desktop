@@ -25,7 +25,10 @@ build: client
 app: ## Build the universal macOS app and dmg
 app:
 	@$(log) "Bundling app..."
-	@$(bin)/tauri build --target universal-apple-darwin
+	@# CI=true makes tauri pass --skip-jenkins to bundle_dmg.sh. Without it the
+	@# Finder AppleScript that arranges the dmg window fails on macOS 15 with
+	@# "Can't set statusbar visible ... (-10006)" and the whole bundle fails.
+	@env CI=true $(bin)/tauri build --target universal-apple-darwin
 
 dev: ## Start the app for interactive development
 dev:
