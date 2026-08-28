@@ -69,11 +69,15 @@ lint:
 	@$(log) "Linting..."
 	@$(bin)/biome lint . $(SILENT)
 
+# dotenv-cli expands the value and strips the quotes from FIREBASE_CONFIG,
+# which leaves it invalid. Parse the file without expansion.
+firebase_config = $(shell node -e 'process.stdout.write(require("dotenv").parse(require("fs").readFileSync(".env")).FIREBASE_CONFIG)')
+
 index: # Build the "server"-side js
 index: app/main.ts
 	@$(log) "Building app js..."
 	@mkdir -p dist
-	@env NODE_ENV=development $(bin)/esbuild --bundle --format=cjs --platform=node --external:electron --loader:.png=file app/main.ts --outfile=dist/index.cjs --define:FIREBASE_CONFIG='$(shell $(bin)/dotenv -p FIREBASE_CONFIG)'
+	@env NODE_ENV=development $(bin)/esbuild --bundle --format=cjs --platform=node --external:electron --loader:.png=file app/main.ts --outfile=dist/index.cjs --define:FIREBASE_CONFIG='$(firebase_config)'
 
 preload: # Build the preload script
 preload: dist/preload.js
