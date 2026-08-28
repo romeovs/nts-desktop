@@ -4,7 +4,7 @@
 
 [![CI/CD](https://github.com/romeovs/nts-desktop/actions/workflows/ci-cd.yml/badge.svg)](https://github.com/romeovs/nts-desktop/actions/workflows/ci-cd.yml)
 
-An unofficial desktop app for NTS built in Electron.
+An unofficial desktop app for NTS built in Tauri.
 
 ## Usage
 
@@ -61,33 +61,38 @@ The project is structured as follows:
 
 ```
 ./
-  src/
-    main.ts     # The electron main file
-    preload.js  # A setup file for the browser context
-    client/     # The electron renderer files
-      main.ts
-      ...
+  client/       # The React app that runs in the webview
+    main.tsx
+    ipc.ts      # The bridge to the Rust side
+    ...
+  lib/          # Code shared across the client
+  src-tauri/    # The Rust app: window, tray, menu, and state
+    src/
+      lib.rs
+      store.rs
+    tauri.conf.json
 ```
 
-To start the app in developement mode, run:
+To start the app in development mode, run:
 
 ```
 make dev
 ```
 
-You can now start editing the renderer files, changes will automatically
+You can now start editing the client files, changes will automatically
 take effect on save.
 
-Note that changes to the main process (`src/main.ts` and `src/preload.js`)
-require a restart to take effect.
+Changes to the Rust code in `src-tauri/` rebuild and restart the app
+automatically.
 
 To build the application run:
 
 ```
-make build app
+make app
 ```
 
-The app will now be in `bundle/mac-universal/NTS Desktop.app`.
+The app will now be in
+`src-tauri/target/universal-apple-darwin/release/bundle/macos/NTS Desktop.app`.
 
 ## Acknowledgement
 
