@@ -2,6 +2,7 @@ import classnames from "classnames"
 import { type FormEvent, useCallback } from "react"
 
 import { electron } from "./electron"
+import { login } from "./lib/firebase"
 
 import css from "./login.module.css"
 import { notify } from "./notifications"
@@ -26,7 +27,8 @@ export function Login(props: LoginProps) {
 			}
 
 			try {
-				await electron.invoke("login-credentials", { email, password })
+				await login({ email, password })
+				electron.send("store-credentials", { email, password })
 				onClose()
 			} catch (err) {
 				notify({ message: "invalid credentials", ttl: 4000, type: "error" })
