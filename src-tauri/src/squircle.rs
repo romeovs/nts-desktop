@@ -32,5 +32,9 @@ pub fn apply(window: &WebviewWindow) {
         // typedef is a plain string.
         let continuous = NSString::from_str("continuous");
         let _: () = msg_send![&*layer, setCornerCurve: &*continuous];
+
+        // The mask is applied after the window was created, so the cached
+        // shadow still follows the old square bounds.
+        ns_window.invalidateShadow();
     }
 }
