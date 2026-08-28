@@ -90,31 +90,53 @@ pub struct Credentials {
 }
 
 pub mod credentials {
+    use std::sync::{Mutex, OnceLock};
+
     use super::Credentials;
 
     const SERVICE: &str = "nts-desktop";
     const USER: &str = "credentials";
+
+    /// Every keychain read can prompt, and the menu and the client both want
+    /// the credentials at startup. Read the keychain once per launch and serve
+    /// the rest from memory.
+    fn cache() -> &'static Mutex<Option<Option<Credentials>>> {
+        static CACHE: OnceLock<Mutex<Option<Option<Credentials>>>> = OnceLock::new();
+        CACHE.get_or_init(|| Mutex::new(None))
+    }
 
     fn entry() -> Option<keyring::Entry> {
         keyring::Entry::new(SERVICE, USER).ok()
     }
 
     pub fn read() -> Option<Credentials> {
-        let content = entry()?.get_password().ok()?;
-        serde_json::from_str(&content).ok()
+        let mut cache = cache().lock().unwrap();
+        if let Some(cached) = cache.as_ref() {
+            return cached.clone();
+        }
+
+        let stored = entry()
+            .and_then(|entry| entry.get_password().ok())
+            .and_then(|content| serde_json::from_str(&content).ok());
+
+        *cache = Some(stored.clone());
+        stored
     }
 
     pub fn write(credentials: &Credentials) {
-        let Some(entry) = entry() else { return };
-        if let Ok(content) = serde_json::to_string(credentials) {
-            let _ = entry.set_password(&content);
+        if let Some(entry) = entry() {
+            if let Ok(content) = serde_json::to_string(credentials) {
+                let _ = entry.set_password(&content);
+            }
         }
+        *cache().lock().unwrap() = Some(Some(credentials.clone()));
     }
 
     pub fn clear() {
         if let Some(entry) = entry() {
             let _ = entry.delete_credential();
         }
+        *cache().lock().unwrap() = Some(None);
     }
 
     pub fn has() -> bool {
