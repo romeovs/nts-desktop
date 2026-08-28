@@ -58,7 +58,7 @@ export class NTSApplication {
 
 		this.evts.on("error", (message: string) => this.showNotification(message))
 
-		ipcMain.on("init", this.syncPreferences.bind(this))
+		ipcMain.on("init", this.handleInit.bind(this))
 
 		ipcMain.on("close", () => this.close())
 		ipcMain.on("tracklist", (_evt: IpcMainEvent, channel: number | string) =>
@@ -72,6 +72,11 @@ export class NTSApplication {
 		)
 		ipcMain.on("preferences", (_evt: IpcMainEvent, prefs: preferences.Preferences) =>
 			this.storePreferences(prefs),
+		)
+		ipcMain.on(
+			"store-credentials",
+			(_evt: IpcMainEvent, creds: credentials.Credentials) =>
+				credentials.write(creds),
 		)
 
 		// @ts-expect-error: only supported on macOS
@@ -155,11 +160,26 @@ export class NTSApplication {
 		setTimeout(() => this.window.once("blur", () => this.handleBlur()), 300)
 	}
 
+	async handleInit() {
+		await this.syncPreferences()
+		await this.syncCredentials()
+	}
+
 	async syncPreferences() {
 		const prefs = await preferences.read()
 		this.window.webContents.send("preferences", prefs)
 		this.window.webContents.send("preferences", prefs)
 		this.window.webContents.send("preferences", prefs)
+	}
+
+	async syncCredentials() {
+		const creds = await credentials.read()
+		this.window.webContents.send("credentials", creds)
+	}
+
+	async logout() {
+		await this.liveTracks.logout()
+		this.window.webContents.send("logout")
 	}
 
 	toggle() {
@@ -369,7 +389,7 @@ async function makeMenu(application: NTSApplication): Promise<Menu> {
 				}
 			: {
 					label: "Log out",
-					click: () => application.liveTracks.logout(),
+					click: () => application.logout(),
 				},
 		{ type: "separator" },
 		{

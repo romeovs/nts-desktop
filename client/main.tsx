@@ -2,6 +2,7 @@ import { createRoot } from "react-dom/client"
 
 import { App } from "~/client/app"
 import { electron } from "~/client/electron"
+import "~/client/lib/firebase"
 import { type Preferences, PreferencesProvider } from "~/client/lib/preferences"
 
 electron.once("preferences", function render(_: Event, preferences: Preferences) {
