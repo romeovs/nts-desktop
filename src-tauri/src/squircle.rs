@@ -38,3 +38,4 @@ pub fn apply(window: &WebviewWindow) {
         ns_window.invalidateShadow();
     }
 }
+

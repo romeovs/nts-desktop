@@ -1,5 +1,6 @@
 mod squircle;
 mod store;
+mod traydrop;
 mod webloc;
 
 use std::sync::Mutex;
@@ -388,6 +389,7 @@ pub fn run() {
                 .build(app)?;
 
             app.global_shortcut().register(shortcut)?;
+            traydrop::install(&handle, open_file, open_url);
 
             if let Some(window) = window(&handle) {
                 squircle::apply(&window);
