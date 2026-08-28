@@ -84,8 +84,8 @@ export function NTS() {
 		[updatePreferences],
 	)
 
-	const tracks1 = useLiveTracks(1)
-	const tracks2 = useLiveTracks(2)
+	const tracks1 = useLiveTracks(1, isOpen)
+	const tracks2 = useLiveTracks(2, isOpen)
 	const currentTracks = playing === 1 ? tracks1 : tracks2
 
 	const next = useCallback(function () {
