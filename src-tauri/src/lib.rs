@@ -1,3 +1,4 @@
+mod squircle;
 mod store;
 mod webloc;
 
@@ -389,6 +390,8 @@ pub fn run() {
             app.global_shortcut().register(shortcut)?;
 
             if let Some(window) = window(&handle) {
+                squircle::apply(&window);
+
                 let closer = handle.clone();
                 window.on_window_event(move |event| {
                     if let WindowEvent::Focused(false) = event {

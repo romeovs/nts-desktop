@@ -11,10 +11,9 @@
 
 body {
 	font-family: "UniversCondensed", Arial;
-	/* The window is transparent so macOS can round the corners and draw a
-	   shadow. The background lives on the rounded surface below. */
+	/* The window is transparent so macOS can round the corners into a
+	   squircle and draw a shadow around it. */
 	background: transparent;
-	border-radius: 10px;
 	color: white;
 	padding: 0;
 	margin: 0;
@@ -29,7 +28,5 @@ body {
 
 #root {
 	background: black;
-	border-radius: 10px;
-	overflow: hidden;
 	height: 100vh;
 }
