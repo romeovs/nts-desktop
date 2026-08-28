@@ -22,12 +22,14 @@
 				"alwaysOnTop": true,
 				"skipTaskbar": true,
 				"visibleOnAllWorkspaces": true,
-				"shadow": false
+				"shadow": true,
+				"transparent": true
 			}
 		],
 		"security": {
 			"csp": "default-src 'self'; script-src 'self' https://widget.mixcloud.com https://w.soundcloud.com; connect-src 'self' ipc: http://ipc.localhost https://identitytoolkit.googleapis.com https://firestore.googleapis.com https://securetoken.googleapis.com https://www.nts.live; media-src 'self' https://stream-relay-geo.ntslive.net https://streams.radiomast.io/nts2 https://*.syd.o.radiomast.io/nts2; frame-src https://www.mixcloud.com https://player-widget.mixcloud.com https://w.soundcloud.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://media2.ntslive.co.uk https://raw.githubusercontent.com"
-		}
+		},
+		"macOSPrivateApi": true
 	},
 	"bundle": {
 		"active": true,

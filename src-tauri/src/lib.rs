@@ -6,7 +6,7 @@ use std::time::{Duration, Instant};
 
 use tauri::image::Image;
 use tauri::menu::{Menu, MenuBuilder, MenuEvent, MenuItemBuilder, SubmenuBuilder};
-use tauri::tray::{MouseButton, TrayIcon, TrayIconBuilder, TrayIconEvent};
+use tauri::tray::{MouseButton, MouseButtonState, TrayIcon, TrayIconBuilder, TrayIconEvent};
 use tauri::{AppHandle, Emitter, Manager, WebviewWindow, WindowEvent};
 use tauri_plugin_dialog::DialogExt;
 use tauri_plugin_global_shortcut::{Code, GlobalShortcutExt, Modifiers, Shortcut, ShortcutState};
@@ -36,8 +36,25 @@ fn tray(app: &AppHandle) -> Option<TrayIcon> {
     app.tray_by_id(TRAY_ID)
 }
 
+/// Menubar icons are supplied oversized. Scale them to the menubar height the
+/// way the Electron app did, at 2x so they stay sharp on retina displays.
+const MENUBAR_HEIGHT: u32 = 18;
+
 fn icon(bytes: &[u8]) -> Image<'static> {
-    Image::from_bytes(bytes).expect("bad menubar icon").to_owned()
+    let source = image::load_from_memory(bytes).expect("bad menubar icon");
+    let height = MENUBAR_HEIGHT * 2;
+    let width = (height as f32 * source.width() as f32 / source.height() as f32).round() as u32;
+    let scaled = source
+        .resize_exact(width, height, image::imageops::FilterType::Lanczos3)
+        .to_rgba8();
+
+    Image::new_owned(scaled.into_raw(), width, height)
+}
+
+/// set_icon drops the template flag, so it has to be set again every time.
+fn set_tray_icon(tray: &TrayIcon, bytes: &[u8]) {
+    let _ = tray.set_icon(Some(icon(bytes)));
+    let _ = tray.set_icon_as_template(true);
 }
 
 // Window
@@ -107,7 +124,7 @@ fn set_playing(app: &AppHandle, channel: Option<u8>) {
         Some(2) => MENUBAR_TWO,
         _ => MENUBAR,
     };
-    let _ = tray.set_icon(Some(icon(bytes)));
+    set_tray_icon(&tray, bytes);
 }
 
 // Archive shows
@@ -353,7 +370,12 @@ pub fn run() {
                 .menu(&build_menu(&handle)?)
                 .on_tray_icon_event(|tray, event| {
                     let app = tray.app_handle();
-                    if let TrayIconEvent::Click { button, .. } = event {
+                    if let TrayIconEvent::Click {
+                        button,
+                        button_state: MouseButtonState::Up,
+                        ..
+                    } = event
+                    {
                         match button {
                             MouseButton::Left => toggle(app),
                             MouseButton::Right => hide_window(app),
