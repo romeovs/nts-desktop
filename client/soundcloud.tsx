@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react"
-import type { ShowInfo } from "~/app/show"
+import type { ShowInfo } from "~/client/lib/show"
 
 import css from "./mixcloud.module.css"
 

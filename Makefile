@@ -18,29 +18,19 @@ help: ## Show this help.
 	@grep '##' $(MAKEFILE_LIST) | grep -v 'grep' | awk -F ': ##' '{ printf("%18s  %s\n", $$1, $$2) }'
 	@echo
 
-bundle: build app
-
-start: ## Start the app, making sure it is build to the latest version
-start: index preload run
-
-run: ## Run the application (not recommended, use start instead)
-run:
-	@$(log) "Running app"
-	@$(bin)/electron dist
-
-build: ## Build all the JavaScript, without bundling the Electron app
-build: index preload client packages
+build: ## Build the client bundle
+build: client
 
 .PHONY: app
-app: ## Build the electron app
+app: ## Build the universal macOS app and dmg
 app:
 	@$(log) "Bundling app..."
-	@$(bin)/electron-builder build --mac --universal --publish=never
+	@$(bin)/tauri build --target universal-apple-darwin
 
-dev: ## Start the development server for interactive development
+dev: ## Start the app for interactive development
 dev:
-	@$(log) "Starting dev server..."
-	@$(bin)/concurrently "make client.dev" "sleep 3 && make start"
+	@$(log) "Starting dev app..."
+	@$(bin)/tauri dev
 
 TSC_FLAGS =
 
@@ -69,19 +59,6 @@ lint:
 	@$(log) "Linting..."
 	@$(bin)/biome lint . $(SILENT)
 
-index: # Build the "server"-side js
-index: app/main.ts
-	@$(log) "Building app js..."
-	@mkdir -p dist
-	@env NODE_ENV=development $(bin)/esbuild --bundle --format=cjs --platform=node --external:electron --loader:.png=file app/main.ts --outfile=dist/index.cjs
-
-preload: # Build the preload script
-preload: dist/preload.js
-dist/preload.js: app/preload.js
-	@$(log) "Copying preload.js..."
-	@mkdir -p dist
-	@cp app/preload.js dist/preload.js
-
 .PHONY: client
 client: # Build the client-side code
 client:
@@ -94,18 +71,15 @@ client.dev: # Start client-side development server
 client.dev:
 	@$(bin)/vite
 
-packages: # Copy package.json and amend it for Electron
-packages: dist/pnpm-lock.json
-dist/pnpm-lock.json: package.json
-	@$(log) "Copying package.json..."
-	@mkdir -p dist
-	@cat package.json | $(bin)/json -e 'this.dependencies=undefined' -e 'this.devDependencies=undefined' > dist/package.json
-	@cd dist && pnpm install --production
-
 logos: ## Convert all svg logos into their png counterparts
 logos: $(patsubst %.svg,%.png,$(wildcard logos/*.svg))
 
-check: lint formatting typecheck
+check: lint formatting typecheck rust
+
+rust: ## Check the Rust code
+rust:
+	@$(log) "Checking Rust..."
+	@cd src-tauri && cargo clippy --quiet -- -D warnings
 
 
 # Git hooks

@@ -6,11 +6,12 @@ import {
 	useState,
 } from "react"
 
-import type { Preferences } from "~/app/preferences"
-import { electron } from "~/client/electron"
+import { ipc } from "~/client/ipc"
 import { useEvent } from "~/client/lib/use-event"
 
-export type { Preferences }
+export type Preferences = {
+	volume: number
+}
 
 type PreferencesContext = {
 	preferences: Preferences
@@ -44,7 +45,7 @@ export function PreferencesProvider(props: ProviderProps) {
 	) {
 		_setPreferences(function (preferences: Preferences) {
 			const prefs = fn(preferences)
-			electron.send("preferences", prefs)
+			ipc.send("set-preferences", prefs)
 			return prefs
 		})
 	}, [])

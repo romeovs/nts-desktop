@@ -1,7 +1,7 @@
 import { type MouseEvent, useRef } from "react"
 import css from "./controls.module.css"
 
-import type { ShowInfo } from "~/app/show"
+import type { ShowInfo } from "~/client/lib/show"
 
 import { PlayButton } from "./play"
 

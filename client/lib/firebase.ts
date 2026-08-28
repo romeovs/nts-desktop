@@ -9,7 +9,7 @@ import {
 import { getFirestore } from "firebase/firestore"
 import { useEffect, useState } from "react"
 
-import { electron } from "~/client/electron"
+import { ipc } from "~/client/ipc"
 import { notify } from "~/client/notifications"
 
 export type Credentials = {
@@ -30,7 +30,7 @@ export async function login(credentials: Credentials): Promise<void> {
 	await signInWithEmailAndPassword(auth, email, password)
 }
 
-electron.addListener(
+ipc.addListener(
 	"credentials",
 	async function (_evt: Event, credentials: Credentials | null) {
 		if (!credentials) {
@@ -45,7 +45,7 @@ electron.addListener(
 	},
 )
 
-electron.addListener("logout", function () {
+ipc.addListener("logout", function () {
 	signOut(auth)
 })
 

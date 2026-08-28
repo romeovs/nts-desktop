@@ -1,9 +1,9 @@
 import { useCallback } from "react"
 
-import type { ShowInfo } from "~/app/show"
+import type { ShowInfo } from "~/client/lib/show"
 
 import { Controls, formatDuration } from "./controls"
-import { electron } from "./electron"
+import { ipc } from "./ipc"
 import { Tracklist } from "./tracklist/index"
 
 import css from "./show.module.css"
@@ -22,10 +22,10 @@ export function Show(props: Props) {
 	const { show, onPlay, onStop, onSeek, playing, duration, position } = props
 
 	const handleMyNTSClick = useCallback(function () {
-		electron.send("my-nts")
+		ipc.send("my-nts")
 	}, [])
 	const handleExploreClick = useCallback(function () {
-		electron.send("explore")
+		ipc.send("explore")
 	}, [])
 
 	if (!show) {

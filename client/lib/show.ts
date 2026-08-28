@@ -1,5 +1,3 @@
-import fetch from "isomorphic-fetch"
-
 export type Track = {
 	artist: string
 	title: string

@@ -9,6 +9,7 @@
 	"repository": "https://github.com/romeovs/nts-desktop",
 	"devDependencies": {
 		"@biomejs/biome": "^1.9.4",
+		"@tauri-apps/cli": "^2",
 		"@types/classnames": "^2.3.4",
 		"@types/isomorphic-fetch": "^0.0.35",
 		"@types/node": "^22.8.7",
@@ -31,6 +32,11 @@
 		"vite-tsconfig-paths": "^5.0.1"
 	},
 	"dependencies": {
+		"@tauri-apps/api": "^2",
+		"@tauri-apps/plugin-dialog": "^2",
+		"@tauri-apps/plugin-global-shortcut": "^2",
+		"@tauri-apps/plugin-notification": "^2",
+		"@tauri-apps/plugin-opener": "^2",
 		"bplist-parser": "^0.3.2",
 		"classnames": "^2.5.1",
 		"electron-log": "^4.4.8",

@@ -1,7 +1,7 @@
 import classnames from "classnames"
 import { useCallback } from "react"
 
-import { electron } from "./electron"
+import { ipc } from "./ipc"
 
 import css from "./chat.module.css"
 
@@ -18,7 +18,7 @@ export function Chat(props: Props) {
 				return
 			}
 
-			electron.send("chat", channel)
+			ipc.send("chat", channel)
 		},
 		[channel],
 	)

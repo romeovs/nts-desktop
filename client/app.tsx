@@ -4,7 +4,7 @@ import "./global.css"
 
 import { type Stream, streams } from "~/lib/stream"
 
-import { electron } from "./electron"
+import { ipc } from "./ipc"
 import { useLiveInfo } from "./lib/live"
 import { useLiveTracks } from "./lib/live-tracks"
 import { usePreferences } from "./lib/preferences"
@@ -14,11 +14,11 @@ import { useOffline } from "./lib/use-offline"
 
 import { useMetadata } from "./metadata"
 
-import type { ShowInfo } from "../app/show"
 import { Arrow } from "./arrow"
 import { Channel as ChannelCard } from "./channel"
 import { Chat } from "./chat"
 import { Help } from "./help"
+import { type ShowInfo, show as fetchShow } from "./lib/show"
 import { Login } from "./login"
 import { Mixcloud } from "./mixcloud"
 import { Notifications } from "./notifications"
@@ -126,12 +126,12 @@ export function NTS() {
 	)
 
 	const close = useCallback(function () {
-		electron.send("close")
+		ipc.send("close")
 	}, [])
 
 	useEffect(
 		function () {
-			electron.send("playing", playing)
+			ipc.send("playing", playing)
 		},
 		[playing],
 	)
@@ -155,8 +155,8 @@ export function NTS() {
 	useKeydown("?", () => setIsShowingHelp((x) => !x))
 	useKeydown(" ", togglePlaying, [playing, index])
 	useKeydown("Escape", close)
-	useKeydown("t", () => electron.send("tracklist", indexToChannel[index]), [index])
-	useKeydown("c", () => electron.send("chat", indexToChannel[index]), [index])
+	useKeydown("t", () => ipc.send("tracklist", indexToChannel[index]), [index])
+	useKeydown("c", () => ipc.send("chat", indexToChannel[index]), [index])
 	useKeydown("1", () => setPlaying(playing === 1 ? null : 1), [playing])
 	useKeydown("2", () => setPlaying(playing === 2 ? null : 2), [playing])
 	useKeydown("+", increaseVolume)
@@ -164,8 +164,10 @@ export function NTS() {
 	useKeydown("ArrowUp", increaseVolume)
 	useKeydown("ArrowDown", decreaseVolume)
 
-	useEvent("open-show", async function (show: ShowInfo) {
-		setShow(show)
+	useEvent("open-url", async function (url: string) {
+		const data = await fetchShow(url)
+		ipc.send("add-history", { name: data.name, url })
+		setShow(data)
 		setPlaying("show")
 		setIndex(channelToIndex.show)
 		setPosition(0)

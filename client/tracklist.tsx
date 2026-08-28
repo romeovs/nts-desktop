@@ -1,6 +1,6 @@
 import classnames from "classnames"
 import { useCallback } from "react"
-import { electron } from "./electron"
+import { ipc } from "./ipc"
 
 import css from "./tracklist.module.css"
 
@@ -21,7 +21,7 @@ export function Tracklist(props: Props) {
 				return
 			}
 
-			electron.send("tracklist", channel)
+			ipc.send("tracklist", channel)
 		},
 		[channel, hasTracks, onShowTracklist],
 	)

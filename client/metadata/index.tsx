@@ -1,7 +1,7 @@
 import { useEffect } from "react"
 
-import type { ShowInfo } from "~/app/show"
 import type { InfoState } from "~/client/lib/live"
+import type { ShowInfo } from "~/client/lib/show"
 import type { Stream } from "~/lib/stream"
 
 const artwork = [

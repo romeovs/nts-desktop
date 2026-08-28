@@ -1,5 +1,5 @@
 import { useEffect } from "react"
-import { electron } from "../electron"
+import { ipc } from "../ipc"
 
 export function useEvent<A>(
 	name: string,
@@ -12,6 +12,6 @@ export function useEvent<A>(
 			handler(...args)
 		}
 
-		return electron.addListener(name, handle)
+		return ipc.addListener(name, handle)
 	}, deps)
 }

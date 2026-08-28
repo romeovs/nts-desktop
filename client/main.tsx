@@ -1,11 +1,11 @@
 import { createRoot } from "react-dom/client"
 
 import { App } from "~/client/app"
-import { electron } from "~/client/electron"
+import { ipc } from "~/client/ipc"
 import "~/client/lib/firebase"
 import { type Preferences, PreferencesProvider } from "~/client/lib/preferences"
 
-electron.once("preferences", function render(_: Event, preferences: Preferences) {
+ipc.once("preferences", function render(_: Event, preferences: Preferences) {
 	const root = document.getElementById("root")
 	if (!root) {
 		return
@@ -19,4 +19,4 @@ electron.once("preferences", function render(_: Event, preferences: Preferences)
 
 	createRoot(root).render(app)
 })
-electron.send("init")
+ipc.send("init")
