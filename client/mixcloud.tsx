@@ -43,7 +43,7 @@ export function Mixcloud(props: Props) {
 					w.events.pause.on(onStop)
 					w.events.ended.on(onStop)
 					w.events.progress.on(onProgress)
-					w.getDuration().then((duration) => onLoad(duration))
+					loadDuration(w, onLoad)
 					setWidget(w)
 				})
 				.catch((err) => console.error(err))
@@ -98,6 +98,24 @@ export function Mixcloud(props: Props) {
 			className={css.frame}
 		/>
 	)
+}
+
+/**
+ * Mixcloud reports no duration until the track has loaded, and returns null
+ * until then. Ask again until it answers.
+ */
+async function loadDuration(
+	widget: Mixcloud.PlayerWidget,
+	onLoad: (duration: number) => void,
+) {
+	for (let attempt = 0; attempt < 20; attempt++) {
+		const duration = await widget.getDuration()
+		if (duration) {
+			onLoad(duration)
+			return
+		}
+		await new Promise((resolve) => setTimeout(resolve, 500))
+	}
 }
 
 function key(url: string) {

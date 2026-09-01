@@ -11,7 +11,7 @@ namespace Mixcloud {
 		load(key: string, startPlaying?: boolean): void
 		seek(pos: number): Promise<boolean>
 		ready: Promise<void>
-		getDuration(): Promise<number>
+		getDuration(): Promise<number | null>
 		getPosition(): Promise<number>
 		getIsPaused(): Promise<boolean>
 		setVolume(value: number): void
