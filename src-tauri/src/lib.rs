@@ -108,6 +108,9 @@ fn handle_blur(app: &AppHandle) {
     if since.elapsed() < BLUR_GRACE {
         return;
     }
+    if window(app).is_some_and(|window| window.is_devtools_open()) {
+        return;
+    }
     hide_window(app)
 }
 
@@ -215,6 +218,7 @@ fn build_menu(app: &AppHandle) -> tauri::Result<Menu<tauri::Wry>> {
         .separator()
         .item(&session)
         .separator()
+        .item(&MenuItemBuilder::with_id("devtools", "Developer Tools").build(app)?)
         .item(&MenuItemBuilder::with_id("reload", "Reload NTS Desktop").build(app)?)
         .quit()
         .build()
@@ -255,6 +259,16 @@ fn handle_menu(app: &AppHandle, event: MenuEvent) {
             credentials::clear();
             let _ = app.emit("logout", ());
             refresh_menu(app);
+        }
+        "devtools" => {
+            if let Some(window) = window(app) {
+                if window.is_devtools_open() {
+                    window.close_devtools()
+                } else {
+                    show_window(app);
+                    window.open_devtools()
+                }
+            }
         }
         "reload" => {
             if let Some(window) = window(app) {
