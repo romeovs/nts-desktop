@@ -9,7 +9,7 @@ import {
 import { getFirestore } from "firebase/firestore"
 import { useEffect, useState } from "react"
 
-import { ipc } from "~/client/ipc"
+import { listen } from "@tauri-apps/api/event"
 import { notify } from "~/client/notifications"
 
 export type Credentials = {
@@ -30,22 +30,20 @@ export async function login(credentials: Credentials): Promise<void> {
 	await signInWithEmailAndPassword(auth, email, password)
 }
 
-ipc.addListener(
-	"credentials",
-	async function (_evt: Event, credentials: Credentials | null) {
-		if (!credentials) {
-			return
-		}
+/** Sign in with the credentials the Rust side holds, if there are any. */
+export async function restore(credentials: Credentials | null): Promise<void> {
+	if (!credentials) {
+		return
+	}
 
-		try {
-			await login(credentials)
-		} catch (err) {
-			notify({ message: "could not log in", ttl: 4000, type: "error" })
-		}
-	},
-)
+	try {
+		await login(credentials)
+	} catch (err) {
+		notify({ message: "could not log in", ttl: 4000, type: "error" })
+	}
+}
 
-ipc.addListener("logout", function () {
+listen("logout", function () {
 	signOut(auth)
 })
 

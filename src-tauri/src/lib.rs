@@ -281,29 +281,41 @@ fn handle_menu(app: &AppHandle, event: MenuEvent) {
 
 // Commands, called from the client over invoke
 
+/// Everything the client needs before it can render.
+#[derive(serde::Serialize)]
+pub struct Init {
+    preferences: Preferences,
+    credentials: Option<Credentials>,
+}
+
+#[tauri::command]
+fn init() -> Init {
+    Init {
+        preferences: preferences::read(),
+        credentials: credentials::read(),
+    }
+}
+
 #[tauri::command]
 fn close(app: AppHandle) {
     hide_window(&app)
 }
 
 #[tauri::command]
-fn playing(app: AppHandle, payload: Option<serde_json::Value>) {
-    let channel = payload.and_then(|v| v.as_u64()).map(|c| c as u8);
-    set_playing(&app, channel)
+fn playing(app: AppHandle, channel: Option<serde_json::Value>) {
+    let stream = channel.and_then(|c| c.as_u64()).map(|c| c as u8);
+    set_playing(&app, stream)
 }
 
 #[tauri::command]
-fn tracklist(app: AppHandle, payload: serde_json::Value) {
-    let channel = payload.as_u64().unwrap_or(1);
-    browse_to(
-        &app,
-        &format!("https://www.nts.live/live-tracklist/{channel}"),
-    )
+fn tracklist(app: AppHandle, channel: serde_json::Value) {
+    let stream = channel.as_u64().unwrap_or(1);
+    browse_to(&app, &format!("https://www.nts.live/live-tracklist/{stream}"))
 }
 
 #[tauri::command]
-fn chat(app: AppHandle, payload: serde_json::Value) {
-    let url = if payload.as_u64() == Some(1) {
+fn chat(app: AppHandle, channel: serde_json::Value) {
+    let url = if channel.as_u64() == Some(1) {
         "https://discord.com/channels/909834111592591421/933364043459227708"
     } else {
         "https://discord.com/channels/909834111592591421/935528991501209600"
@@ -322,26 +334,20 @@ fn explore(app: AppHandle) {
 }
 
 #[tauri::command]
-fn set_preferences(payload: Preferences) {
-    preferences::write(&payload)
+fn set_preferences(preferences: Preferences) {
+    preferences::write(&preferences)
 }
 
 #[tauri::command]
-fn store_credentials(app: AppHandle, payload: Credentials) {
-    credentials::write(&payload);
+fn store_credentials(app: AppHandle, credentials: Credentials) {
+    credentials::write(&credentials);
     refresh_menu(&app)
 }
 
 #[tauri::command]
-fn add_history(app: AppHandle, payload: Entry) {
-    history::add(payload);
+fn add_history(app: AppHandle, entry: Entry) {
+    history::add(entry);
     refresh_menu(&app)
-}
-
-#[tauri::command]
-fn init(app: AppHandle) {
-    let _ = app.emit("preferences", preferences::read());
-    let _ = app.emit("credentials", credentials::read());
 }
 
 pub fn run() {

@@ -1,22 +1,25 @@
 import { createRoot } from "react-dom/client"
 
 import { App } from "~/client/app"
-import { ipc } from "~/client/ipc"
-import "~/client/lib/firebase"
-import { type Preferences, PreferencesProvider } from "~/client/lib/preferences"
+import { init } from "~/client/lib/commands"
+import { restore } from "~/client/lib/firebase"
+import { PreferencesProvider } from "~/client/lib/preferences"
 
-ipc.once("preferences", function render(_: Event, preferences: Preferences) {
+async function main() {
 	const root = document.getElementById("root")
+	const { preferences, credentials } = await init()
+
+	restore(credentials)
+
 	if (!root) {
 		return
 	}
 
-	const app = (
+	createRoot(root).render(
 		<PreferencesProvider preferences={preferences}>
 			<App />
-		</PreferencesProvider>
+		</PreferencesProvider>,
 	)
+}
 
-	createRoot(root).render(app)
-})
-ipc.send("init")
+main()

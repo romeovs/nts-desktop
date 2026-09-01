@@ -3,7 +3,7 @@ import { useCallback } from "react"
 import type { ShowInfo } from "~/client/lib/show"
 
 import { Controls, formatDuration } from "./controls"
-import { ipc } from "./ipc"
+import * as commands from "./lib/commands"
 import { Tracklist } from "./tracklist/index"
 
 import css from "./show.module.css"
@@ -22,10 +22,10 @@ export function Show(props: Props) {
 	const { show, onPlay, onStop, onSeek, playing, duration, position } = props
 
 	const handleMyNTSClick = useCallback(function () {
-		ipc.send("my-nts")
+		commands.myNts()
 	}, [])
 	const handleExploreClick = useCallback(function () {
-		ipc.send("explore")
+		commands.explore()
 	}, [])
 
 	if (!show) {

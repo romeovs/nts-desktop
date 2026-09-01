@@ -6,8 +6,7 @@ import {
 	useState,
 } from "react"
 
-import { ipc } from "~/client/ipc"
-import { useEvent } from "~/client/lib/use-event"
+import * as commands from "~/client/lib/commands"
 
 export type Preferences = {
 	volume: number
@@ -28,14 +27,6 @@ const context = createContext<PreferencesContext | null>(null)
 export function PreferencesProvider(props: ProviderProps) {
 	const [preferences, _setPreferences] = useState<Preferences>(props.preferences)
 
-	useEvent(
-		"preferences",
-		(prefs: Preferences) => {
-			_setPreferences(prefs)
-		},
-		[],
-	)
-
 	const setPreferences = useCallback(function (prefs: Preferences) {
 		updatePreferences((_) => prefs)
 	}, [])
@@ -45,7 +36,7 @@ export function PreferencesProvider(props: ProviderProps) {
 	) {
 		_setPreferences(function (preferences: Preferences) {
 			const prefs = fn(preferences)
-			ipc.send("set-preferences", prefs)
+			commands.setPreferences(prefs)
 			return prefs
 		})
 	}, [])

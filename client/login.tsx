@@ -1,7 +1,7 @@
 import classnames from "classnames"
 import { type FormEvent, useCallback } from "react"
 
-import { ipc } from "./ipc"
+import * as commands from "./lib/commands"
 import { login } from "./lib/firebase"
 
 import css from "./login.module.css"
@@ -28,7 +28,7 @@ export function Login(props: LoginProps) {
 
 			try {
 				await login({ email, password })
-				ipc.send("store-credentials", { email, password })
+				commands.storeCredentials({ email, password })
 				onClose()
 			} catch (err) {
 				notify({ message: "invalid credentials", ttl: 4000, type: "error" })

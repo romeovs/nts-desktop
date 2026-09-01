@@ -1,7 +1,6 @@
 import classnames from "classnames"
 import { useCallback } from "react"
-
-import { ipc } from "./ipc"
+import * as commands from "./lib/commands"
 
 import css from "./chat.module.css"
 
@@ -18,7 +17,7 @@ export function Chat(props: Props) {
 				return
 			}
 
-			ipc.send("chat", channel)
+			commands.chat(channel)
 		},
 		[channel],
 	)

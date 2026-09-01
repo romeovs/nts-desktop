@@ -1,6 +1,6 @@
 import classnames from "classnames"
 import { useCallback } from "react"
-import { ipc } from "./ipc"
+import * as commands from "./lib/commands"
 
 import css from "./tracklist.module.css"
 
@@ -21,7 +21,7 @@ export function Tracklist(props: Props) {
 				return
 			}
 
-			ipc.send("tracklist", channel)
+			commands.tracklist(channel)
 		},
 		[channel, hasTracks, onShowTracklist],
 	)

@@ -1,17 +1,31 @@
+import { listen } from "@tauri-apps/api/event"
 import { useEffect } from "react"
-import { ipc } from "../ipc"
 
-export function useEvent<A>(
+/**
+ * Subscribe to an event emitted by the Rust side. Registering is asynchronous,
+ * so a subscription that is torn down before it completes is dropped again.
+ */
+export function useEvent<T>(
 	name: string,
-	handler: (...args: A[]) => void,
-	deps: any[] = [],
+	handler: (payload: T) => void,
+	deps: unknown[] = [],
 ) {
 	// biome-ignore lint/correctness/useExhaustiveDependencies: we're using a dep array here
 	useEffect(function () {
-		function handle(_evt: Event, ...args: A[]) {
-			handler(...args)
-		}
+		let unlisten: (() => void) | null = null
+		let cancelled = false
 
-		return ipc.addListener(name, handle)
+		listen<T>(name, (event) => handler(event.payload)).then(function (fn) {
+			if (cancelled) {
+				fn()
+				return
+			}
+			unlisten = fn
+		})
+
+		return function () {
+			cancelled = true
+			unlisten?.()
+		}
 	}, deps)
 }
