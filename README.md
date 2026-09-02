@@ -52,6 +52,12 @@ To open the app anyway, you can:
 System Preferences > Security & Privacy > General > Open Anyway
 ```
 
+NTS Desktop checks the Releases Page for new versions when it starts and every
+six hours after that. When a newer version is available you get a notification
+and the menubar menu (right-click the NTS logo) shows a `Download Update` item
+that opens the release. Use `Check for Updates...` in the same menu to check
+manually.
+
 I have only tested this app on macOS, so I can't guarantee it works on Linux or
 Windows. If people want to help me port it over, shoot me a message, PR's are welcome!
 
