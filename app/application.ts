@@ -22,6 +22,7 @@ import * as history from "./history"
 import { NTSLiveTracks } from "./live-tracks"
 import * as preferences from "./preferences"
 import { show } from "./show"
+import { Updater } from "./updates"
 
 import menubarOne from "../logos/menu-one.png"
 import menubarTwo from "../logos/menu-two.png"
@@ -35,6 +36,7 @@ export class NTSApplication {
 	evts: EventEmitter
 	production: boolean
 	liveTracks: NTSLiveTracks
+	updater: Updater
 
 	constructor(production: boolean) {
 		this.window = makeWindow()
@@ -42,6 +44,7 @@ export class NTSApplication {
 		this.evts = new EventEmitter()
 		this.production = production
 		this.liveTracks = new NTSLiveTracks(this.window.webContents)
+		this.updater = new Updater()
 	}
 
 	async init() {
@@ -82,6 +85,11 @@ export class NTSApplication {
 		app.on("activate", () => this.open())
 
 		globalShortcut.register("Control+N", () => this.toggle())
+
+		// Only check automatically in packaged builds, the dev version always looks outdated
+		if (this.production) {
+			this.updater.start()
+		}
 
 		setTimeout(() => app.dock.hide(), 1500)
 		await this.liveTracks.init()
@@ -318,12 +326,22 @@ function makeTray(): Tray {
 async function makeMenu(application: NTSApplication): Promise<Menu> {
 	const h = await history.read()
 	const hasCredentials = await credentials.has()
+	const update = application.updater.available
 
 	return Menu.buildFromTemplate([
 		{
 			label: "About NTS Desktop",
 			click: () => application.openAbout(),
 		},
+		update
+			? {
+					label: `Download Update v${update.version}...`,
+					click: () => application.updater.open(),
+				}
+			: {
+					label: "Check for Updates...",
+					click: () => void application.updater.check(true),
+				},
 		{
 			label: "Show NTS Desktop",
 			accelerator: "Control+N",
