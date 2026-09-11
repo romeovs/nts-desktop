@@ -4,6 +4,7 @@ import { useEvent } from "./use-event"
 export type ChannelInfo = {
 	now: ShowInfo
 	next: ShowInfo | null
+	upcoming: ShowInfo[]
 }
 
 export type ShowInfo = {
@@ -12,6 +13,8 @@ export type ShowInfo = {
 	ends: Date
 	location: string
 	image: string
+	show: string
+	episode: string
 }
 
 export type Info = {
@@ -37,14 +40,28 @@ export async function live(options: LiveOptions): Promise<Info> {
 	const content = await resp.json()
 
 	return {
-		channel1: result({
-			now: simplify(content.results[0].now),
-			next: simplify(content.results[0].next),
-		}),
-		channel2: result({
-			now: simplify(content.results[1].now),
-			next: simplify(content.results[1].next),
-		}),
+		channel1: result(channel(content.results[0])),
+		channel2: result(channel(content.results[1])),
+	}
+}
+
+// The live endpoint carries the rest of the day as next, next2 ... next17, which
+// is the schedule - no second request needed for it.
+function channel(data: Record<string, ShowData>): ChannelInfo {
+	const upcoming: ShowInfo[] = []
+	for (let i = 1; i <= 17; i++) {
+		const key = i === 1 ? "next" : `next${i}`
+		const entry = data[key]
+		if (!entry) {
+			continue
+		}
+		upcoming.push(simplify(entry))
+	}
+
+	return {
+		now: simplify(data.now),
+		next: upcoming[0] ?? null,
+		upcoming,
 	}
 }
 
@@ -59,43 +76,42 @@ function result(info: ChannelInfo): ChannelInfo {
 
 	return {
 		now: info.next,
-		next: null,
+		next: info.upcoming[1] ?? null,
+		upcoming: info.upcoming.slice(1),
 	}
 }
 
+// Only the show on air and the one after it come with details attached. The
+// rest of the day arrives as a title and a pair of timestamps, which is all a
+// schedule needs.
 type ShowData = {
+	broadcast_title?: string
 	start_timestamp: string
 	end_timestamp: string
-	embeds: {
-		details: {
-			name: string
-			location_long: string
-			media: {
-				background_large: string
+	embeds?: {
+		details?: {
+			name?: string
+			location_long?: string
+			show_alias?: string
+			episode_alias?: string
+			media?: {
+				background_large?: string
 			}
 		}
 	}
 }
 
 function simplify(data: ShowData): ShowInfo {
-	const {
-		start_timestamp,
-		end_timestamp,
-		embeds: {
-			details: {
-				name,
-				location_long,
-				media: { background_large },
-			},
-		},
-	} = data
+	const details = data.embeds?.details
 
 	return {
-		name,
-		location: location_long,
-		image: background_large,
-		starts: new Date(start_timestamp),
-		ends: new Date(end_timestamp),
+		name: details?.name ?? data.broadcast_title ?? "",
+		location: details?.location_long ?? "",
+		image: details?.media?.background_large ?? "",
+		show: details?.show_alias ?? "",
+		episode: details?.episode_alias ?? "",
+		starts: new Date(data.start_timestamp),
+		ends: new Date(data.end_timestamp),
 	}
 }
 
@@ -139,7 +155,7 @@ export function useLiveInfo(options: Options): InfoState {
 	const next = useCallback(
 		function () {
 			setState(function (state) {
-				if (!state.data || !state.data.channel1.next || !state.data.channel2.next) {
+				if (!state.data?.channel1.next || !state.data.channel2.next) {
 					return state
 				}
 
@@ -148,11 +164,13 @@ export function useLiveInfo(options: Options): InfoState {
 					data: {
 						channel1: {
 							now: state.data.channel1.next,
-							next: null,
+							next: state.data.channel1.upcoming[1] ?? null,
+							upcoming: state.data.channel1.upcoming.slice(1),
 						},
 						channel2: {
 							now: state.data.channel2.next,
-							next: null,
+							next: state.data.channel2.upcoming[1] ?? null,
+							upcoming: state.data.channel2.upcoming.slice(1),
 						},
 					},
 				}

@@ -76,48 +76,9 @@ jobs:
       - name: Lint
         run: make lint
 
-  build:
-    name: Build
-    runs-on: ubuntu-latest
-    steps:
-      - name: Check out
-        uses: actions/checkout@v4
-      - name: Read .tool-versions
-        id: versions
-        uses: marocchino/tool-versions-action@v1
-      - uses: pnpm/action-setup@v4
-        name: Install pnpm
-        with:
-          version: ${{ steps.versions.outputs.pnpm }}
-      - name: Unlock .env
-        uses: sliteteam/github-action-git-crypt-unlock@1.2.0
-        env:
-          GIT_CRYPT_KEY: ${{ secrets.GIT_CRYPT_KEY }}
-      - name: Set up node
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ steps.versions.outputs.nodejs }}
-          cache: pnpm
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
-      - name: Set version
-        if: startsWith(github.ref, 'refs/tags/')
-        run: pnpm version --no-git-tag-version --new-version "${GITHUB_REF:11}"
-      - name: Build renderer
-        run: make build packages
-        env:
-          NODE_OPTIONS: --openssl-legacy-provider
-      - name: Upload dist
-        uses: actions/upload-artifact@v4
-        with:
-          name: dist
-          path: dist
-
   bundle:
     name: Bundle
     runs-on: macos-latest
-    needs:
-      - build
     steps:
       - name: Check out
         uses: actions/checkout@v4
@@ -133,23 +94,32 @@ jobs:
         with:
           node-version: ${{ steps.versions.outputs.nodejs }}
           cache: pnpm
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: aarch64-apple-darwin,x86_64-apple-darwin
+      - name: Cache Rust
+        uses: swatinem/rust-cache@v2
+        with:
+          workspaces: src-tauri
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
       - name: Set version
         if: startsWith(github.ref, 'refs/tags/')
-        run: pnpm version --no-git-tag-version --new-version "${GITHUB_REF:11}"
-      - name: Download dist
-        uses: actions/download-artifact@v4
-        with:
-          name: dist
-          path: dist
-      - name: Build Electron app
+        run: make version VERSION="${GITHUB_REF:11}"
+      - name: Build app
         run: make app
+      - name: Collect disk images
+        run: |
+          mkdir -p bundle
+          find src-tauri/target -path '*/release/bundle/dmg/*.dmg' -exec cp {} bundle/ \;
+          ls -lh bundle/*.dmg
       - name: Upload bundle
         uses: actions/upload-artifact@v4
         with:
           name: bundle
-          path: bundle
+          path: bundle/*.dmg
+          if-no-files-found: error
 
   release:
     name: Release
@@ -160,6 +130,8 @@ jobs:
       - bundle
     runs-on: macos-latest
     if: startsWith(github.ref, 'refs/tags/')
+    permissions:
+      contents: write
     steps:
       - name: Check out
         uses: actions/checkout@v4
@@ -169,9 +141,9 @@ jobs:
           name: bundle
           path: bundle
       - name: Release
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v2
         with:
-          files: bundle/NTS Desktop-*.dmg
+          files: bundle/*.dmg
           generate_release_notes: true
           fail_on_unmatched_files: true
         env:

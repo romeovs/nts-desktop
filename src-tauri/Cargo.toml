@@ -1,0 +1,37 @@
+[package]
+name = "ntser"
+version = "0.5.1"
+description = "A menubar player for NTS Radio"
+authors = ["Romeo Van Snick <romeo@romeovansnick.be>"]
+license = "MIT"
+repository = "https://github.com/ghetoblues/ntser"
+edition = "2021"
+rust-version = "1.77.2"
+
+[lib]
+name = "ntser_lib"
+crate-type = ["staticlib", "cdylib", "rlib"]
+
+[build-dependencies]
+tauri-build = { version = "2", features = [] }
+
+[dependencies]
+tauri = { version = "2", features = ["macos-private-api", "tray-icon", "image-png"] }
+tauri-plugin-clipboard-manager = "2"
+tauri-plugin-global-shortcut = "2"
+tauri-plugin-notification = "2"
+tauri-plugin-opener = "2"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+chrono = { version = "0.4", default-features = false, features = ["clock", "std"] }
+dotenvy = "0.15"
+keyring = "3"
+plist = "1"
+thiserror = "2"
+
+[profile.release]
+codegen-units = 1
+lto = true
+opt-level = "s"
+panic = "abort"
+strip = true

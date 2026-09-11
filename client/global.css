@@ -10,7 +10,7 @@
 }
 
 body {
-	font-family: "UniversCondensed", Arial;
+	font-family: "UniversCondensed", Arial, sans-serif;
 	background: black;
 	color: white;
 	padding: 0;

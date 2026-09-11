@@ -1,4 +1,4 @@
-namespace Mixcloud {
+declare namespace Mixcloud {
 	type Event<Handler extends Function = () => void> = {
 		on: (handler: Handler) => void
 		off: (handler: Handler) => void

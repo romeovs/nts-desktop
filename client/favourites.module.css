@@ -1,0 +1,105 @@
+.favourites {
+	height: 100vh;
+	display: flex;
+	flex-direction: column;
+	box-sizing: border-box;
+}
+
+.heading {
+	flex-shrink: 0;
+	padding: 0.6rem 0.5rem 0.4rem 0.5rem;
+	font-weight: bold;
+	font-size: 0.7rem;
+	text-transform: uppercase;
+}
+
+.list {
+	list-style: none;
+	margin: 0;
+	padding: 0 0 0.5rem 0;
+	overflow-y: auto;
+	flex-grow: 1;
+}
+
+.button {
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+	width: 100%;
+	padding: 0.25rem 0.5rem;
+	background: none;
+	border: none;
+	outline: none;
+	font: inherit;
+	color: inherit;
+	letter-spacing: inherit;
+	text-transform: inherit;
+	text-align: left;
+	cursor: pointer;
+	transition: background 200ms;
+
+	&:hover {
+		background: rgba(76, 76, 76, 0.35);
+	}
+}
+
+.image {
+	width: 34px;
+	height: 34px;
+	object-fit: cover;
+	flex-shrink: 0;
+}
+
+.info {
+	min-width: 0;
+}
+
+.name {
+	display: block;
+	font-weight: bold;
+	text-transform: uppercase;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.date {
+	display: block;
+	font-size: 0.7rem;
+	opacity: 0.6;
+}
+
+.notice {
+	height: 100vh;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	text-align: center;
+	padding: 3em;
+	box-sizing: border-box;
+}
+
+.back {
+	flex-shrink: 0;
+	display: block;
+	width: 100%;
+	padding: 0.6rem 0.5rem 0.4rem 0.5rem;
+	background: none;
+	border: none;
+	outline: none;
+	font: inherit;
+	color: inherit;
+	letter-spacing: inherit;
+	font-weight: bold;
+	font-size: 0.7rem;
+	text-transform: uppercase;
+	text-align: left;
+	cursor: pointer;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+
+	&:hover {
+		opacity: 0.7;
+	}
+}

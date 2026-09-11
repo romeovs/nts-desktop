@@ -11,7 +11,9 @@
 }
 
 .toast {
-	transition: opacity 500ms, height 500ms;
+	transition:
+		opacity 500ms,
+		height 500ms;
 
 	height: 0;
 
@@ -25,7 +27,9 @@
 		height: 1.5rem;
 		line-height: 1.5rem;
 
-		transition: transform 300ms, opacity 500ms;
+		transition:
+			transform 300ms,
+			opacity 500ms;
 		will-change: height;
 	}
 

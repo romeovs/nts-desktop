@@ -1,22 +1,3 @@
-.empty {
-	width: 100vw;
-	height: 100vh;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	text-align: center;
-	padding: 3em;
-	box-sizing: border-box;
-}
-
-.empty svg {
-	width: 24px;
-	height: 24px;
-	fill: none;
-	stroke: currentColor;
-	stroke-width: 2;
-}
-
 .show {
 	overflow-y: auto;
 	width: 100vw;
@@ -76,42 +57,90 @@
 	display: none;
 }
 
-.header {
+/* The transport controls live below the fold, so the header doubles as the
+   play/pause button - the same affordance the live channels have. */
+/* The header and the heart share a row: one acts on playback, the other on the
+   show, and the corner is left to navigation alone. */
+.controls {
 	position: absolute;
 	top: 0.5rem;
 	left: 0.5rem;
 	display: flex;
+	align-items: center;
+	gap: 0.4rem;
+	z-index: 10;
+}
+
+.header {
+	display: flex;
+	align-items: center;
+	background: black;
+	padding: 0.25rem;
+	padding-right: 0.5rem;
+
+	letter-spacing: inherit;
+	text-transform: inherit;
+	font: inherit;
+	color: white;
+	border: none;
+	outline: none;
+	text-align: left;
+	cursor: pointer;
+	transition:
+		background 300ms,
+		color 300ms;
+}
+
+.badge {
+	background: white;
+	width: 2rem;
+	height: 2rem;
+	flex-shrink: 0;
+	margin-right: 0.5rem;
+	position: relative;
+	transition: background 300ms;
+}
+
+.play {
+	position: absolute;
+	left: 0;
+	right: 0;
+	top: 0;
+	bottom: 0;
+	margin: auto;
+	padding-bottom: 0.1rem;
+}
+
+/* Mirrors the "Live Now" block on the channel header, past tense. */
+.was {
+	display: block;
+	font-weight: bold;
+	font-size: 0.7rem;
+	line-height: 1em;
+	margin-top: 0.05rem;
+	text-transform: uppercase;
 }
 
 .date {
-	padding: 0.25rem 0.5rem;
+	display: block;
+	color: inherit;
+}
+
+.playing.header {
+	background: white;
+	color: black;
+}
+
+.playing .badge {
 	background: black;
-	color: white;
+}
+
+.playing .play {
+	fill: white;
 }
 
 .notracklist {
 	text-align: center;
 	padding: 0.5rem 0;
 	font-size: 0.75rem;
-}
-
-.nav {
-	position: relative;
-	top: 1rem;
-	font-size: 0.85em;
-}
-
-.nav button {
-	background: none;
-	border: none;
-	font: inherit;
-	color: inherit;
-	text-transform: inherit;
-	letter-spacing: inherit;
-	outline: none;
-	cursor: pointer;
-}
-
-.nav button:first-child {
-	margin-right: 1rem;
 }

@@ -143,6 +143,7 @@ export function Soundcloud(props: Props) {
 	const feed = encodeURIComponent(show.source.url)
 	return (
 		<iframe
+			title="SoundCloud player"
 			ref={ref}
 			src={`https://w.soundcloud.com/player/?url=${feed}`}
 			allow="autoplay"

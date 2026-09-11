@@ -17,7 +17,7 @@
 	}
 
 	&:hover {
-		background: rgba(76, 76, 76, 0.35) !important;
+		background: rgba(76, 76, 76, 0.35);
 	}
 
 	&:active {
@@ -59,5 +59,38 @@
 	.seekable &:hover {
 		background: white;
 		color: black;
+	}
+}
+
+.play {
+	flex-shrink: 0;
+	appearance: none;
+	background: none;
+	border: none;
+	padding: 0;
+	margin: 0 0 0 0.35rem;
+	width: 18px;
+	height: 18px;
+	cursor: pointer;
+	color: inherit;
+
+	/* Stays out of the way until the row is pointed at, so the tracklist reads
+	   as a list rather than a column of buttons. */
+	opacity: 0;
+	transition: opacity 150ms;
+
+	& svg {
+		width: 100%;
+		height: 100%;
+		fill: currentColor;
+		display: block;
+	}
+
+	.track:hover & {
+		opacity: 0.6;
+	}
+
+	&:hover {
+		opacity: 1;
 	}
 }

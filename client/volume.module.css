@@ -4,7 +4,9 @@
 	position: fixed;
 	bottom: 0;
 	right: 0;
-	transition: opacity 200ms, height 100ms;
+	transition:
+		opacity 200ms,
+		height 100ms;
 	opacity: 0;
 	width: 5px;
 	background: white;

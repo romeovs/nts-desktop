@@ -7,7 +7,7 @@ import type { Stream } from "~/lib/stream"
 const artwork = [
 	{
 		type: "image/png",
-		src: "https://raw.githubusercontent.com/romeovs/nts-desktop/refs/heads/main/logos/logo.png",
+		src: "https://raw.githubusercontent.com/ghetoblues/ntser/refs/heads/main/logos/logo.png",
 	},
 ]
 

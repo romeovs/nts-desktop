@@ -1,9 +1,0 @@
-tabWidth: 2
-useTabs: true
-semi: false
-singleQuote: false
-jsxSingleQuote: false
-trailingComma: all
-bracketSpacing: true
-arrowParens: avoid
-printWidth: 120

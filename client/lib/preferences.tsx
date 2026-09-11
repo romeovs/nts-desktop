@@ -1,6 +1,6 @@
 import {
-	type PropsWithChildren,
 	createContext,
+	type PropsWithChildren,
 	useCallback,
 	useContext,
 	useState,
@@ -35,10 +35,6 @@ export function PreferencesProvider(props: ProviderProps) {
 		[],
 	)
 
-	const setPreferences = useCallback(function (prefs: Preferences) {
-		updatePreferences((_) => prefs)
-	}, [])
-
 	const updatePreferences = useCallback(function (
 		fn: (prefs: Preferences) => Preferences,
 	) {
@@ -48,6 +44,13 @@ export function PreferencesProvider(props: ProviderProps) {
 			return prefs
 		})
 	}, [])
+
+	const setPreferences = useCallback(
+		function (prefs: Preferences) {
+			updatePreferences((_) => prefs)
+		},
+		[updatePreferences],
+	)
 
 	const ctx = {
 		preferences,

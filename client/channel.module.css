@@ -22,7 +22,9 @@
 	display: flex;
 	padding: 0.25rem;
 	padding-right: 0.5rem;
-	transition: background 300ms, color 300ms;
+	transition:
+		background 300ms,
+		color 300ms;
 
 	letter-spacing: inherit;
 	text-transform: inherit;
@@ -47,7 +49,9 @@
 	font-size: 1.2rem;
 
 	position: relative;
-	transition: background 300ms, color 300ms;
+	transition:
+		background 300ms,
+		color 300ms;
 }
 
 .playing .header {
@@ -58,10 +62,6 @@
 .playing .ch {
 	color: white;
 	background: black;
-}
-
-.playing .play {
-	fill: white;
 }
 
 .play {
@@ -76,6 +76,10 @@
 	opacity: 0;
 	transition: opacity 200ms;
 	cursor: pointer;
+}
+
+.playing .play {
+	fill: white;
 }
 
 .header:hover .ch {
@@ -140,7 +144,6 @@
 
 .tracklist {
 	list-style: none;
-	padding: 0;
 	margin: 0;
 	padding: 0.5rem 0;
 }
@@ -154,7 +157,7 @@
 	align-items: top;
 
 	&:hover {
-		background: rgba(76, 76, 76, 0.35) !important;
+		background: rgba(76, 76, 76, 0.35);
 	}
 
 	&:active {

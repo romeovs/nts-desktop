@@ -1,0 +1,120 @@
+.schedule {
+	height: 100vh;
+	background: black;
+	color: white;
+
+	display: flex;
+	flex-direction: column;
+	padding: 0.5rem;
+	box-sizing: border-box;
+}
+
+.heading {
+	flex-shrink: 0;
+	font-weight: bold;
+	font-size: 0.7rem;
+	text-transform: uppercase;
+	margin-bottom: 0.4rem;
+}
+
+.columns {
+	display: flex;
+	gap: 0.5rem;
+	flex-grow: 1;
+	min-height: 0;
+}
+
+.column {
+	flex: 1 1 0;
+	min-width: 0;
+	overflow-y: auto;
+
+	/* The panel is 360px wide and split in two; a scrollbar in each column takes
+	   room the show titles need, and the columns are obviously scrollable. */
+	scrollbar-width: none;
+
+	&::-webkit-scrollbar {
+		display: none;
+	}
+}
+
+/* Sticky does not change paint order, and this sits before the list in the
+   markup, so without a stacking order the rows scroll over it rather than
+   under. */
+.channel {
+	position: sticky;
+	top: 0;
+	z-index: 1;
+	background: black;
+	font-weight: 900;
+	font-size: 0.7rem;
+	text-transform: uppercase;
+	padding: 0.1rem 0 0.35rem 0;
+}
+
+.list {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+.entry {
+	display: flex;
+	align-items: flex-start;
+	gap: 0.25rem;
+	margin-bottom: 0.4rem;
+}
+
+.info {
+	min-width: 0;
+	flex-grow: 1;
+}
+
+.notify {
+	flex-shrink: 0;
+	appearance: none;
+	background: none;
+	border: none;
+	padding: 0;
+	margin-top: 0.1rem;
+	width: 14px;
+	height: 14px;
+	cursor: pointer;
+	color: inherit;
+	opacity: 0.25;
+	transition: opacity 200ms;
+
+	& svg {
+		width: 100%;
+		height: 100%;
+		fill: currentColor;
+		display: block;
+	}
+
+	&:hover {
+		opacity: 0.8;
+	}
+}
+
+.marked {
+	opacity: 1;
+}
+
+.time {
+	display: block;
+	font-size: 0.65rem;
+	opacity: 0.55;
+}
+
+.name {
+	display: block;
+	font-size: 0.7rem;
+	line-height: 1.25;
+	text-transform: uppercase;
+	font-weight: bold;
+}
+
+.empty {
+	font-size: 0.7rem;
+	opacity: 0.4;
+}

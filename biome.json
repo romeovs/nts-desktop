@@ -1,7 +1,16 @@
 {
 	"$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
 	"files": {
-		"maxSize": 20971520
+		"maxSize": 20971520,
+		"includes": [
+			"**",
+			"!**/*.svg",
+			"!dist",
+			"!bundle",
+			"!src-tauri/target",
+			"!src-tauri/gen",
+			"!src-tauri/icons"
+		]
 	},
 	"formatter": {
 		"indentStyle": "tab",
@@ -22,12 +31,15 @@
 	},
 	"linter": {
 		"rules": {
-			"recommended": true,
+			"preset": "recommended",
 			"a11y": {
-				"all": false,
+				"noSvgWithoutTitle": "off",
+				"noStaticElementInteractions": "off",
+				"useKeyWithClickEvents": "off",
 				"noAccessKey": "error",
 				"noAriaHiddenOnFocusable": "error",
-				"noAriaUnsupportedElements": "error"
+				"noAriaUnsupportedElements": "error",
+				"useMediaCaption": "off"
 			},
 			"complexity": {
 				"useArrowFunction": "off",

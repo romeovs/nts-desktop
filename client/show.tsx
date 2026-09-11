@@ -1,12 +1,14 @@
+import classnames from "classnames"
 import { useCallback } from "react"
 
 import type { ShowInfo } from "~/app/show"
 
 import { Controls, formatDuration } from "./controls"
-import { electron } from "./electron"
-import { Tracklist } from "./tracklist/index"
-
+import { Favourite } from "./favourite"
+import { Favourites } from "./favourites"
+import { PlayButton } from "./play"
 import css from "./show.module.css"
+import { Tracklist } from "./tracklist/index"
 
 type Props = {
 	show: ShowInfo | null
@@ -21,32 +23,21 @@ type Props = {
 export function Show(props: Props) {
 	const { show, onPlay, onStop, onSeek, playing, duration, position } = props
 
-	const handleMyNTSClick = useCallback(function () {
-		electron.send("my-nts")
-	}, [])
-	const handleExploreClick = useCallback(function () {
-		electron.send("explore")
-	}, [])
+	const handleToggle = useCallback(
+		function () {
+			if (playing) {
+				onStop()
+			} else {
+				onPlay()
+			}
+		},
+		[playing, onPlay, onStop],
+	)
 
+	// With nothing loaded, the screen is far more useful as a way into the shows
+	// you saved than as a hint to go and find a link in a browser.
 	if (!show) {
-		return (
-			<div className={css.empty}>
-				<div>
-					<svg viewBox="0 0 24 24">
-						<path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3" />
-					</svg>
-					<p>Drop a link on the menu icon to load an episode</p>
-					<div className={css.nav}>
-						<button type="button" onClick={handleMyNTSClick}>
-							My NTS
-						</button>
-						<button type="button" onClick={handleExploreClick}>
-							Explore
-						</button>
-					</div>
-				</div>
-			</div>
-		)
+		return <Favourites />
 	}
 
 	const { image, name, location, date, tracklist } = show
@@ -54,9 +45,22 @@ export function Show(props: Props) {
 	return (
 		<div className={css.show} data-show="true">
 			<div className={css.top}>
-				<img src={image} className={css.image} draggable={false} />
-				<div className={css.header}>
-					<div className={css.date}>{formatDate(date)}</div>
+				<img src={image} className={css.image} draggable={false} alt="" />
+				<div className={css.controls}>
+					<button
+						type="button"
+						className={classnames(css.header, playing && css.playing)}
+						onClick={handleToggle}
+					>
+						<span className={css.badge}>
+							<PlayButton playing={playing} className={css.play} />
+						</span>
+						<span>
+							<span className={css.was}>Was Live</span>
+							<span className={css.date}>{formatDate(date)}</span>
+						</span>
+					</button>
+					<Favourite show={show.show} episode={show.episode} inline />
 				</div>
 				<div className={css.footer}>
 					<div className={css.location}>{location}</div>
@@ -69,9 +73,6 @@ export function Show(props: Props) {
 				show={show}
 				duration={duration}
 				position={position}
-				playing={playing}
-				onPlay={onPlay}
-				onStop={onStop}
 				onSeek={onSeek}
 			/>
 			{tracklist.length === 0 && (

@@ -10,7 +10,7 @@ export type Notification = {
 	created: number
 	ttl: number
 	id: number
-	nodeRef: React.RefObject<HTMLDivElement>
+	nodeRef: React.RefObject<HTMLDivElement | null>
 }
 
 type NotificationDefinition = {

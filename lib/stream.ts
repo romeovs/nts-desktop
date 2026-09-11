@@ -20,6 +20,8 @@ export function pathnameToStream(pathname: string): 1 | 2 | null {
 	return null
 }
 
+// NTS redirects these to radiomast.io (streams.radiomast.io -> audio-edge-*.h.radiomast.io),
+// so every host in that chain has to be allowed by the media-src CSP in index.html.
 export const streams = {
 	1: "https://stream-relay-geo.ntslive.net/stream?client=NTSWebApp",
 	2: "https://stream-relay-geo.ntslive.net/stream2?client=NTSWebApp",

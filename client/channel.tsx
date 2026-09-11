@@ -1,14 +1,11 @@
 import classnames from "classnames"
-
+import { useEffect, useRef } from "react"
 import type { LiveTrack } from "~/app/live-tracks"
-import type { ChannelInfo } from "./lib/live"
-
+import css from "./channel.module.css"
 import { Indicator } from "./indicator"
+import type { ChannelInfo } from "./lib/live"
 import { PlayButton } from "./play"
 import { Tracklist } from "./tracklist/index"
-
-import { useEffect, useRef } from "react"
-import css from "./channel.module.css"
 
 type Props = {
 	info?: ChannelInfo
@@ -32,7 +29,16 @@ export function Channel(props: Props) {
 		}
 	}
 
-	const tracks = props.tracks.filter((track) => track.stream === channel)
+	// The live tracks feed is per channel, not per show, so the tail of it still
+	// belongs to whatever was on before. Keep only what has played since this
+	// show went on air.
+	const tracks = props.tracks.filter(function (track) {
+		if (track.stream !== channel) {
+			return false
+		}
+
+		return !starts || track.startTime.getTime() >= starts.getTime()
+	})
 	const hasTracks = tracks.some((track) => track.title)
 
 	const ref = useRef<HTMLDivElement>(null)
@@ -66,7 +72,7 @@ export function Channel(props: Props) {
 	return (
 		<div className={css.wrapper} data-show="true" data-channel={channel} ref={ref}>
 			<div className={classnames(css.channel, playing && css.playing)}>
-				<img src={image} className={css.image} draggable={false} />
+				<img src={image} className={css.image} draggable={false} alt="" />
 				<button type="button" className={css.header} onClick={handleClick}>
 					<div className={css.ch}>
 						{channel}

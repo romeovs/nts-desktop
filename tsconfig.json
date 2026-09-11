@@ -1,12 +1,10 @@
 {
-	"include": ["client", "app", "types"],
+	"include": ["client", "app", "lib", "types"],
 	"compilerOptions": {
 		"module": "esnext",
 		"target": "esnext",
-		"moduleResolution": "node",
-		"jsx": "preserve",
-		"jsxFactory": "h",
-		"jsxFragmentFactory": "Fragment",
+		"moduleResolution": "bundler",
+		"jsx": "react-jsx",
 		"baseUrl": "./",
 		"noEmit": true,
 		"strict": true,

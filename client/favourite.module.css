@@ -1,0 +1,53 @@
+.favourite {
+	color: white;
+	background: none;
+	border: none;
+	padding: 0;
+	outline: none;
+	opacity: 0.5;
+	transition: opacity 300ms;
+	cursor: pointer;
+	width: 30px;
+	height: 30px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.corner {
+	position: absolute;
+	top: 10px;
+	right: 10px;
+}
+
+.inline {
+	position: relative;
+	align-self: center;
+}
+
+.favourite:hover {
+	opacity: 1;
+}
+
+.favourite:disabled {
+	pointer-events: none;
+	opacity: 0;
+}
+
+.favourite svg {
+	width: 24px;
+	height: 24px;
+	fill: none;
+	stroke: white;
+	stroke-width: 1.8;
+	filter: drop-shadow(0px 1px 2px rgba(100, 100, 100, 0.4));
+}
+
+/* Filled in once it is in the account, so the state reads at a glance. */
+.saved {
+	opacity: 1;
+}
+
+.saved svg {
+	fill: white;
+}

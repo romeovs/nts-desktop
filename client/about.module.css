@@ -1,0 +1,114 @@
+.about {
+	position: fixed;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	background: black;
+	color: white;
+	opacity: 1;
+	transition: opacity 400ms;
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	padding: 0.75rem;
+	box-sizing: border-box;
+	overflow: hidden;
+
+	z-index: 1002;
+	cursor: default;
+}
+
+.hide {
+	opacity: 0;
+	pointer-events: none;
+}
+
+.inner {
+	text-align: center;
+	max-width: 100%;
+}
+
+.logo {
+	width: 30px;
+	height: 30px;
+	display: block;
+	margin: 0 auto 0.4rem auto;
+}
+
+.name {
+	font-weight: bold;
+	text-transform: uppercase;
+	font-size: 0.85rem;
+	line-height: 1.15;
+}
+
+.version {
+	font-size: 0.7rem;
+	opacity: 0.5;
+	margin-top: 0.15rem;
+}
+
+.blurb {
+	font-size: 0.7rem;
+	line-height: 1.4;
+	margin: 0.7rem 0 0 0;
+	opacity: 0.75;
+}
+
+.credit {
+	font-size: 0.7rem;
+	line-height: 1.45;
+	margin: 0.6rem 0 0 0;
+}
+
+.link {
+	appearance: none;
+	background: none;
+	border: none;
+	padding: 0;
+	margin: 0;
+	font: inherit;
+	color: inherit;
+	letter-spacing: inherit;
+	cursor: pointer;
+	text-decoration: underline;
+	text-underline-offset: 2px;
+	opacity: 0.65;
+	transition: opacity 200ms;
+
+	&:hover {
+		opacity: 1;
+	}
+}
+
+.licence {
+	font-size: 0.65rem;
+	margin-top: 0.7rem;
+	opacity: 0.45;
+}
+
+/* Marks the way out: the same arrow that moves between the screens underneath,
+   so the swipe that dismisses this panel is visible rather than guessed at. */
+.exit {
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	right: 0;
+	margin: auto;
+	width: 1rem;
+	height: 3rem;
+	padding: 0;
+	border: none;
+	outline: none;
+	background: none;
+	cursor: pointer;
+	opacity: 0.3;
+	transition: opacity 200ms;
+
+	&:hover {
+		opacity: 1;
+	}
+}

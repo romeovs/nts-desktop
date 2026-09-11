@@ -12,35 +12,37 @@ title = $(shell pwd | xargs basename)
 log = printf "$(__blue)$(title): $(__normal) %s\\n"
 
 help: ## Show this help.
-	@echo 'NTS Desktop'
+	@echo 'NTSer'
 	@echo 'Please use one of these make rules:'
 	@echo
 	@grep '##' $(MAKEFILE_LIST) | grep -v 'grep' | awk -F ': ##' '{ printf("%18s  %s\n", $$1, $$2) }'
 	@echo
 
-bundle: build app
-
-start: ## Start the app, making sure it is build to the latest version
-start: index preload run
-
-run: ## Run the application (not recommended, use start instead)
-run:
-	@$(log) "Running app"
-	@$(bin)/electron dist
-
-build: ## Build all the JavaScript, without bundling the Electron app
-build: index preload client packages
-
-.PHONY: app
-app: ## Build the electron app
-app:
-	@$(log) "Bundling app..."
-	@$(bin)/electron-builder build --mac --universal --publish=never
+start: ## Start the app with the native shell and a Vite dev server
+start:
+	@$(log) "Starting app"
+	@$(bin)/tauri dev
 
 dev: ## Start the development server for interactive development
-dev:
-	@$(log) "Starting dev server..."
-	@$(bin)/concurrently "make client.dev" "sleep 3 && make start"
+dev: start
+
+# GitHub Actions sets CI=true. Build a universal disk image there so Intel
+# and Apple Silicon both get one download; locally, only this machine.
+ifeq ($(CI),true)
+TAURI_FLAGS ?= --target universal-apple-darwin
+endif
+
+.PHONY: app
+app: ## Build the macOS app (universal on CI)
+app:
+	@$(log) "Bundling app..."
+	@$(bin)/tauri build --bundles dmg $(TAURI_FLAGS)
+
+.PHONY: version
+version: ## Set the version in package.json, Cargo.toml and tauri.conf.json
+version:
+	@test -n "$(VERSION)" || (echo "VERSION=x.y.z required" && exit 1)
+	@node scripts/set-version.mjs "$(VERSION)"
 
 TSC_FLAGS =
 
@@ -55,13 +57,13 @@ typecheck.watch: typecheck
 
 format: ## Format all code
 format:
-	@$(bin)/biome check . --linter-enabled=false --organize-imports-enabled=true --fix
+	@$(bin)/biome check . --linter-enabled=false --write
 
 
 formatting: ## Check the formatting of all code
 formatting:
 	@$(log) "Checking format..."
-	@$(bin)/biome check . --linter-enabled=false --organize-imports-enabled=true $(SILENT)
+	@$(bin)/biome check . --linter-enabled=false $(SILENT)
 
 
 lint: ## Check lint
@@ -69,41 +71,38 @@ lint:
 	@$(log) "Linting..."
 	@$(bin)/biome lint . $(SILENT)
 
-index: # Build the "server"-side js
-index: app/main.ts
-	@$(log) "Building app js..."
-	@mkdir -p dist
-	@env NODE_ENV=development $(bin)/esbuild --bundle --format=cjs --platform=node --external:electron --loader:.png=file app/main.ts --outfile=dist/index.cjs --define:FIREBASE_CONFIG='$(shell $(bin)/dotenv -p FIREBASE_CONFIG)'
+.env: # Recover the public Firebase config NTS ships in its own frontend bundle
+.env:
+	@$(log) "Fetching Firebase config from nts.live..."
+	@node scripts/firebase-config.mjs > .env || (rm -f .env; \
+		$(log) "Could not reach nts.live; building without the live tracklist"; \
+		touch .env)
 
-preload: # Build the preload script
-preload: dist/preload.js
-dist/preload.js: app/preload.js
-	@$(log) "Copying preload.js..."
-	@mkdir -p dist
-	@cp app/preload.js dist/preload.js
+env: ## Refresh .env with the public Firebase config from nts.live
+env:
+	@rm -f .env
+	@$(MAKE) --no-print-directory .env
 
 .PHONY: client
 client: # Build the client-side code
 client:
 	@$(log) "Building client..."
-	@mkdir -p dist
-	@rm -rf dist/client/*
 	@$(bin)/vite build
 
 client.dev: # Start client-side development server
 client.dev:
 	@$(bin)/vite
 
-packages: # Copy package.json and amend it for Electron
-packages: dist/pnpm-lock.json
-dist/pnpm-lock.json: package.json
-	@$(log) "Copying package.json..."
-	@mkdir -p dist
-	@cat package.json | $(bin)/json -e 'this.dependencies=undefined' -e 'this.devDependencies=undefined' > dist/package.json
-	@cd dist && pnpm install --production
-
 logos: ## Convert all svg logos into their png counterparts
-logos: $(patsubst %.svg,%.png,$(wildcard logos/*.svg))
+logos: $(patsubst %.svg,%.png,$(wildcard logos/menu*.svg))
+
+.PHONY: icons
+icons: ## Build macOS/Windows app icons from the squircle SVG
+icons: logos/app-icon.svg
+	@$(log) "Building app icons..."
+	@$(bin)/tauri icon logos/app-icon.svg
+	@rm -rf src-tauri/icons/android src-tauri/icons/ios
+	@rm -f src-tauri/icons/Square*.png src-tauri/icons/StoreLogo.png
 
 check: lint formatting typecheck
 

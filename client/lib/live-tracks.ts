@@ -1,20 +1,14 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 
 import type { LiveTrack } from "~/app/live-tracks"
 import type { Stream } from "~/lib/stream"
 
-import { useEvent } from "./use-event"
+import { onLiveTracks } from "./session"
 
 export function useLiveTracks(stream: Stream) {
 	const [tracks, setTracks] = useState<LiveTrack[]>([])
 
-	useEvent(
-		`live-tracks-${stream}`,
-		function (tracks: LiveTrack[]) {
-			setTracks(tracks)
-		},
-		[],
-	)
+	useEffect(() => onLiveTracks(stream, setTracks), [stream])
 
 	return tracks
 }

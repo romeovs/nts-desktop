@@ -1,32 +1,18 @@
 import { type MouseEvent, useRef } from "react"
-import css from "./controls.module.css"
-
 import type { ShowInfo } from "~/app/show"
-
-import { PlayButton } from "./play"
+import css from "./controls.module.css"
 
 type Props = {
 	duration: number
 	position: number
 	show: ShowInfo
-	playing: boolean
-	onPlay: () => void
-	onStop: () => void
 	onSeek: (pos: number) => void
 }
 
 export function Controls(props: Props) {
-	const { duration, position, onPlay, onStop, playing, onSeek } = props
+	const { duration, position, onSeek } = props
 	const width = duration === 0 ? 0 : (100 * position) / duration
 	const ref = useRef<HTMLDivElement | null>(null)
-
-	function handlePlayClick() {
-		if (playing) {
-			onStop()
-		} else {
-			onPlay()
-		}
-	}
 
 	function handleClick(evt: MouseEvent<HTMLDivElement>) {
 		if (!ref.current) {
@@ -45,9 +31,6 @@ export function Controls(props: Props) {
 
 	return (
 		<div className={css.controls}>
-			<button onClick={handlePlayClick} type="button" className={css.play}>
-				<PlayButton playing={playing} />
-			</button>
 			<div className={css.bar} onClick={handleClick} ref={ref}>
 				<div className={css.pos} style={{ width: `${width}%` }} />
 			</div>

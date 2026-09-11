@@ -1,0 +1,59 @@
+{
+	"$schema": "https://schema.tauri.app/config/2",
+	"productName": "NTSer",
+	"version": "0.5.1",
+	"identifier": "org.observepeople.ntser",
+	"build": {
+		"frontendDist": "../dist/client",
+		"devUrl": "http://localhost:5173",
+		"beforeDevCommand": "make .env && make client.dev",
+		"beforeBuildCommand": "make .env && make client"
+	},
+	"app": {
+		"macOSPrivateApi": true,
+		"windows": [
+			{
+				"label": "main",
+				"title": "NTSer",
+				"width": 360,
+				"height": 270,
+				"resizable": false,
+				"decorations": false,
+				"visible": false,
+				"skipTaskbar": true,
+				"alwaysOnTop": true,
+				"visibleOnAllWorkspaces": true,
+				"fullscreen": false,
+				"shadow": true,
+				"focus": false
+			}
+		],
+		"security": {
+			"csp": "default-src 'self'; script-src 'self' https://widget.mixcloud.com https://w.soundcloud.com; connect-src 'self' ipc: http://ipc.localhost https://identitytoolkit.googleapis.com https://firestore.googleapis.com https://securetoken.googleapis.com https://www.nts.live https://itunes.apple.com https://*.googleapis.com wss://*.googleapis.com; media-src 'self' https://stream-relay-geo.ntslive.net https://stream-mixtape-geo.ntslive.net https://streams.radiomast.io https://*.radiomast.io; style-src 'self' 'unsafe-inline'; img-src 'self' https://media.ntslive.co.uk https://media2.ntslive.co.uk https://raw.githubusercontent.com; frame-src https://www.mixcloud.com https://w.soundcloud.com https://widget.mixcloud.com"
+		}
+	},
+	"bundle": {
+		"active": true,
+		"targets": ["dmg"],
+		"icon": [
+			"icons/32x32.png",
+			"icons/128x128.png",
+			"icons/128x128@2x.png",
+			"icons/icon.icns",
+			"icons/icon.ico",
+			"icons/icon.png"
+		],
+		"category": "Music",
+		"macOS": {
+			"minimumSystemVersion": "12.0",
+			"signingIdentity": "-"
+		},
+		"fileAssociations": [
+			{
+				"ext": ["webloc"],
+				"name": "Web location",
+				"role": "Viewer"
+			}
+		]
+	}
+}

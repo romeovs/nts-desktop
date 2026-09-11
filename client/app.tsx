@@ -3,35 +3,34 @@ import { useCallback, useEffect, useState } from "react"
 import "./global.css"
 
 import { type Stream, streams } from "~/lib/stream"
-
+import type { ShowInfo } from "../app/show"
+import { About } from "./about"
+import css from "./app.module.css"
+import { Arrow } from "./arrow"
+import { Channel as ChannelCard } from "./channel"
 import { electron } from "./electron"
+import { Favourite } from "./favourite"
+import { Favourites } from "./favourites"
+import { Help } from "./help"
 import { useLiveInfo } from "./lib/live"
 import { useLiveTracks } from "./lib/live-tracks"
 import { usePreferences } from "./lib/preferences"
 import { useEvent } from "./lib/use-event"
 import { useKeydown } from "./lib/use-keydown"
 import { useOffline } from "./lib/use-offline"
-
-import { useMetadata } from "./metadata"
-
-import type { ShowInfo } from "../app/show"
-import { Arrow } from "./arrow"
-import { Channel as ChannelCard } from "./channel"
-import { Chat } from "./chat"
-import { Help } from "./help"
+import { LoadShow } from "./load-show"
 import { Login } from "./login"
+import { useMetadata } from "./metadata"
 import { Mixcloud } from "./mixcloud"
 import { Notifications } from "./notifications"
 import { Offline } from "./offline"
 import { Player } from "./player"
+import { Schedule } from "./schedule"
 import { Show } from "./show"
 import { Slide, Slider } from "./slider"
 import { Soundcloud } from "./soundcloud"
 import { Splash } from "./splash"
-import { Tracklist } from "./tracklist"
 import { Volume } from "./volume"
-
-import css from "./app.module.css"
 
 type Channel = Stream | "show"
 
@@ -41,7 +40,10 @@ const channelToIndex: Record<Channel, number> = {
 	show: 2,
 }
 
-const indexToChannel: Channel[] = [1, 2, "show"]
+type SlideName = Channel | "schedule"
+
+const indexToSlide: SlideName[] = [1, 2, "show", "schedule"]
+const SLIDES = indexToSlide.length
 
 export function App() {
 	const [route, setRoute] = useState<"app" | "login">("app")
@@ -64,12 +66,17 @@ export function App() {
 
 export function NTS() {
 	const [show, setShow] = useState<ShowInfo | null>(null)
+	// The archive slide shows either the loaded show or the favourites list. The
+	// audio elements live outside the slider, so browsing does not stop playback.
+	const [browsing, setBrowsing] = useState(false)
 	const { preferences, updatePreferences } = usePreferences()
 
 	const [index, setIndex] = useState<number>(0)
 	const [playing, setPlaying] = useState<Channel | null>(null)
 	const [isOpen, setIsOpen] = useState(document.hasFocus())
 	const [isShowingHelp, setIsShowingHelp] = useState(false)
+	const [isShowingAbout, setIsShowingAbout] = useState(false)
+	const [loadShow, setLoadShow] = useState<string | null>(null)
 	const [duration, setDuration] = useState(0)
 	const [position, setPosition] = useState(0)
 	const [looped, setLooped] = useState(0)
@@ -86,14 +93,22 @@ export function NTS() {
 
 	const tracks1 = useLiveTracks(1)
 	const tracks2 = useLiveTracks(2)
-	const currentTracks = playing === 1 ? tracks1 : tracks2
+
+	// Whatever is on air on the channel being looked at, which is what the
+	// favourite button acts on.
+	const liveShow =
+		index === 0
+			? live.data?.channel1.now
+			: index === 1
+				? live.data?.channel2.now
+				: null
 
 	const next = useCallback(function () {
-		setIndex((idx) => (idx + 1) % 3)
+		setIndex((idx) => (idx + 1) % SLIDES)
 	}, [])
 
 	const prev = useCallback(function () {
-		setIndex((idx) => (3 + idx - 1) % 3)
+		setIndex((idx) => (SLIDES + idx - 1) % SLIDES)
 	}, [])
 
 	const togglePlaying = useCallback(
@@ -102,7 +117,14 @@ export function NTS() {
 				return
 			}
 
-			setPlaying((playing) => (playing ? null : indexToChannel[index]))
+			setPlaying(function (playing) {
+				if (playing) {
+					return null
+				}
+
+				const slide = indexToSlide[index]
+				return slide === "schedule" ? null : slide
+			})
 		},
 		[index, isOffline],
 	)
@@ -125,9 +147,28 @@ export function NTS() {
 		[position],
 	)
 
-	const close = useCallback(function () {
-		electron.send("close")
-	}, [])
+	const close = useCallback(
+		function () {
+			// Escape backs out of whatever is on top before it closes the window.
+			if (isShowingAbout) {
+				setIsShowingAbout(false)
+				return
+			}
+
+			if (isShowingHelp) {
+				setIsShowingHelp(false)
+				return
+			}
+
+			if (loadShow !== null) {
+				setLoadShow(null)
+				return
+			}
+
+			electron.send("close")
+		},
+		[isShowingAbout, isShowingHelp, loadShow],
+	)
 
 	useEffect(
 		function () {
@@ -154,9 +195,7 @@ export function NTS() {
 	useKeydown("ArrowLeft", prev)
 	useKeydown("?", () => setIsShowingHelp((x) => !x))
 	useKeydown(" ", togglePlaying, [playing, index])
-	useKeydown("Escape", close)
-	useKeydown("t", () => electron.send("tracklist", indexToChannel[index]), [index])
-	useKeydown("c", () => electron.send("chat", indexToChannel[index]), [index])
+	useKeydown("Escape", close, [isShowingAbout, isShowingHelp, loadShow])
 	useKeydown("1", () => setPlaying(playing === 1 ? null : 1), [playing])
 	useKeydown("2", () => setPlaying(playing === 2 ? null : 2), [playing])
 	useKeydown("+", increaseVolume)
@@ -164,8 +203,12 @@ export function NTS() {
 	useKeydown("ArrowUp", increaseVolume)
 	useKeydown("ArrowDown", decreaseVolume)
 
+	useEvent("about", () => setIsShowingAbout(true))
+	useEvent("load-show", (suggestion: string) => setLoadShow(suggestion))
+
 	useEvent("open-show", async function (show: ShowInfo) {
 		setShow(show)
+		setBrowsing(false)
 		setPlaying("show")
 		setIndex(channelToIndex.show)
 		setPosition(0)
@@ -200,16 +243,6 @@ export function NTS() {
 		},
 		[isOffline, stopAll],
 	)
-
-	const handleShowTracklist = useCallback(function () {
-		const all = document.querySelectorAll("[data-show]")
-		for (const el of all) {
-			el.scrollTo({
-				top: 220,
-				behavior: "smooth",
-			})
-		}
-	}, [])
 
 	const handleShowPlay = useCallback(function () {
 		setPlaying("show")
@@ -255,15 +288,22 @@ export function NTS() {
 					/>
 				</Slide>
 				<Slide>
-					<Show
-						show={show}
-						onPlay={() => setPlaying("show")}
-						onStop={stopAll}
-						onSeek={seek}
-						playing={playing === "show"}
-						duration={duration}
-						position={position}
-					/>
+					{browsing || !show ? (
+						<Favourites />
+					) : (
+						<Show
+							show={show}
+							onPlay={() => setPlaying("show")}
+							onStop={stopAll}
+							onSeek={seek}
+							playing={playing === "show"}
+							duration={duration}
+							position={position}
+						/>
+					)}
+				</Slide>
+				<Slide>
+					<Schedule live={live} />
 				</Slide>
 			</Slider>
 			<button type="button" onClick={prev} className={css.prev}>
@@ -272,13 +312,19 @@ export function NTS() {
 			<button type="button" onClick={next} className={css.next}>
 				<Arrow direction="right" />
 			</button>
-			<Tracklist
-				channel={indexToChannel[index]}
-				hasShow={Boolean(show)}
-				onShowTracklist={handleShowTracklist}
-				hasTracks={currentTracks.length > 0}
-			/>
-			<Chat channel={indexToChannel[index]} />
+			{(indexToSlide[index] === 1 || indexToSlide[index] === 2) && (
+				<Favourite show={liveShow?.show ?? ""} episode={liveShow?.episode ?? ""} />
+			)}
+			{indexToSlide[index] === "show" && show && !browsing && (
+				<button
+					type="button"
+					className={css.back}
+					onClick={() => setBrowsing(true)}
+					title="Back to favourites"
+				>
+					<Arrow direction="left" />
+				</button>
+			)}
 			<Player
 				src={streams[1]}
 				playing={playing === 1}
@@ -321,6 +367,12 @@ export function NTS() {
 			)}
 			<Offline hide={!isOffline} />
 			<Help hide={!isShowingHelp} onHide={() => setIsShowingHelp(false)} />
+			<About hide={!isShowingAbout} onHide={() => setIsShowingAbout(false)} />
+			<LoadShow
+				show={loadShow !== null}
+				suggestion={loadShow ?? ""}
+				onClose={() => setLoadShow(null)}
+			/>
 			<Volume volume={preferences.volume} />
 		</>
 	)
