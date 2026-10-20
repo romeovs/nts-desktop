@@ -100,6 +100,9 @@ fn hide_window(app: &AppHandle) {
 /// Close on blur, but only once the window has been open past the grace
 /// period. Matches the delayed one-shot blur handler the Electron app used.
 fn handle_blur(app: &AppHandle) {
+    if over_tray(app) {
+        return;
+    }
     let Some(opened) = app.try_state::<Opened>() else {
         return;
     };
@@ -112,6 +115,26 @@ fn handle_blur(app: &AppHandle) {
         return;
     }
     hide_window(app)
+}
+
+/// Whether the cursor sits on the menubar icon.
+///
+/// Clicking the icon blurs the window, and the click itself is only reported
+/// afterwards, so blur on its own cannot tell a dismissal from a toggle. The
+/// cursor is over the icon for the whole click, which the click handler then
+/// acts on.
+fn over_tray(app: &AppHandle) -> bool {
+    let Some(tray) = tray(app) else { return false };
+    let (Ok(Some(rect)), Ok(cursor)) = (tray.rect(), app.cursor_position()) else {
+        return false;
+    };
+    let position = rect.position.to_physical::<f64>(1.0);
+    let bounds = rect.size.to_physical::<f64>(1.0);
+
+    cursor.x >= position.x
+        && cursor.x <= position.x + bounds.width
+        && cursor.y >= position.y
+        && cursor.y <= position.y + bounds.height
 }
 
 fn toggle(app: &AppHandle) {
