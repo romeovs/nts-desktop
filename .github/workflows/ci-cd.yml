@@ -111,9 +111,14 @@ jobs:
         with:
           version: ${{ steps.versions.outputs.pnpm }}
       - name: Unlock .env
-        uses: sliteteam/github-action-git-crypt-unlock@1.2.0
         env:
           GIT_CRYPT_KEY: ${{ secrets.GIT_CRYPT_KEY }}
+        run: |
+          brew install git-crypt
+          keyfile="$(mktemp)"
+          printf '%s' "$GIT_CRYPT_KEY" | openssl base64 -d -A > "$keyfile"
+          git-crypt unlock "$keyfile"
+          rm -f "$keyfile"
       - name: Set up node
         uses: actions/setup-node@v4
         with:
