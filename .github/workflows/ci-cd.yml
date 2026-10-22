@@ -95,7 +95,7 @@ jobs:
         with:
           workspaces: src-tauri
       - name: Clippy
-        run: cd src-tauri && cargo clippy -- -D warnings
+        run: cd src-tauri && cargo clippy --release -- -D warnings
 
   bundle:
     name: Bundle
